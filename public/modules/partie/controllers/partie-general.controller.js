@@ -25,9 +25,9 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	$scope.defense = {};
 
 	function getAttaques(){
-		if ($scope.loaded.joueurs && $scope.loaded.cartes){
+		if ($scope.loaded.partie && $scope.loaded.cartes){
 			if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 0){
-				Attaques.get($scope.joueurId).success(function(response){
+				Attaques.get({joueurId: $scope.joueurId}).success(function(response){
 					for (var i in response){
 						if (response[i].categorie == 'attaque'){
 							$scope.attaques.defenses.push(response[i]);
@@ -58,6 +58,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			temps: response[0].temps,
 			dispo: response[0].dispo
 		};
+		$scope.loaded.partie = true;
 		getAttaques();
 	})
 

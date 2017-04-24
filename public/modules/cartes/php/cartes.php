@@ -1,6 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+header("Pragma: no-cache");
 
     $con = mysqli_connect("localhost","redingot_romain","redingote778","redingot_database");
     // Check connection

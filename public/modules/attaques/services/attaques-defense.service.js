@@ -15,6 +15,7 @@ angular.module('attaques').service('AttaquesDefenseService',
 			console.log(carteId);
 		console.log($scope.defense.action.types[0]);
 			if (action.types[0] == 'cartes_perte'){
+				console.log('1here')
 				$scope.defense.remainingSteps = 0;
 				$scope.defense.cartes_jeter = [
 					{filled: false},
@@ -40,15 +41,13 @@ angular.module('attaques').service('AttaquesDefenseService',
 				}
 			}
 			else if (action.types[0] == 'cartes_perte_test'){
+				console.log('here')
 				$scope.defense.remainingSteps = 1;
-				if (action.valeur == 1){
-					description = "Tu passes " + action.valeur + " tour";
-				}
-				else {
-					description = "Tu passes " + action.valeur + " tour";
-				}
+				$scope.defense.test = {};
+				description = "Quelle heure est-il ?";
 			}
 			else if (action.types[0] == 'tour_passe'){
+				console.log('here too');
 				$scope.defense.canProceed = true;
 				$scope.defense.remainingSteps = 0;
 				if (action.valeur == 1){
@@ -59,6 +58,7 @@ angular.module('attaques').service('AttaquesDefenseService',
 				}
 			}
 		}
+		console.log('description');
 		$scope.defense.description = description;
 		console.log($scope.defense);
 	};
