@@ -1,0 +1,23 @@
+<md-dialog style="max-width: 600px;">
+    <md-dialog-content style="order: 0;
+    padding-top: 30px;
+    font-size: 16px;
+    padding-right: 70px;
+    padding-left: 70px;">
+    	<span>
+    		Tu es tombé sur une question de {{poseur}} !
+    	</span>
+    	<span>
+    		{{texte}}
+    	</span>
+    </md-dialog-content>
+	<md-dialog-actions  layout="row" style="padding:20px 50px;">
+		<div flex>
+		</div>
+		<div>
+			<md-button ng-click="popupConfirm()" class="md-primary md-raised">
+				C'est parti !
+			</md-button>
+		</div>
+	</md-dialog-actions>
+</md-dialog>

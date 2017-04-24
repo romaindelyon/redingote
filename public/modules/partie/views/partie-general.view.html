@@ -1,0 +1,69 @@
+<div ng-controller="PartieGeneralController" layout="column" style="min-width: 1300px;">
+
+	<!-- Top row: players and plateaux -->
+
+	<div layout="row" style="width: 100%;height: 400px;">
+
+		<red-joueurs-recap-left style="width: 38%;"></red-joueurs-recap-left>
+
+		<div style="width: 24%;height: 100%;" layout="column" style="font-size: 30px;">
+			<div layout="row" style="height: 50%;width: 100%;">
+				<div ng-click="goToPlateau(1)" layout="row" flex layout-align="center center" style="margin: 20px;background-color:#8cd5d1;outline: none;">
+					<span>
+						Labyrinthe
+					</span>
+				</div>
+				<div ng-click="goToPlateau(2)" layout="row" flex layout-align="center center" style="margin: 20px;background-color:#ffc176;outline: none;">
+					<span>
+						Escalier
+					</span>
+				</div>
+			</div>
+			<div layout="row" flex layout-align="center center" style="width: 100%;height: 50%;outline: none;">
+				<img ng-click="goToPlateau(0)" src="modules/plateaux/img/plateau_paysage.jpeg" style="height: 100%;width: 300px;outline: none;">
+			</div>
+		</div>
+
+		<red-joueurs-recap-right style="width: 38%;"></red-joueurs-recap-right>
+
+	</div>
+
+	<!-- Plateaux -->
+
+	<red-plateaux-paysage ng-if="plateau == '0'"></red-plateaux-paysage>
+	<red-plateaux-labyrinthe ng-if="plateau == '1'"></red-plateaux-labyrinthe>
+	<red-plateaux-escalier ng-if="plateau == '2'"></red-plateaux-escalier>
+
+	<!-- Jeux -->
+
+	<red-jeu-container></red-jeu-container>
+
+	<!-- Attaques -->
+
+	<red-attaques-container ng-if="attaque.active"></red-attaques-container>
+
+	<!-- Defenses -->
+
+	<red-attaques-defense-container ng-if="defense.active"></red-attaques-defense-container>
+
+	<!-- Pioches -->
+
+	<div layout="row" style="height: 300px;padding-left: 100px;padding-right: 100px;width: 1300px;">
+
+		<red-des-container layout="column" style="width: 300px;height: 300px;"></red-des-container>
+
+		<div ng-controller="CartesPiocheController" layout="row" flex layout-align="center center" style="width: 800px;height: 300px;">
+			<div ng-click="!piochesDisponibles || partie.dispo.pioches.pioche <= 0 || cartePioche()" layout="row" layout-align="center center" ng-class="!piochesDisponibles || partie.dispo.pioches.pioche <= 0 ? 'cartes-pioches-pioche-disabled' : 'cartes-pioches-pioche'">
+				<span>
+					Pioche
+				</span>
+			</div>
+
+			<div layout="row" layout-align="center center" style="height: 100%;outline: none;">
+				<img ng-click="carteQuestion()" src="modules/cartes/img/questions/cartes_questions_rom.png" style="height: 150px;outline: none;">
+			</div>
+		</div>
+
+	</div>
+
+</div>

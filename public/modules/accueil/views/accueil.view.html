@@ -1,0 +1,27 @@
+<div ng-controller="AccueilController" layout="column">
+	<div style="height: 100px;" layout="row" flex layout-align="center center">
+		<div layout-flex>
+		</div>
+		<span layout="row" style="font-size: 40px;">
+			Redingote
+		</span>
+		<div layout-flex>
+		</div>
+	</div>
+	<div layout="row" flex style="height: 100px;">
+		<div ng-click="goToPartie(0)" layout="row" flex layout-align="center center">
+			Je suis Julia !
+		</div>
+		<div ng-click="goToPartie(1)" layout="row" flex layout-align="center center">
+			Je suis Marie !
+		</div>
+		<div ng-click="goToPartie(2)" layout="row" flex layout-align="center center">
+			Je suis Romain !
+		</div>
+	</div>
+	<div layout="column" flex>
+		<div>
+			<img src="modules/accueil/img/accueil.jpg" style="min-width: 1024px;max-width: 100%;outline: none;">
+		</div>
+	</div>
+</div>

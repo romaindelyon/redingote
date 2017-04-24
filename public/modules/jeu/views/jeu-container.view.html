@@ -1,0 +1,41 @@
+<div ng-controller="JeuContainerController" layout="column" flex layout-align="center center">
+
+    <div layout="column" class="jeu-container">
+        <div layout="row" style="margin-bottom: 10px;">
+            <div>
+                Boite aux lettres
+            </div>
+            <div flex></div>
+            <div style="text-align: center;">
+                <span style="font-size: 16px;">
+                    {{joueur.nom}}
+                </span>
+                <br>
+                <span>
+                    {{joueur.notes_titre}}
+                </span>
+                <img ng-click="" src="modules/jeu/img/jeu_icones_crayon.png" style="height: 20px;margin-bottom: 4px;outline: none;">
+            </div>
+            <div flex></div>
+            <div ng-controller="PartieTourController" layout="row" style="width: 150px;">
+                <div layout="column">
+                    <span ng-if="partie.tour_joueur != joueur.id">
+                        C'est le tour de {{joueurs[partie.tour_joueur].nom}}
+                    </span>
+                    <span ng-if="partie.tour_joueur == joueur.id">
+                        C'est ton tour {{attaques.length}}
+                    </span>
+                    <span>
+                        {{tourActionNames[partie.tour_action]}}
+                    </span>
+                </div>
+                <div layout="column" layout-align="center center" ng-click="!actionsDisponibles.nextAction || defense.active || nextAction()" ng-if="partie.tour_joueur == joueurId" style="outline: none;">
+                    <img src="modules/jeu/img/jeu_icones_next.png" style="height: 20px;">
+                </div>
+            </div>
+        </div>
+        <red-jeu-ouvertes layout="row" flex style="height: 260px;"></red-jeu-ouvertes>
+        <red-jeu-main layout="row" flex style="height: 260px;"></red-jeu-main>
+    </div>
+
+</div>

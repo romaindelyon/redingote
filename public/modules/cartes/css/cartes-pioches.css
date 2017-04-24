@@ -1,0 +1,13 @@
+.cartes-pioches-pioche,
+.cartes-pioches-pioche-disabled {
+	height: 200px;
+    width: 180px;
+	margin: 10px;
+	background-color: #f8952f;
+	outline: none;
+}
+
+.cartes-pioches-pioche-disabled {
+	cursor: default;
+	opacity: 0.5;
+}

@@ -1,0 +1,45 @@
+<div ng-controller="AttaquesDefenseContainerController" layout="row" flex layout-align="center center">
+    <div layout="column" class="attaques-defenses-container">
+
+        <div layout="row" layout-align="center center" class="attaques-defenses-container-titre red-font">
+            <span>
+                {{joueurs[defense.source].nom}} t'attaque !
+            </span>
+        </div>
+
+        <div layout="row" class="attaques-container-body">
+
+            <div class="attaques-container-image">
+                <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+defense.carte+'.png'}}">
+            </div>
+
+            <div layout="column" layout-align="center center" ng-if="defense.type == 'action' && defense.action.types[0] == 'tour_passe'" class="attaques-defenses-action-tour-passe">
+                <div layout="column">
+                    <span>
+                        {{defense.description}}
+                    </span>
+                </div>
+            </div>
+
+            <div layout="column" layout-align="space-around" ng-if="defense.type == 'action' && defense.action.types[0] == 'cartes_perte'" class="attaques-defenses-action-cartes-perte">
+                <span class="attaques-defenses-action-cartes-perte-titre">
+                    {{defense.description}}
+                </span>
+                <div layout="row" layout-align="space-around" class="attaques-defenses-action-cartes-perte-cartes">
+                    <div ng-click="removeCarte($index)" ng-repeat="carte in defense.cartes_jeter" class="attaques-defenses-action-cartes-perte-carte">
+                        <img ng-if="carte.filled" ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.id+'.png'}}">
+                        <img ng-if="!carte.filled" ng-src="{{'modules/cartes/img/pioche/cartes_pioche_blank.png'}}">
+                    </div>
+                </div>
+            </div>
+
+            <div layout="column" layout-align="center center" class="attaques-defenses-container-buttons">
+                <md-button ng-click="finishDefense()" ng-disabled="!defense.canProceed" class="attaques-defenses-container-button red-font md-primary md-raised">
+                    OK !
+                </md-button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

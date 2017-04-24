@@ -1,0 +1,273 @@
+/*Attaques container divs*/
+
+.attaques-container {
+	width: 800px;
+	height: 300px;
+	margin-top: 10px;
+	padding: 5px;
+	background-color: #fff5f5;
+	border: solid 2px #ed1c24;
+	border-radius: 5px;
+}
+
+.attaques-container-titre {
+	width: 100%;
+	height: 30px;
+	font-size: 24px;
+	font-weight: 600;
+	text-align: center;
+}
+
+.attaques-container-body {
+	width: 100%;
+	height: 270px;
+	padding: 20px 40px;
+	font-size: 24px;
+	text-align: center;
+}
+
+.attaques-container-image,
+.attaques-container-image img,
+.attaques-container-buttons {
+	width: 140px;
+	height: 225px;
+}
+
+.attaques-container-cible {
+	width: 240px;
+	height: 225px;
+	padding-left: 40px;
+}
+
+.attaques-container-cible-image,
+.attaques-container-cible-image img {
+	width: 100px;
+	height: 100px;
+	opacity: 0.6;
+	outline: none;
+}
+.attaques-container-cible-image-focused,
+.attaques-container-cible-image-focused img {
+	width: 100px;
+	height: 100px;
+	opacity: 1;
+	outline: none;
+}
+
+.attaques-container-contenu {
+	width: 240px;
+	height: 225px;
+}
+
+.md-button.md-primary.attaques-container-button {
+	background-color: #484848;
+    color: white;
+}
+.md-button.md-primary.md-raised:not([disabled]).attaques-container-button:hover {
+	background-color: #858585;
+    color: white;
+}
+/*Attaques container divs*/
+
+.attaques-defenses-container {
+	height: 300px;
+	margin-top: 10px;
+	padding: 5px;
+	background-color: #fff5f5;
+	border: solid 2px #ed1c24;
+	border-radius: 5px;
+}
+
+.attaques-defenses-container-titre {
+	width: 100%;
+	height: 30px;
+	font-size: 24px;
+	font-weight: 600;
+	text-align: center;
+}
+
+.attaques-defenses-container-body {
+	width: 100%;
+	height: 270px;
+	padding: 20px 40px;
+	font-size: 24px;
+	text-align: center;
+}
+
+.attaques-defenses-container-image,
+.attaques-defenses-container-image img,
+.attaques-defenses-container-buttons {
+	width: 140px;
+	height: 225px;
+}
+
+/*Passe tour*/
+.attaques-defenses-action-tour-passe {
+	width: 240px;
+	height: 225px;
+	margin-left: 30px;
+}
+
+/*Perte carte*/
+.attaques-defenses-action-cartes-perte {
+	width: 350px;
+	height: 225px;
+	margin-left: 30px;	
+}
+.attaques-defenses-action-cartes-perte-titre {
+	width: 350px;
+	height: 30px;
+	font-size: 16px;	
+}
+.attaques-defenses-action-cartes-perte-cartes {
+	width: 350px;	
+}
+.attaques-defenses-action-cartes-perte-carte {
+	width: 80px;
+	height: 125px;
+	outline: none;
+}
+.attaques-defenses-action-cartes-perte-carte img {
+	width: 80px;
+	height: 125px;
+}
+
+.md-button.md-primary.attaques-defenses-container-button {
+	background-color: #484848;
+    color: white;
+}
+.md-button.md-primary.md-raised:not([disabled]).attaques-defenses-container-button:hover {
+	background-color: #858585;
+    color: white;
+}
+.cartes-pioches-pioche,
+.cartes-pioches-pioche-disabled {
+	height: 200px;
+    width: 180px;
+	margin: 10px;
+	background-color: #f8952f;
+	outline: none;
+}
+
+.cartes-pioches-pioche-disabled {
+	cursor: default;
+	opacity: 0.5;
+}
+.des-container-line {
+	width: 300px;
+	height: 100px;
+}
+
+.des-container-box,
+.des-container-box-disabled {
+	width: 80px;
+	height: 80px;
+	margin: 10px;
+	text-align: center;
+	outline: none;
+}
+
+.des-container-box-disabled {
+	cursor: default;
+	opacity: 0.5;
+}
+/*Jeu container divs*/
+
+.jeu-container {
+	width: 1200px;
+	margin-top: 20px;
+	padding: 5px;
+	border: solid 1px black;
+}
+
+.jeu-main-carte {
+	outline: none;
+	width: 160px;
+	height: 250px;
+	margin-left: -80px;
+	margin-top: 0;
+	transition: margin-left 0.2s;
+	z-index: 1;
+}
+.jeu-main-carte-focused {
+	outline: none;
+	width: 166px;
+	height: 256px;
+	border: solid green 3px;
+	margin-left: -80px;
+	transition: margin-left 0.2s;
+	margin-top: -2px;
+	z-index: 2;
+}
+.jeu-main-carte-neighbor-focused {
+	outline: none;
+	width: 160px;
+	height: 250px;
+	margin-left: -10px;
+	margin-top: 0;
+	transition: margin-left 0.2s;
+	z-index: 1;
+}
+
+.jeu-ouvertes-carte {
+	outline: none;
+	width: 160px;
+	height: 250px;
+}
+.jeu-ouvertes-carte-focused {
+	outline: none;
+	width: 166px;
+	height: 256px;
+	border: solid green 3px;
+}
+/*Patient page divs*/
+
+.plateaux-paysage-case,
+.plateaux-paysage-case-clicked {
+	width: 65px;
+	height: 70px;
+	background-color: rgba(255,255,255,0);
+	color: rgba(255,255,255,0);
+	outline: none;
+}
+
+.plateaux-paysage-case:hover,
+.plateaux-paysage-case-clicked {
+	background-color: rgba(255,255,255,0.4);
+	color: rgba(0,0,0,1);
+}
+
+.plateaux-paysage-case-tooltip-topleft,
+.plateaux-paysage-case-tooltip-bottomright,
+.plateaux-paysage-case-tooltip-bottomleft {
+	position: absolute;
+	width: 65px;
+	height: 70px;
+	background-color: rgba(255,255,255,0.4);
+	color: rgba(0,0,0,1);
+	margin-left: -65px;
+	margin-top: -70px;
+	font-size: 10px;
+}
+
+.plateaux-paysage-case-tooltip-topleft {
+	margin-left: -65px;
+	margin-top: -70px;
+}
+
+.plateaux-paysage-case-tooltip-bottomright {
+	margin-left: 65px;
+	margin-top: 70px;
+}
+
+.plateaux-paysage-case-tooltip-bottomleft {
+	margin-left: -65px;
+	margin-top: 70px;
+}
+.md-button.md-primary {
+	text-transform: none;
+}
+.red-font {
+	font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
+	color: #484848;
+}

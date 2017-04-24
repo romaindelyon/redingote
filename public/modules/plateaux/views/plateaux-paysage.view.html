@@ -1,0 +1,53 @@
+<div ng-controller="PlateauxPaysageController" layout="row" flex style="width: 1560px;height: 980px;">
+	<img src="modules/plateaux/img/plateau_paysage.jpeg" style="position: absolute;z-index: 1;width: 1560px;height: 980px;">
+
+	<div style="position: absolute;z-index: 2;width: 1600px;height: 850px;">
+		<!-- Rangees -->
+		<div ng-repeat="ligne in plateauPaysage" layout="row">
+			<!-- Colonnes -->
+			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(ligne.id,case.id)" layout="column" layout-align="space-between center" ng-class="selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id ? 'plateaux-paysage-case-clicked' : 'plateaux-paysage-case'">
+
+				<!-- Case -->
+				<div layout="row" layout-align="space-between center" style="width: 100%;">
+					<span>
+						{{case.numero}}
+					</span>
+					<span ng-if="case.question">
+						?
+					</span>
+				</div>
+				<div layout="row" layout-align="space-between center" style="width: 100%;">
+					<div>
+						<span ng-if="case.achat">
+							G
+						</span>
+					</div>
+					<span ng-if="case.action">
+						!
+					</span>
+				</div>
+
+				<!-- Tooltips -->
+				<!-- 1. Zone info -->
+				<div ng-if="selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id" class="plateaux-paysage-case-tooltip-topleft">
+					Zones:
+					<span ng-repeat="zone in case.zones">
+						<br>{{zone}}
+					</span>
+				</div>
+
+				<!-- 2. Action info -->
+				<div ng-if="case.action && selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id" class="plateaux-paysage-case-tooltip-bottomright">
+					Description de l'action specifique a cette case.
+				</div>
+
+				<!-- 3. Achat info -->
+				<div ng-if="case.achat && selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id" class="plateaux-paysage-case-tooltip-bottomleft">
+					Description des achats disponibles.
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>	

@@ -1,0 +1,44 @@
+/*Patient page divs*/
+
+.plateaux-paysage-case,
+.plateaux-paysage-case-clicked {
+	width: 65px;
+	height: 70px;
+	background-color: rgba(255,255,255,0);
+	color: rgba(255,255,255,0);
+	outline: none;
+}
+
+.plateaux-paysage-case:hover,
+.plateaux-paysage-case-clicked {
+	background-color: rgba(255,255,255,0.4);
+	color: rgba(0,0,0,1);
+}
+
+.plateaux-paysage-case-tooltip-topleft,
+.plateaux-paysage-case-tooltip-bottomright,
+.plateaux-paysage-case-tooltip-bottomleft {
+	position: absolute;
+	width: 65px;
+	height: 70px;
+	background-color: rgba(255,255,255,0.4);
+	color: rgba(0,0,0,1);
+	margin-left: -65px;
+	margin-top: -70px;
+	font-size: 10px;
+}
+
+.plateaux-paysage-case-tooltip-topleft {
+	margin-left: -65px;
+	margin-top: -70px;
+}
+
+.plateaux-paysage-case-tooltip-bottomright {
+	margin-left: 65px;
+	margin-top: 70px;
+}
+
+.plateaux-paysage-case-tooltip-bottomleft {
+	margin-left: -65px;
+	margin-top: 70px;
+}
