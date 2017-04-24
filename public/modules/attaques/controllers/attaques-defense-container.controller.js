@@ -44,6 +44,16 @@ angular.module('attaques').controller('AttaquesDefenseContainerController', ['$s
 					}
 				}
 			}
+			else if (action.types[0] == 'cartes_perte_test'){
+				if ($scope.defense.question == "19h42"){
+					if ($scope.defense.test.hour == "19" && $scope.defense.test.hour == "42"){
+						$scope.defense.test.correct = true;
+					}
+					else {
+						$scope.defense.test.correct = false;
+					}
+				}
+			}
 		}
 		// Si la defense en question est bien finie:
 		if ($scope.defense.remainingSteps <= 0){

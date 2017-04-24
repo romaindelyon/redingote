@@ -1,4 +1,4 @@
-<div ng-controller="AttaquesDefenseContainerController" layout="row" flex layout-align="center center">
+<form name="Defense" ng-controller="AttaquesDefenseContainerController" layout="row" flex layout-align="center center">
     <div layout="column" class="attaques-defenses-container">
 
         <div layout="row" layout-align="center center" class="attaques-defenses-container-titre red-font">
@@ -22,7 +22,7 @@
             </div>
 
             <div layout="column" layout-align="space-around" ng-if="defense.type == 'action' && defense.action.types[0] == 'cartes_perte'" class="attaques-defenses-action-cartes-perte">
-                <span class="attaques-defenses-action-cartes-perte-titre">
+                <span class="attaques-defenses-action-content-titre ">
                     {{defense.description}}
                 </span>
                 <div layout="row" layout-align="space-around" class="attaques-defenses-action-cartes-perte-cartes">
@@ -33,8 +33,28 @@
                 </div>
             </div>
 
+            <div layout="column" layout-align="center center" ng-if="defense.type == 'action' && defense.action.types[0] == 'cartes_perte_test'" class="attaques-defenses-action-test">
+                <span class="attaques-defenses-action-content-titre ">
+                    {{defense.description}}
+                </span>
+                <div layout="row">
+                    <md-input-container style="width: 35px;">
+                        <input ng-model="defense.test.hours" maxlength="2">
+                    </md-input-container>
+                    <span>
+                    h
+                    </span>
+                    <md-input-container style="width: 35px;">
+                        <input ng-model="defense.test.minutes" maxlength="2">
+                    </md-input-container>
+                </div>
+            </div>
+
             <div layout="column" layout-align="center center" class="attaques-defenses-container-buttons">
-                <md-button ng-click="finishDefense()" ng-disabled="!defense.canProceed" class="attaques-defenses-container-button red-font md-primary md-raised">
+                <md-button ng-if="defense.type != 'action' || defense.action.types[0] != 'cartes_perte_test'" ng-click="finishDefense()" ng-disabled="!defense.canProceed" class="attaques-defenses-container-button red-font md-primary md-raised">
+                    OK !
+                </md-button>
+                <md-button ng-if="defense.type == 'action' && defense.action.types[0] == 'cartes_perte_test'" type="submit" ng-click="finishDefense()" class="attaques-defenses-container-button red-font md-primary md-raised">
                     OK !
                 </md-button>
             </div>
@@ -42,4 +62,4 @@
         </div>
     </div>
 
-</div>
+</form>
