@@ -3,18 +3,18 @@
 
         <div layout="row" layout-align="center center" class="confrontations-titre red-font">
             <span>
-                Lancer un duel {{duel.cible_text}}
+                 Duel lancé par {{joueurs[defense.source].nom}}
             </span>
         </div>
 
         <div layout="row" class="confrontations-body">
 
             <div layout="column" layout-align="space-around center" class="confrontations-cible">
-                <div ng-click="chooseJoueur(autresJoueurs[0])" ng-class="attaque.cible == autresJoueurs[0] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
-                    <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[0]+'.png'}}">
+                <div class="confrontations-cible-image-focused">
+                    <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+defense.source+'.png'}}">
                 </div>
-                <div ng-click="chooseJoueur(autresJoueurs[1])" ng-class="attaque.cible == autresJoueurs[1] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
-                    <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[1]+'.png'}}">
+                <div class="confrontations-cible-image-focused">
+                    <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+defense.cible+'.png'}}">
                 </div>
             </div>
 
@@ -38,10 +38,38 @@
                     <span ng-if="duel.info.bonus_source < 0" class="confrontations-duel-result">
                     + {{duel.info.bonus_source}}
                     </span>
+                    <span>
+                        mod {{duel.info.modulo}}
+                    </span>
+                    <span>
+                        {{duel.info.result_source}}
+                    </span>
                 </div>
-                <div layout="row" layout-align="center center">
-                    <span>mod {{duel.info.modulo}}</span>
-                    <span>{{duel.info.result_source}}</span>
+                <div layout="row" layout-align="space-around center">
+                    <span class="confrontations-duel-result">
+                        {{duel.info.results_cible[0]}}
+                    </span>
+                    <span class="confrontations-duel-result">
+                        {{duel.info.results_cible[1]}}
+                    </span>
+                    <span class="confrontations-duel-result">
+                        {{duel.info.results_cible[2]}}
+                    </span>
+                    <span ng-if="duel.info.bonus_source > 0" class="confrontations-duel-result">
+                    - {{duel.info.bonus_cible}}
+                    </span>
+                    <span ng-if="duel.info.bonus_source == 0" class="confrontations-duel-result">
+                    + 0
+                    </span>
+                    <span ng-if="duel.info.bonus_source < 0" class="confrontations-duel-result">
+                    + {{duel.info.bonus_cible}}
+                    </span>
+                    <span>
+                        mod {{duel.info.modulo}}
+                    </span>
+                    <span>
+                        {{duel.info.result_cible}}
+                    </span>
                 </div>
             </div>
 

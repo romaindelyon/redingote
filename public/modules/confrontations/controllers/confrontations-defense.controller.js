@@ -5,11 +5,10 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 
 	$scope.toursToSkip = 0;
 
-
 	function implementDefense(){
-		var description = "";
 		var defense = $scope.defense;
 		if (defense.type == 'action'){
+			var description = "";
 			var carteId = defense.carte;
 			var action = $scope.cartes[carteId].action;
 			$scope.defense.action = action;
@@ -54,8 +53,14 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 					description = "Tu passes " + action.valeur + " tour";
 				}
 			}
+			$scope.defense.description = description;
 		}
-		$scope.defense.description = description;
+		else if (defense.type == 'duel'){
+			var duel = defense.duel;
+			$scope.defense.duel.results_cible = [];
+			$scope.defense.duel.result_cible = 0;
+			$scope.defense.remainingSteps = 1;
+		}
 	};
 
 	function startDefense(){
@@ -63,7 +68,12 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 			$scope.defense.id = $scope.attaques.defenses[0].id;
 			$scope.defense.type = $scope.attaques.defenses[0].type;
 			$scope.defense.categorie = $scope.attaques.defenses[0].categorie;
-			$scope.defense.carte = $scope.attaques.defenses[0].info;
+			if ($scope.defense.type == 'action'){
+				$scope.defense.carte = $scope.attaques.defenses[0].info;
+			}
+			else if ($scope.defense.type == 'duel'){
+				$scope.duel.info = $scope.attaques.defenses[0].info;
+			}
 			$scope.defense.source = $scope.attaques.defenses[0].source;
 			$scope.defense.canProceed = false;
 			$scope.defense.active = true;
@@ -125,6 +135,18 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 				action.types[0] = 'cartes_perte_test_2';
 			}
 		}
+		else if ($scope.defense.type == 'duel'){
+			// if ($scope.duel.result_cible > $scope.duel.result_source){
+			// 	$scope.defense.type = 'duel_won';
+			// }
+			// else if ($scope.duel.result_cible > $scope.duel.result_source){
+			// 	$scope.defense.type = 'duel_lost';
+			// }
+			// else {
+			// 	$scope.defense.type = 'duel_equal';
+			// }
+			$scope.defense.remainingSteps = 0;
+		}
 		// Si la defense en question est bien finie:
 		if ($scope.defense.remainingSteps <= 0){
 			// On la vire:
@@ -173,6 +195,25 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 		}
 	}
 
+	function updateResult(){
+		var result = 0;
+		for (var i in $scope.duel.info.results_cible){
+			result += $scope.duel.info.results_cible[i];
+		}
+		$scope.duel.info.result_cible = result % $scope.duel.info.modulo;
+		console.log($scope.duel.info.result_source);
+	}
+
+	function lanceDeDuel(result){
+		if ($scope.duel.info.results_cible.length < 3){
+			$scope.duel.info.results_cible.push(result);
+			updateResult();
+			if ($scope.duel.info.results_cible.length == 3){
+				$scope.defense.canProceed = true;
+			}
+		}
+	}
+
 	// Event listeners that call the defense functions:
 	$rootScope.$on('confrontations-defense-start', function(event, args) {
 		startDefense();
@@ -180,7 +221,9 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 	$rootScope.$on('confrontations-defense-jeter-carte', function(event, args) {
 		jeterCarte(args.id);
 	});
-
+	$rootScope.$on('confrontations-duel-de', function(event, args) {
+		lanceDeDuel(args.result);
+	});
 	// Controller loaded:
 	$scope.loaded.defenseController = true;
 	$scope.getAttaques()
