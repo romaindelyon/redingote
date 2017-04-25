@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('confrontations').controller('ConfrontationsDefenseController', ['$scope','$rootScope','Cartes','Confrontations','Partie','Joueurs','ConfrontationsDefenseService','PartieTourService',
-	function($scope,$rootScope,Cartes,Confrontations,Partie,Joueurs,ConfrontationsDefenseService,PartieTourService) {
+angular.module('confrontations').controller('ConfrontationsDefenseController', ['$scope','$rootScope','Cartes','Confrontations','PartieTourService',
+	function($scope,$rootScope,Cartes,Confrontations,PartieTourService) {
 
 	$scope.toursToSkip = 0;
 
@@ -22,7 +22,6 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 				$scope.defense.cartes_jeter_filled = 0;
 				$scope.defense.cartes_jeter_total = action.valeur;
 				var cartesJetables = 0;
-				console.log(cartesJetables);
 				for (var i in $scope.jeu.main){
 					if (!$scope.jeu.main[i].injetable){
 						cartesJetables ++;
@@ -32,7 +31,6 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 				if ($scope.defense.cartes_jeter_total == 0){
 					$scope.defense.canProceed = true;
 				}
-				console.log(cartesJetables);
 				$scope.partie.dispo.cartes.main_jeter_attaque = true;
 				if (action.valeur == 1){
 					description = "Choisis " + action.valeur + " carte à défausser :";
@@ -42,13 +40,11 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 				}
 			}
 			else if (action.types[0] == 'cartes_perte_test'){
-				console.log('here')
 				$scope.defense.remainingSteps = 1;
 				$scope.defense.test = {};
 				description = "Quelle heure est-il ?";
 			}
 			else if (action.types[0] == 'tour_passe'){
-				console.log('here too');
 				$scope.defense.canProceed = true;
 				$scope.defense.remainingSteps = 0;
 				if (action.valeur == 1){
@@ -67,7 +63,7 @@ angular.module('confrontations').controller('ConfrontationsDefenseController', [
 			$scope.defense.id = $scope.attaques.defenses[0].id;
 			$scope.defense.type = $scope.attaques.defenses[0].type;
 			$scope.defense.categorie = $scope.attaques.defenses[0].categorie;
-			$scope.defense.carte = $scope.attaques.defenses[0].carte;
+			$scope.defense.carte = $scope.attaques.defenses[0].info;
 			$scope.defense.source = $scope.attaques.defenses[0].source;
 			$scope.defense.canProceed = false;
 			$scope.defense.active = true;

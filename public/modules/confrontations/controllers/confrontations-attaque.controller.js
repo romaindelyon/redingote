@@ -26,7 +26,7 @@ angular.module('confrontations').controller('ConfrontationsAttaqueController', [
         	Confrontations.add({
         		categorie: 'attaque',
         		type: 'action',
-        		carte: carte.id,
+        		info: carte.id,
         		cible: $scope.attaque.cible,
         		source: $scope.joueurId
         	});

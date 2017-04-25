@@ -1,6 +1,6 @@
 [{"id":1,
 	"tour_joueur":0,
-	"tour_action":0,
+	"tour_action":4,
 	"tour_skip": [0,0,0],
 	"tonalite":"sol",
 	"temps": 0,

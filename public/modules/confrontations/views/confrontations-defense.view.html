@@ -7,7 +7,7 @@
             </span>
         </div>
 
-        <div layout="row" class="confrontations-defenses-body">
+        <div layout="row" class="confrontations-body">
 
             <div class="confrontations-defenses-image">
                 <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+defense.carte+'.png'}}">
@@ -56,8 +56,8 @@
                 </div>
             </div>
 
-            <div layout="column" layout-align="center center" class="confrontations-defenses-buttons">
-                <md-button ng-click="finishDefense()" ng-disabled="!defense.canProceed && (defense.type != 'action' || (defense.action.types[0] != 'cartes_perte_test' && defense.action.types[0] != 'cartes_perte_test_2'))" class="confrontations-defenses-button red-font md-primary md-raised">
+            <div layout="column" layout-align="center center" class="confrontations-buttons">
+                <md-button ng-click="finishDefense()" ng-disabled="!defense.canProceed && (defense.type != 'action' || (defense.action.types[0] != 'cartes_perte_test' && defense.action.types[0] != 'cartes_perte_test_2'))" class="confrontations-button red-font md-primary md-raised">
                     OK !
                 </md-button>
             </div>

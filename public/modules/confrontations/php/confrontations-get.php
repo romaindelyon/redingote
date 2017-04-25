@@ -14,7 +14,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
     $stmt -> bind_param('i',$joueur_id);
     $stmt -> execute();
-    $stmt -> bind_result($id,$categorie,$type,$carte,$cible,$source);
+    $stmt -> bind_result($id,$categorie,$type,$info,$cible,$source);
 
     $results = array();
     while($stmt->fetch()) {
@@ -22,7 +22,7 @@ header("Content-Type: application/json; charset=UTF-8");
             $result["id"] = $id;
             $result["categorie"] = $categorie;
             $result["type"] = $type;
-            $result["carte"] = $carte;
+            $result["info"] = $info;
             $result["source"] = json_decode($source);
             array_push($results, $result);
         }

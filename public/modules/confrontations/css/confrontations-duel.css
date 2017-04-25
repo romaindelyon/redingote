@@ -1,0 +1,23 @@
+/*Duels divs*/
+
+.confrontations-container-duel {
+	height: 300px;
+	margin-top: 10px;
+	padding: 5px;
+	background-color: #fff2e1;
+	border: solid 2px #ed991c;
+	border-radius: 5px;
+}
+
+.confrontations-duel-results {
+	width: 350px;
+	height: 225px;
+	font-size: 18px;
+}
+
+.confrontations-duel-result {
+	width: 40px;
+	height: 40px;
+	background-color: green;
+	text-align: center;
+}

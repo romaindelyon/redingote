@@ -10,6 +10,8 @@ angular.module('partie').service('PartieTourService', ['Partie',
 		$scope.jeu.de = -1;
 		$scope.resetDispos();
 		console.log('starting action : tourJoueur is '+tourJoueur);
+		console.log(tourAction);
+		console.log($scope.joueurId);
 		// Lancer la nouvelle action:
 		if (tourJoueur == $scope.joueurId){
 			console.log(tourAction);
@@ -21,6 +23,10 @@ angular.module('partie').service('PartieTourService', ['Partie',
 				$scope.partie.dispo.pioches.pioche ++;
 				$scope.partie.dispo.des.rhombo ++;
 				$scope.partie.dispo.cartes.main_jeter = true;
+			}
+			else if (tourAction == 5){
+				$scope.partie.dispo.duel = true;
+				$scope.partie.dispo.des.duel = 3;
 			}
 			else if (tourAction == 6){
 				$scope.partie.dispo.cartes.utiliser = true;

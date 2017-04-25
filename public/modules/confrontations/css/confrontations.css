@@ -16,3 +16,41 @@
 	font-weight: 600;
 	text-align: center;
 }
+
+.confrontations-body {
+	width: 100%;
+	height: 270px;
+	padding: 20px 40px;
+	font-size: 24px;
+	text-align: center;
+}
+
+.confrontations-cible {
+	width: 240px;
+	height: 225px;
+	padding-left: 40px;
+}
+
+.confrontations-cible-image,
+.confrontations-cible-image img {
+	width: 100px;
+	height: 100px;
+	opacity: 0.6;
+	outline: none;
+}
+.confrontations-cible-image-focused,
+.confrontations-cible-image-focused img {
+	width: 100px;
+	height: 100px;
+	opacity: 1;
+	outline: none;
+}
+
+.md-button.md-primary.confrontations-button {
+	background-color: #484848;
+    color: white;
+}
+.md-button.md-primary.md-raised:not([disabled]).confrontations-button:hover {
+	background-color: #858585;
+    color: white;
+}

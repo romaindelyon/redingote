@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','Cartes','Partie','Joueurs','Confrontations','ConfrontationsDefenseService',
-	function($scope,$state,$stateParams,Cartes,Partie,Joueurs,Confrontations,ConfrontationsDefenseService) {
+angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','Cartes','Partie','Joueurs','Confrontations',
+	function($scope,$state,$stateParams,Cartes,Partie,Joueurs,Confrontations) {
 
 	// Tracking if all information has been well retrieved:
 	$scope.loaded = {
@@ -25,8 +25,9 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.defense = {};
 
+	$scope.duel = {};
+
 	$scope.getAttaques = function(){
-		console.log($scope.loaded);
 		if ($scope.loaded.partie && $scope.loaded.cartes && $scope.loaded.defenseController){
 			if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 0){
 				Confrontations.get({joueurId: $scope.joueurId}).success(function(response){
@@ -37,7 +38,6 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 						else if (response[i].categorie == 'recompense'){
 							$scope.attaques.recompenses.push(response[i]);
 						}
-						console.log($scope.attaques.defenses);
 					}
 					$scope.loaded.defenses = true;
 					$scope.$emit('confrontations-defense-start', {});
@@ -84,7 +84,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 				main_jeter: false,
 				ouvertes_jeter: false,
 				utiliser: false
-			}
+			},
+			duel: false
 		}
 	}
 

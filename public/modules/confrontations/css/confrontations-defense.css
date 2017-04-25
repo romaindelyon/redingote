@@ -9,14 +9,6 @@
 	border-radius: 5px;
 }
 
-.confrontations-defenses-body {
-	width: 100%;
-	height: 270px;
-	padding: 20px 40px;
-	font-size: 24px;
-	text-align: center;
-}
-
 .confrontations-defenses-image {
 	width: 175px;
 	padding-right: 30px;
@@ -64,13 +56,4 @@
 .confrontations-defenses-action-test{
 	width: 270px;
 	height: 225px;
-}
-
-.md-button.md-primary.confrontations-defenses-button {
-	background-color: #484848;
-    color: white;
-}
-.md-button.md-primary.md-raised:not([disabled]).confrontations-defenses-button:hover {
-	background-color: #858585;
-    color: white;
 }
