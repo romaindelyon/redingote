@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('attaques').controller('AttaquesContainerController', ['$scope','Cartes','Attaques',
-	function($scope,Cartes,Attaques) {
+angular.module('confrontations').controller('ConfrontationsAttaqueController', ['$scope','Cartes','Confrontations',
+	function($scope,Cartes,Confrontations) {
 
 	$scope.chooseJoueur = function(id){
 		$scope.attaque.cible = id;
@@ -23,7 +23,7 @@ angular.module('attaques').controller('AttaquesContainerController', ['$scope','
     		position: -2
         }).success(function(){
         	// send attaque !
-        	Attaques.add({
+        	Confrontations.add({
         		categorie: 'attaque',
         		type: 'action',
         		carte: carte.id,

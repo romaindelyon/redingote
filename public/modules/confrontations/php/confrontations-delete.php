@@ -10,7 +10,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
     $id = $_GET["id"];
 
-    $stmt = $con -> prepare("DELETE FROM attaques WHERE id = ?");
+    $stmt = $con -> prepare("DELETE FROM confrontations WHERE id = ?");
 
     $stmt -> bind_param('i',$id);
     $stmt -> execute();
