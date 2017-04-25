@@ -16,7 +16,7 @@ header("Cache-Control: no-cache");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("INSERT INTO attaques (categorie, type, carte, cible, source) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $con -> prepare("INSERT INTO confrontations (categorie, type, carte, cible, source) VALUES (?, ?, ?, ?, ?)");
 
     $stmt -> bind_param('ssiii',$categorie,$type,$carte,$cible,$source);
     $stmt -> execute();

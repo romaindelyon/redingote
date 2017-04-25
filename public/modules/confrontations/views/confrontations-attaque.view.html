@@ -1,0 +1,48 @@
+<div ng-controller="ConfrontationsAttaqueController" layout="row" flex layout-align="center center">
+    <div layout="column" class="confrontations-container">
+
+        <div layout="row" layout-align="center center" class="confrontations-titre red-font">
+            <span>
+                Action : {{attaque.carte.nom}}
+            </span>
+        </div>
+
+        <div layout="row" class="confrontations-attaques-body">
+
+            <div class="confrontations-attaques-image">
+                <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+attaque.carte.id+'.png'}}">
+            </div>
+
+            <div layout="column" layout-align="space-around center" class="confrontations-attaques-cible">
+                <div ng-click="chooseJoueur(autresJoueurs[0])" ng-class="attaque.cible == autresJoueurs[0] ? 'confrontations-attaques-cible-image-focused' : 'confrontations-attaques-cible-image'">
+                    <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[0]+'.png'}}">
+                </div>
+                <div ng-click="chooseJoueur(autresJoueurs[1])" ng-class="attaque.cible == autresJoueurs[1] ? 'confrontations-attaques-cible-image-focused' : 'confrontations-attaques-cible-image'">
+                    <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[1]+'.png'}}">
+                </div>
+            </div>
+
+            <div layout="column" layout-align="center center" class="confrontations-attaques-contenu">
+                <div layout="column" ng-if="attaque.cible >= 0">
+                    <span> 
+                        {{joueurs[attaque.cible].nom}}
+                    </span>
+                    <span>
+                        {{attaque.description}}
+                    </span>
+                </div>
+            </div>
+
+            <div layout="column" layout-align="center center" class="confrontations-attaques-buttons">
+                <md-button ng-click="lanceAction()" ng-disabled="attaque.cible == undefined || attaque.cible < 0" class="confrontations-attaques-button red-font md-primary md-raised">
+                    OK !
+                </md-button>
+                <md-button ng-click="cancelAttaque()" class="confrontations-attaques-button red-font md-primary md-raised">
+                    Annuler
+                </md-button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

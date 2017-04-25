@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('attaques').factory('Attaques', ['$http','configService',
+angular.module('confrontations').factory('Confrontations', ['$http','configService',
 	function($http,configService) {
 		return {
 			// Add an attaque:
@@ -14,7 +14,7 @@ angular.module('attaques').factory('Attaques', ['$http','configService',
 				else {
 					return $http({
 				        method: 'POST', 
-				        url: 'modules/attaques/php/attaques-add.php',
+				        url: 'modules/confrontations/php/confrontations-add.php',
 				        params: params,
 				        headers: {
 				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate',
@@ -27,13 +27,13 @@ angular.module('attaques').factory('Attaques', ['$http','configService',
 				if (configService.local){
 					return $http({
 				        method: 'GET', 
-				        url: 'modules/attaques/json/attaques.json'
+				        url: 'modules/confrontations/json/confrontations.json'
 				    });
 				}
 				else {
 					return $http({
 				        method: 'GET', 
-				        url: 'modules/attaques/php/attaques-get.php',
+				        url: 'modules/confrontations/php/confrontations-get.php',
 				        params: params,
 				        headers: {
 				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate',
@@ -46,13 +46,13 @@ angular.module('attaques').factory('Attaques', ['$http','configService',
 				if (configService.local){
 					return $http({
 				        method: 'GET', 
-				        url: 'modules/attaques/json/attaques.json'
+				        url: 'modules/confrontations/json/confrontations.json'
 				    });
 				}
 				else {
 					return $http({
 				        method: 'POST', 
-				        url: 'modules/attaques/php/attaques-delete.php',
+				        url: 'modules/confrontations/php/confrontations-delete.php',
 				        params: params,
 				        headers: {
 				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate',

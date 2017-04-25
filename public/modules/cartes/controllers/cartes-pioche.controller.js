@@ -62,10 +62,10 @@ angular.module('cartes').controller('CartesPiocheController',
     			$scope.pioches.pioche.push($scope.defausses.pioche[i]);
     		}
     		$scope.defausses.pioche = [];
+    		if (pioche){
+    			carteSelection();
+    		}
     	});
-    	if (pioche){
-    		carteSelection();
-    	}
 	} 
 
 	$scope.cartePioche = function(){

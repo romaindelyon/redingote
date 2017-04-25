@@ -1,14 +1,15 @@
 'use strict';
 
-angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','Cartes','Partie','Joueurs','Attaques','AttaquesDefenseService',
-	function($scope,$state,$stateParams,Cartes,Partie,Joueurs,Attaques,AttaquesDefenseService) {
+angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','Cartes','Partie','Joueurs','Confrontations','ConfrontationsDefenseService',
+	function($scope,$state,$stateParams,Cartes,Partie,Joueurs,Confrontations,ConfrontationsDefenseService) {
 
 	// Tracking if all information has been well retrieved:
 	$scope.loaded = {
 		partie: false,
 		cartes: false,
 		joueurs: false,
-		defenses: false // integrated
+		defenses: false, // integrated
+		defenseController: false
 	};
 
 	// Get param:
@@ -24,10 +25,11 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.defense = {};
 
-	function getAttaques(){
-		if ($scope.loaded.partie && $scope.loaded.cartes){
+	$scope.getAttaques = function(){
+		console.log($scope.loaded);
+		if ($scope.loaded.partie && $scope.loaded.cartes && $scope.loaded.defenseController){
 			if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 0){
-				Attaques.get({joueurId: $scope.joueurId}).success(function(response){
+				Confrontations.get({joueurId: $scope.joueurId}).success(function(response){
 					for (var i in response){
 						if (response[i].categorie == 'attaque'){
 							$scope.attaques.defenses.push(response[i]);
@@ -38,7 +40,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 						console.log($scope.attaques.defenses);
 					}
 					$scope.loaded.defenses = true;
-					AttaquesDefenseService.startDefense($scope);
+					$scope.$emit('confrontations-defense-start', {});
 				});
 			}
 			else {
@@ -59,7 +61,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			dispo: response[0].dispo
 		};
 		$scope.loaded.partie = true;
-		getAttaques();
+		$scope.getAttaques();
 	})
 
 	$scope.resetDispos = function(){
@@ -125,7 +127,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    		}
 	    	}
 			$scope.loaded.cartes = true;
-			getAttaques();
+			$scope.getAttaques();
 	    }).error(function(response){
 	    	console.log("Error while trying to get cartes");
 	    });

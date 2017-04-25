@@ -1,8 +1,8 @@
-angular.module('attaques').service('attaquesActions',
+angular.module('confrontations').service('ConfrontationsAttaqueService',
 	['$mdDialog','Cartes',
 	function($mdDialog,Cartes) {
 
-	var attaquesActionsFunctions = {};
+	var confrontationsAttaquesFunctions = {};
 
 	function addAttaqueDescription(scope,action){
 		var description = "";
@@ -18,12 +18,12 @@ angular.module('attaques').service('attaquesActions',
 		scope.attaque.description = description;
 	};
 
-	attaquesActionsFunctions.utiliser = function(scope,carte){
+	confrontationsAttaquesFunctions.utiliser = function(scope,carte){
 		scope.attaque.active = true;
 		scope.attaque.categorie = 'action';
 		scope.attaque.carte = carte;
 		addAttaqueDescription(scope,carte.action);
 	}
 
-	return(attaquesActionsFunctions);
+	return(confrontationsAttaquesFunctions);
 }]);

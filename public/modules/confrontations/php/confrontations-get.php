@@ -10,7 +10,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
     $joueur_id = $_GET["joueurId"];
 
-    $stmt = $con -> prepare("SELECT * FROM attaques WHERE cible = ?");
+    $stmt = $con -> prepare("SELECT * FROM confrontations WHERE cible = ?");
 
     $stmt -> bind_param('i',$joueur_id);
     $stmt -> execute();
