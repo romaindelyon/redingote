@@ -44,3 +44,12 @@ angular.module('confrontations').directive('redConfrontationsAttaqueDuel', [
 		};
 	}
 ]);
+
+angular.module('confrontations').directive('redConfrontations', [
+	function() {
+		return {
+			templateUrl: 'modules/confrontations/views/confrontations.view.html',
+			restrict: 'E'
+		};
+	}
+]);

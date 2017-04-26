@@ -1,6 +1,6 @@
 /*Styles shared between several sub categories*/
 
-.confrontations-container {
+.confrontations-container-action {
 	height: 300px;
 	margin-top: 10px;
 	padding: 5px;
@@ -25,6 +25,11 @@
 	text-align: center;
 }
 
+.confrontations-description {
+	width: 240px;
+	height: 225px;
+}
+
 .confrontations-cible {
 	width: 240px;
 	height: 225px;
@@ -44,6 +49,11 @@
 	height: 100px;
 	opacity: 1;
 	outline: none;
+}
+
+.confrontations-buttons {
+	width: 140px;
+	height: 225px;
 }
 
 .md-button.md-primary.confrontations-button {

@@ -2,7 +2,7 @@
 
 	<div layout="column" layout-align="center center" style="width: 150px;margin-right: 100px;">
 		<div ng-if="focusIndex >= 0">
-			<md-button ng-if="partie.dispo.cartes.utiliser && jeu.main[focusIndex].utilisation.indexOf('action') > -1 && !attaque.active" ng-click="utiliserCarte(focusIndex)" class="md-primary">
+			<md-button ng-if="partie.dispo.cartes.utiliser && jeu.main[focusIndex].utilisation.indexOf('action') > -1 && !confrontation.active" ng-click="utiliserCarte(focusIndex)" class="md-primary">
 				Utiliser
 			</md-button>
 			<md-button ng-if="partie.dispo.cartes.ouvertures && jeu.main[focusIndex].utilisation.indexOf('ouverture') > -1"  ng-click="ouvrirCarte(focusIndex)" class="md-primary">
@@ -11,7 +11,7 @@
 			<md-button ng-if="partie.dispo.cartes.main_jeter && !jeu.main[focusIndex].injetable" ng-click="jeterCarte(focusIndex)" class="md-primary">
 				Jeter
 			</md-button>
-			<md-button ng-if="partie.dispo.cartes.main_jeter_attaque && !jeu.main[focusIndex].injetable && defense.cartes_jeter_filled < defense.cartes_jeter_total" ng-click="jeterAttaqueCarte(focusIndex)" class="md-primary">
+			<md-button ng-if="partie.dispo.cartes.main_jeter_attaque && !jeu.main[focusIndex].injetable && confrontation.cartes.filled < confrontation.cartes.total" ng-click="jeterAttaqueCarte(focusIndex)" class="md-primary">
 				Jeter
 			</md-button>
 			<md-button ng-if="partie.dispo.cartes.main_donner_attaque" ng-click="jeterAttaqueCarte(focusIndex)" class="md-primary">

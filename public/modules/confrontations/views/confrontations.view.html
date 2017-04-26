@@ -1,0 +1,151 @@
+<div ng-controller="ConfrontationsController" layout="column" ng-class="{'confrontations-container-action': confrontation.type == 'action','confrontations-container-duel': confrontation.type == 'duel'}">
+
+	<!-- Titre -->
+ 	<div layout="row" layout-align="center center" class="confrontations-titre red-font">
+        <span>
+             {{confrontation.titre}}
+        </span>
+    </div>
+
+    <!-- Body -->
+    <div layout="row" class="confrontations-body">
+
+    	<!-- Module 1 - Carte image -->
+    	<div ng-if="confrontation.display.carte_image" class="confrontations-attaques-image">
+            <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+confrontation.info+'.png'}}">
+        </div>
+
+        <!-- Module 2 - Joueur selection -->
+        <div ng-if="confrontation.display.joueur_selection" layout="column" layout-align="space-around center" class="confrontations-cible">
+            <div ng-click="selectCible(autresJoueurs[0])" ng-class="confrontation.cible == autresJoueurs[0] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
+                <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[0]+'.png'}}">
+            </div>
+            <div ng-click="selectCible(autresJoueurs[1])" ng-class="confrontation.cible == autresJoueurs[1] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
+                <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[1]+'.png'}}">
+            </div>
+        </div>
+
+        <!-- Module 3 - Joueur images -->
+        <div ng-if="confrontation.display.joueur_images" layout="column" layout-align="space-around center" class="confrontations-cible">
+            <div class="confrontations-cible-image-focused">
+                <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+defense.source+'.png'}}">
+            </div>
+            <div class="confrontations-cible-image-focused">
+                <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+defense.cible+'.png'}}">
+            </div>
+        </div>
+
+        <!-- Module 4 - Description -->
+        <div ng-if="confrontation.display.description" layout="column" layout-align="center center" class="confrontations-description">
+            <div ng-if="confrontation.display.description_type == 'text_only'" layout="column">
+                <span>
+                    {{confrontation.description}}
+                </span>
+            </div>
+            <div ng-if="confrontation.display.description_type == 'cible_left' && confrontation.cible >= 0" layout="column">
+                <span>
+                    {{joueurs[confrontation.cible].nom}}{{confrontation.description}}
+                </span>
+            </div>
+        </div>
+
+        <!-- Module 5 - Duel results -->
+        <div ng-if="confrontation.display.duel_results" layout="column" layout-align="space-around center" class="confrontations-duel-results">
+            <div layout="row" layout-align="space-around center">
+                <span class="confrontations-duel-result">
+                    {{duel.info.results_source[0]}}
+                </span>
+                <span class="confrontations-duel-result">
+                    {{duel.info.results_source[1]}}
+                </span>
+                <span class="confrontations-duel-result">
+                    {{duel.info.results_source[2]}}
+                </span>
+                <span ng-if="duel.info.bonus_source > 0" class="confrontations-duel-result">
+                - {{duel.info.bonus_source}}
+                </span>
+                <span ng-if="duel.info.bonus_source == 0" class="confrontations-duel-result">
+                + 0
+                </span>
+                <span ng-if="duel.info.bonus_source < 0" class="confrontations-duel-result">
+                + {{duel.info.bonus_source}}
+                </span>
+                <span>
+                    mod {{duel.info.modulo}}
+                </span>
+                <span>
+                    {{duel.info.result_source}}
+                </span>
+            </div>
+            <div ng-if="confrontation.categorie == 'defense'" layout="row" layout-align="space-around center">
+                <span class="confrontations-duel-result">
+                    {{duel.info.results_cible[0]}}
+                </span>
+                <span class="confrontations-duel-result">
+                    {{duel.info.results_cible[1]}}
+                </span>
+                <span class="confrontations-duel-result">
+                    {{duel.info.results_cible[2]}}
+                </span>
+                <span ng-if="duel.info.bonus_source > 0" class="confrontations-duel-result">
+                - {{duel.info.bonus_cible}}
+                </span>
+                <span ng-if="duel.info.bonus_source == 0" class="confrontations-duel-result">
+                + 0
+                </span>
+                <span ng-if="duel.info.bonus_source < 0" class="confrontations-duel-result">
+                + {{duel.info.bonus_cible}}
+                </span>
+                <span>
+                    mod {{duel.info.modulo}}
+                </span>
+                <span>
+                    {{duel.info.result_cible}}
+                </span>
+            </div>
+        </div>
+
+        <!-- Module 6 - Cartes a defausser -->
+        <div ng-if="confrontation.display.cartes_perte" layout="column" layout-align="space-around" class="confrontations-defenses-action-cartes-perte">
+            <span class="confrontations-defenses-action-content-titre ">
+                {{confrontation.description}}
+            </span>
+            <div layout="row" layout-align="space-around" class="confrontations-defenses-action-cartes-perte-cartes">
+                <div ng-click="removeCarte($index)" ng-repeat="carte in confrontation.cartes.liste" class="confrontations-defenses-action-cartes-perte-carte">
+                    <img ng-if="carte.filled" ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.id+'.png'}}">
+                    <img ng-if="!carte.filled" ng-src="{{'modules/cartes/img/pioche/cartes_pioche_blank.png'}}">
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 8 - Test -->
+        <div ng-if="confrontation.display.test" layout="column" layout-align="center center" class="confrontations-defenses-action-test">
+            <span class="confrontations-defenses-action-content-titre ">
+                {{confrontation.description}}
+            </span>
+            <div layout="row">
+                <md-input-container style="width: 35px;">
+                    <input ng-model="confrontation.test.values.hours" maxlength="2">
+                </md-input-container>
+                <span>
+                h
+                </span>
+                <md-input-container style="width: 35px;">
+                    <input ng-model="confrontation.test.values.minutes" maxlength="2">
+                </md-input-container>
+            </div>
+        </div>
+
+        <!-- Module 9 - Boutons -->
+        <div layout="column" layout-align="center center" class="confrontations-buttons">
+            <md-button ng-click="lanceConfrontation()" ng-disabled="!confrontation.ready" class="confrontations-button red-font md-primary md-raised">
+                OK !
+            </md-button>
+            <md-button ng-if="confrontation.categorie == 'attaque' && confrontation.type == 'action'" ng-click="cancelConfrontation()" class="confrontations-button red-font md-primary md-raised">
+                Annuler
+            </md-button>
+        </div>
+
+    </div>
+
+ </div>

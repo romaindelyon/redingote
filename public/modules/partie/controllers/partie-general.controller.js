@@ -206,7 +206,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	// Attaques:
 
 	$scope.attaque = {};
-
+	$scope.confrontation = {};
+	
 	// Actions disponibles
 
 	$scope.actionsDisponibles = {};
