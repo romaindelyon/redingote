@@ -9,7 +9,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 		cartes: false,
 		joueurs: false,
 		defenses: false, // integrated
-		defenseController: false
+		confrontationsController: false
 	};
 
 	// Get param:
@@ -27,8 +27,10 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.duel = {};
 
-	$scope.getAttaques = function(){
-		if ($scope.loaded.partie && $scope.loaded.cartes && $scope.loaded.defenseController){
+	$scope.initiateConfrontations = function(){
+		console.log('called');
+		if ($scope.loaded.partie && $scope.loaded.cartes && $scope.loaded.confrontationsController){
+			console.log('inside');
 			if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 0){
 				Confrontations.get({joueurId: $scope.joueurId}).success(function(response){
 					for (var i in response){
@@ -43,9 +45,11 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 					$scope.$emit('confrontations-defense-start', {});
 				});
 			}
-			else {
-				$scope.loaded.defenses = true;
+			else if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 5){
+				console.log('emitting');
+				$scope.$emit('confrontations-attaque-duel-start', {});
 			}
+			$scope.loaded.defenses = true;
 		}
 	}
 
@@ -61,7 +65,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			dispo: response[0].dispo
 		};
 		$scope.loaded.partie = true;
-		$scope.getAttaques();
+		$scope.initiateConfrontations();
 	})
 
 	$scope.resetDispos = function(){
@@ -128,7 +132,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    		}
 	    	}
 			$scope.loaded.cartes = true;
-			$scope.getAttaques();
+			$scope.initiateConfrontations();
 	    }).error(function(response){
 	    	console.log("Error while trying to get cartes");
 	    });

@@ -27,6 +27,7 @@ angular.module('partie').service('PartieTourService', ['Partie',
 			else if (tourAction == 5){
 				$scope.partie.dispo.duel = true;
 				$scope.partie.dispo.des.duel = 3;
+				$scope.$emit('confrontations-attaque-duel-start', {index: index});
 			}
 			else if (tourAction == 6){
 				$scope.partie.dispo.cartes.utiliser = true;

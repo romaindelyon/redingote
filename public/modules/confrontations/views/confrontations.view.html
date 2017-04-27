@@ -53,54 +53,54 @@
         <div ng-if="confrontation.display.duel_results" layout="column" layout-align="space-around center" class="confrontations-duel-results">
             <div layout="row" layout-align="space-around center">
                 <span class="confrontations-duel-result">
-                    {{duel.info.results_source[0]}}
+                    {{confrontation.info.results_source[0]}}
                 </span>
                 <span class="confrontations-duel-result">
-                    {{duel.info.results_source[1]}}
+                    {{confrontation.info.results_source[1]}}
                 </span>
                 <span class="confrontations-duel-result">
-                    {{duel.info.results_source[2]}}
+                    {{confrontation.info.results_source[2]}}
                 </span>
-                <span ng-if="duel.info.bonus_source > 0" class="confrontations-duel-result">
-                - {{duel.info.bonus_source}}
+                <span ng-if="confrontation.info.bonus_source > 0" class="confrontations-duel-result">
+                - {{confrontation.info.bonus_source}}
                 </span>
-                <span ng-if="duel.info.bonus_source == 0" class="confrontations-duel-result">
+                <span ng-if="confrontation.info.bonus_source == 0" class="confrontations-duel-result">
                 + 0
                 </span>
-                <span ng-if="duel.info.bonus_source < 0" class="confrontations-duel-result">
-                + {{duel.info.bonus_source}}
+                <span ng-if="confrontation.info.bonus_source < 0" class="confrontations-duel-result">
+                + {{confrontation.info.bonus_source}}
                 </span>
                 <span>
-                    mod {{duel.info.modulo}}
+                    mod {{confrontation.info.modulo}}
                 </span>
                 <span>
-                    {{duel.info.result_source}}
+                    {{confrontation.info.result_source}}
                 </span>
             </div>
             <div ng-if="confrontation.categorie == 'defense'" layout="row" layout-align="space-around center">
                 <span class="confrontations-duel-result">
-                    {{duel.info.results_cible[0]}}
+                    {{confrontation.info.results_cible[0]}}
                 </span>
                 <span class="confrontations-duel-result">
-                    {{duel.info.results_cible[1]}}
+                    {{confrontation.info.results_cible[1]}}
                 </span>
                 <span class="confrontations-duel-result">
-                    {{duel.info.results_cible[2]}}
+                    {{confrontation.info.results_cible[2]}}
                 </span>
-                <span ng-if="duel.info.bonus_source > 0" class="confrontations-duel-result">
-                - {{duel.info.bonus_cible}}
+                <span ng-if="confrontation.info.bonus_source > 0" class="confrontations-duel-result">
+                - {{confrontation.info.bonus_cible}}
                 </span>
-                <span ng-if="duel.info.bonus_source == 0" class="confrontations-duel-result">
+                <span ng-if="confrontation.info.bonus_source == 0" class="confrontations-duel-result">
                 + 0
                 </span>
-                <span ng-if="duel.info.bonus_source < 0" class="confrontations-duel-result">
-                + {{duel.info.bonus_cible}}
+                <span ng-if="confrontation.info.bonus_source < 0" class="confrontations-duel-result">
+                + {{confrontation.info.bonus_cible}}
                 </span>
                 <span>
-                    mod {{duel.info.modulo}}
+                    mod {{confrontation.info.modulo}}
                 </span>
                 <span>
-                    {{duel.info.result_cible}}
+                    {{confrontation.info.result_cible}}
                 </span>
             </div>
         </div>

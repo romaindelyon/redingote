@@ -18,7 +18,7 @@ header("Cache-Control: no-cache");
 
     $stmt = $con -> prepare("INSERT INTO confrontations (categorie, type, info, cible, source) VALUES (?, ?, ?, ?, ?)");
 
-    $stmt -> bind_param('ssiii',$categorie,$type,$info,$cible,$source);
+    $stmt -> bind_param('sssii',$categorie,$type,$info,$cible,$source);
     $stmt -> execute();
 
     mysqli_close($con);
