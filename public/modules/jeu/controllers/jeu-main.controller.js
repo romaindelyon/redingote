@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('jeu').controller('JeuMainController', ['$scope','$timeout','Cartes','ConfrontationsAttaqueService',
-	function($scope,$timeout,Cartes,ConfrontationsAttaqueService) {
+angular.module('jeu').controller('JeuMainController', ['$scope','$timeout','Cartes',
+	function($scope,$timeout,Cartes) {
 
 	// Mains:
 
@@ -18,9 +18,9 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$timeout','Cart
 
 	$scope.utiliserCarte = function(index){
 		var carte = $scope.jeu.main[index];
+		console.log(index);
 		if (carte.categorie == 'action'){
 			$scope.$emit('confrontations-attaque-action-start', {carte: carte,carteIndex: index});
-			console.log('event emitted');
 		}
 	}
 

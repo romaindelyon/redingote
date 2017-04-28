@@ -29,7 +29,7 @@
                         {{tourActionNames[partie.tour_action]}}
                     </span>
                 </div>
-                <div layout="column" layout-align="center center" ng-click="!actionsDisponibles.nextAction || defense.active || nextAction()" ng-if="partie.tour_joueur == joueurId" style="outline: none;">
+                <div layout="column" layout-align="center center" ng-click="!actionsDisponibles.nextAction || attaques.defenses.length > 0 || nextAction()" ng-if="partie.tour_joueur == joueurId" style="outline: none;">
                     <img src="modules/jeu/img/jeu_icones_next.png" style="height: 20px;">
                 </div>
             </div>

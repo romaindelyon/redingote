@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('partie').controller('PartieTourController', ['$scope','$rootScope','Partie','PartieTourService',
-	function($scope,$rootScope,Partie,PartieTourService) {
+angular.module('partie').controller('PartieTourController', ['$scope','$rootScope','Partie',
+	function($scope,$rootScope,Partie) {
 
 	$scope.actionsDisponibles.nextAction = true;
 
@@ -37,9 +37,6 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 			else if (tourAction == 5){
 				$scope.partie.dispo.duel = true;
 				$scope.partie.dispo.des.duel = 3;
-				console.log('emitting');
-				console.log($scope.partie.tour_action);
-				$scope.$emit('confrontations-attaque-duel-start', {});
 			}
 			else if (tourAction == 6){
 				$scope.partie.dispo.cartes.utiliser = true;
@@ -52,11 +49,15 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 		$scope.actionsDisponibles.nextAction = false;
 		// Verify if data is consistent
 		Partie.getPartie().success(function(response){
-			// Data is consistent
-			if (true || ($scope.partie.tour_joueur == response[0].tour_joueur && $scope.partie.tour_action == response[0].tour_action && $scope.partie.tour_skip == response[0].tour_skip)){
+			// Data is consistent;
+			if ($scope.partie.tour_joueur == response[0].tour_joueur && $scope.partie.tour_action == response[0].tour_action){
+				console.log('donc on y va');
 				var tourJoueur, tourAction, tourSkip;
 				tourSkip = $scope.partie.tour_skip;
+				console.log(tourSkip);
+				console.log($scope.joueurId);
 				tourSkip[$scope.joueurId] += skipTours;
+				console.log(tourSkip);
 				// changement de joueur:
 				if ($scope.partie.tour_action + numberTours > 6){
 					var joueurFound = false;
@@ -77,6 +78,8 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 					tourAction = $scope.partie.tour_action + numberTours;
 					tourJoueur = $scope.partie.tour_joueur;
 				}
+				startAction(tourJoueur,tourAction);
+				console.log(tourSkip);
 				Partie.changeTour({
 					tour_joueur: tourJoueur,
 					tour_action: tourAction,
@@ -86,8 +89,10 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 					// Changement de tour: updater variables locales
 					$scope.partie.tour_joueur = tourJoueur;
 					$scope.partie.tour_action = tourAction;
-					startAction(tourJoueur,tourAction);
 					$scope.actionsDisponibles.nextAction = true;
+					if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 5){
+						$scope.$emit('confrontations-attaque-duel-start', {});
+					}
 				}).error(function(){
 					$scope.actionsDisponibles.nextAction = true;
 				});

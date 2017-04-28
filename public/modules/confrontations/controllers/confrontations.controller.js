@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('confrontations').controller('ConfrontationsController', ['$scope','$rootScope','Cartes','Confrontations','PartieTourService',
-	function($scope,$rootScope,Cartes,Confrontations,PartieTourService) {
+angular.module('confrontations').controller('ConfrontationsController', ['$scope','$rootScope','Cartes','Confrontations',
+	function($scope,$rootScope,Cartes,Confrontations) {
+
+	console.log('running confrontations controller');
 
 	// *** STARTING FUNCTIONS ***
 
@@ -34,6 +36,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 		$scope.confrontation.type = type;
 		$scope.confrontation.info = info;
 		$scope.confrontation.carteIndex = carteIndex;
+		console.log($scope.confrontation.carteIndex);
 		$scope.confrontation.source = source;
 		$scope.confrontation.cible = cible;
 		$scope.confrontation.ready = false;
@@ -278,27 +281,32 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	function deplacerCartes(newPosition){
 		for (var i in $scope.confrontation.cartes.liste){
 			if ($scope.confrontation.cartes.liste[i].filled){
-				var index = -1;
-				var j = 0;
-				while (index < 0 && j < $scope.jeu.main.length){
-					if ($scope.jeu.main[j].id == $scope.confrontation.cartes.liste[i].id){
-						index = j;
-					}
-					j ++;
-				}
-				Cartes.moveCartes({
-		    		carteIds: [$scope.confrontation.cartes.liste[i].id],
-		    		position: newPosition
-		    	}).success(function(){
-		    		var carte = $scope.jeu.main[index];
-		    		carte.main = {};
-		    		delete carte.filled;
-					$scope.defausses.pioche.push(carte);
-					$scope.jeu.main.splice(carte.index,1);
-					$scope.focusIndex = -2;
-		    	}).error(function(){
+				var result = function(id){
+					console.log(id);
+					Cartes.moveCartes({
+			    		carteIds: [id],
+			    		position: newPosition
+			    	}).success(function(){
+			    		console.log(id);
+						var index = -1;
+						var j = 0;
+						while (index < 0 && j < $scope.jeu.main.length){
+							if ($scope.jeu.main[j].id == id){
+								index = j;
+							}
+							j ++;
+						}
+						console.log(index);
+			    		var carte = $scope.jeu.main[index];
+			    		carte.main = {};
+			    		delete carte.filled;
+						$scope.defausses.pioche.push(carte);
+						$scope.jeu.main.splice(index,1);
+						$scope.focusIndex = -2;
+			    	}).error(function(){
 
-		    	})
+			    	})
+			    }($scope.confrontation.cartes.liste[i].id);
 			}
 		}
 	}
@@ -322,15 +330,8 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	        	});
 	    		$scope.defausses.pioche.push($scope.cartes[confrontation.info]);
 	    		$scope.cancelConfrontation();
-				var index = -1;
-				var j = 0;
-				while (index < 0 && j < $scope.jeu.main.length){
-					if ($scope.jeu.main[j].id == $scope.confrontation.info){
-						index = j;
-					}
-					j ++;
-				}
-				$scope.jeu.main.splice(index,1);
+	    		console.log($scope.confrontation.carteIndex);
+				$scope.jeu.main.splice($scope.confrontation.carteIndex,1);
 	    	}).error(function(){
 
 	    	})
@@ -391,18 +392,20 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 				}
 				else {
 					if (confrontation.info.result_cible > confrontation.info.result_source){
+						console.log('ici !');
 						$scope.confrontation.display.description = true;
-						$scope.description = 'Tu as gagné ! ' + $scope.joueurs[confrontation.source] + ' te donnera 2 cartes' + $scope.joueurs[$scope.confrontation.source].nom + " :";
+						$scope.confrontation.display.description_type = 'text_only';
+						$scope.confrontation.description = "Tu as gagné ! " + $scope.joueurs[confrontation.source].nom + " te donnera 2 cartes";
 					}
 					else if (confrontation.info.result_cible < confrontation.info.result_source){
+						$scope.confrontation.ready = false;
 						startCartePerte(2);
 						$scope.confrontation.description = "Tu as perdu. Choisis 2 cartes à donner à " + $scope.joueurs[$scope.confrontation.source].nom + " :";
-						$scope.confrontation.ready = false;
 					}
 					else {
+						$scope.confrontation.ready = false;
 						startCartePerte(1);
 						$scope.confrontation.description = "Egalité. Choisis 1 carte à donner à " + $scope.joueurs[$scope.confrontation.source].nom + " :";
-						$scope.confrontation.ready = false;
 					}
 					$scope.confrontation.display.duel_results = false;
 					$scope.confrontation.info.completed = true;
@@ -420,7 +423,8 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 				// On skippe les tours eventuellement:
 				else {
 					if ($scope.toursToSkip > 0){
-						$scope.$emit('partie-tours-move', {numberTours: 7,toursToSkip: $scope.toursToSkip});
+						console.log($scope.toursToSkip);
+						$scope.$emit('partie-tours-move', {numberTours: 7,toursToSkip: $scope.toursToSkip - 1});
 					}
 				}
 			}
