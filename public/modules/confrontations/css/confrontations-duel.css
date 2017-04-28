@@ -15,9 +15,20 @@
 	font-size: 18px;
 }
 
-.confrontations-duel-result {
+.confrontations-duel-result-green,
+.confrontations-duel-result-blue {
 	width: 40px;
 	height: 40px;
-	background-color: green;
+	margin: 5px;
+	background-color: #22b14c;
 	text-align: center;
+	padding: 8px 0;
+}
+
+.confrontations-duel-result-green {
+	background-color: #22b14c;
+}
+
+.confrontations-duel-result-blue {
+	background-color: #2cb4c4;
 }

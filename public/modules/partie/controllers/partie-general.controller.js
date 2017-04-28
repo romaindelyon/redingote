@@ -28,7 +28,6 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	$scope.duel = {};
 
 	$scope.initiateConfrontations = function(){
-		console.log('called');
 		if ($scope.loaded.partie && $scope.loaded.cartes && $scope.loaded.confrontationsController){
 			console.log('inside');
 			if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 0){
@@ -88,6 +87,10 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 				main_jeter: false,
 				ouvertes_jeter: false,
 				utiliser: false
+			},
+			plateaux: {
+				paysage: 0,
+				layrinthe: 0
 			},
 			duel: false
 		}

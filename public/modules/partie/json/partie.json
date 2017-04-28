@@ -1,29 +1,29 @@
 [{"id":1,
-	"tour_joueur":0,
-	"tour_action":5,
-	"tour_skip": [0,0,0],
-	"tonalite":"sol",
-	"temps": 0,
-	"dispo": {
-		"des": {
-			"rhombo": 0,
-			"paysage": 0,
-			"duel": 3,
-			"echecs": 0,
-			"labyrinthe": 0
-		},
-		"pioches": {
-			"pioche": 0,
-			"questions": 0,
-			"humeurs": 0,
-			"missions": 0
-		},
-		"cartes": {
-			"ouvertures": false,
-			"main_jeter": false,
-			"ouvertes_jeter": false,
-			"utiliser": true
-		}
+"tour_joueur":0,
+"tour_action":0,
+"tour_skip": [0,0,0],
+"tonalite":"sol",
+"temps": 0,
+"dispo": {
+	"des": {
+		"rhombo": 0,
+		"paysage": 0,
+		"duel": 3,
+		"echecs": 0,
+		"labyrinthe": 0
 	},
-	"duel": true
+	"pioches": {
+		"pioche": 0,
+		"questions": 0,
+		"humeurs": 0,
+		"missions": 0
+	},
+	"cartes": {
+		"ouvertures": false,
+		"main_jeter": false,
+		"ouvertes_jeter": false,
+		"utiliser": true
+	}
+},
+"duel": true
 }]

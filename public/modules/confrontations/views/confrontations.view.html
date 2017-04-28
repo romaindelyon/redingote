@@ -28,10 +28,10 @@
         <!-- Module 3 - Joueur images -->
         <div ng-if="confrontation.display.joueur_images" layout="column" layout-align="space-around center" class="confrontations-cible">
             <div class="confrontations-cible-image-focused">
-                <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+defense.source+'.png'}}">
+                <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+confrontation.source+'.png'}}">
             </div>
             <div class="confrontations-cible-image-focused">
-                <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+defense.cible+'.png'}}">
+                <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+joueurId+'.png'}}">
             </div>
         </div>
 
@@ -52,54 +52,54 @@
         <!-- Module 5 - Duel results -->
         <div ng-if="confrontation.display.duel_results" layout="column" layout-align="space-around center" class="confrontations-duel-results">
             <div layout="row" layout-align="space-around center">
-                <span class="confrontations-duel-result">
+                <span class="confrontations-duel-result-green">
                     {{confrontation.info.results_source[0]}}
                 </span>
-                <span class="confrontations-duel-result">
+                <span class="confrontations-duel-result-green">
                     {{confrontation.info.results_source[1]}}
                 </span>
-                <span class="confrontations-duel-result">
+                <span class="confrontations-duel-result-green">
                     {{confrontation.info.results_source[2]}}
                 </span>
-                <span ng-if="confrontation.info.bonus_source > 0" class="confrontations-duel-result">
+                <span ng-if="confrontation.info.bonus_source > 0" class="confrontations-duel-result-green">
                 - {{confrontation.info.bonus_source}}
                 </span>
-                <span ng-if="confrontation.info.bonus_source == 0" class="confrontations-duel-result">
+                <span ng-if="confrontation.info.bonus_source == 0" class="confrontations-duel-result-green">
                 + 0
                 </span>
-                <span ng-if="confrontation.info.bonus_source < 0" class="confrontations-duel-result">
+                <span ng-if="confrontation.info.bonus_source < 0" class="confrontations-duel-result-green">
                 + {{confrontation.info.bonus_source}}
                 </span>
                 <span>
                     mod {{confrontation.info.modulo}}
                 </span>
-                <span>
+                <span class="confrontations-duel-result-green">
                     {{confrontation.info.result_source}}
                 </span>
             </div>
             <div ng-if="confrontation.categorie == 'defense'" layout="row" layout-align="space-around center">
-                <span class="confrontations-duel-result">
+                <span class="confrontations-duel-result-blue">
                     {{confrontation.info.results_cible[0]}}
                 </span>
-                <span class="confrontations-duel-result">
+                <span class="confrontations-duel-result-blue">
                     {{confrontation.info.results_cible[1]}}
                 </span>
-                <span class="confrontations-duel-result">
+                <span class="confrontations-duel-result-blue">
                     {{confrontation.info.results_cible[2]}}
                 </span>
-                <span ng-if="confrontation.info.bonus_source > 0" class="confrontations-duel-result">
+                <span ng-if="confrontation.info.bonus_source > 0" class="confrontations-duel-result-blue">
                 - {{confrontation.info.bonus_cible}}
                 </span>
-                <span ng-if="confrontation.info.bonus_source == 0" class="confrontations-duel-result">
+                <span ng-if="confrontation.info.bonus_source == 0" class="confrontations-duel-result-blue">
                 + 0
                 </span>
-                <span ng-if="confrontation.info.bonus_source < 0" class="confrontations-duel-result">
+                <span ng-if="confrontation.info.bonus_source < 0" class="confrontations-duel-result-blue">
                 + {{confrontation.info.bonus_cible}}
                 </span>
                 <span>
                     mod {{confrontation.info.modulo}}
                 </span>
-                <span>
+                <span class="confrontations-duel-result-blue">
                     {{confrontation.info.result_cible}}
                 </span>
             </div>

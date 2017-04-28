@@ -22,7 +22,7 @@ header("Content-Type: application/json; charset=UTF-8");
             $result["id"] = $id;
             $result["categorie"] = $categorie;
             $result["type"] = $type;
-            $result["info"] = $info;
+            $result["info"] = json_decode($info);
             $result["source"] = json_decode($source);
             array_push($results, $result);
         }

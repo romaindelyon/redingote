@@ -113,11 +113,13 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 					}
 				}
 			}
-			else if (defense.type == 'duel'){
-				titre = "Duel lancé par" + $scope.joueurs[$scope.confrontation.source].nom;
+			else if (type == 'duel'){
+				titre = "Duel lancé par " + $scope.joueurs[$scope.confrontation.source].nom;
 				$scope.confrontation.display.duel_results = true;
+				$scope.confrontation.display.joueur_images = true;
 				$scope.confrontation.info.results_cible = [];
 				$scope.confrontation.info.result_cible = 0;
+				$scope.partie.dispo.des.duel = 3;
 			}
 		}
 
@@ -136,6 +138,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	function startDefense(){
 		if($scope.attaques.defenses.length > 0 && $scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 0){
 			console.log($scope.attaques.defenses);
+			$scope.attaques.defenses[0];
 			startConfrontation('defense',
 				$scope.attaques.defenses[0].type,
 				$scope.attaques.defenses[0].info,
@@ -152,6 +155,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 
 	// Start attaque duel:
 	$rootScope.$on('confrontations-attaque-duel-start', function(event, args) {
+		console.log('receiving');
 		if($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 5){
 			var duel = {
 				results_source: [],
@@ -159,6 +163,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 				bonus_source: 0,
 				modulo: 18
 			};
+			console.log('here');
 			startConfrontation('attaque','duel',duel,-1,$scope.joueurId);			
 		}
 	});
@@ -169,6 +174,9 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 		$scope.confrontation.cible = id;
 		if ($scope.confrontation.categorie == 'attaque' && $scope.confrontation.type == 'duel'){
 			$scope.confrontation.titre = "Lancer un duel sur " + $scope.joueurs[id].nom;
+			if ($scope.confrontation.info.results_source.length == 3){
+				$scope.confrontation.ready = true;
+			}
 		}
 	}
 
@@ -228,11 +236,12 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	}
 
 	function lanceDeDuel(result){
+		console.log($scope.confrontation.categorie);
 		if ($scope.confrontation.categorie == 'attaque'){
 			if ($scope.confrontation.info.results_source.length < 3){
 				$scope.confrontation.info.results_source.push(result);
 				updateResult();
-				if ($scope.confrontation.info.results_source.length == 3){
+				if ($scope.confrontation.info.results_source.length == 3 && $scope.confrontation.cible >= 0){
 					$scope.confrontation.ready = true;
 				}
 			}
@@ -258,9 +267,41 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 		$scope.confrontation.active = false;
 		$scope.confrontation.cible = -1;
 		$scope.confrontation.info = -1;
+		$scope.confrontation.display = {};
 	}
+	$rootScope.$on('confrontations-attaque-duel-cancel', function(event, args) {
+		$scope.cancelConfrontation();
+	});
 
 	$scope.toursToSkip = 0;
+
+	function deplacerCartes(newPosition){
+		for (var i in $scope.confrontation.cartes.liste){
+			if ($scope.confrontation.cartes.liste[i].filled){
+				var index = -1;
+				var j = 0;
+				while (index < 0 && j < $scope.jeu.main.length){
+					if ($scope.jeu.main[j].id == $scope.confrontation.cartes.liste[i].id){
+						index = j;
+					}
+					j ++;
+				}
+				Cartes.moveCartes({
+		    		carteIds: [$scope.confrontation.cartes.liste[i].id],
+		    		position: newPosition
+		    	}).success(function(){
+		    		var carte = $scope.jeu.main[index];
+		    		carte.main = {};
+		    		delete carte.filled;
+					$scope.defausses.pioche.push(carte);
+					$scope.jeu.main.splice(carte.index,1);
+					$scope.focusIndex = -2;
+		    	}).error(function(){
+
+		    	})
+			}
+		}
+	}
 
 	$scope.lanceConfrontation = function(){
 		var confrontation = $scope.confrontation;
@@ -279,9 +320,17 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	        		cible: confrontation.cible,
 	        		source: confrontation.source
 	        	});
-	    		$scope.defausses.pioche.push(confrontation.info);
+	    		$scope.defausses.pioche.push($scope.cartes[confrontation.info]);
 	    		$scope.cancelConfrontation();
-				$scope.jeu.main.splice($scope.confrontation.info.carteIndex,1);
+				var index = -1;
+				var j = 0;
+				while (index < 0 && j < $scope.jeu.main.length){
+					if ($scope.jeu.main[j].id == $scope.confrontation.info){
+						index = j;
+					}
+					j ++;
+				}
+				$scope.jeu.main.splice(index,1);
 	    	}).error(function(){
 
 	    	})
@@ -290,8 +339,8 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	    	Confrontations.add({
 	    		categorie: 'attaque',
 	    		type: 'duel',
-	    		info: $scope.duel.info,
-	    		cible: $scope.attaque.cible,
+	    		info: $scope.confrontation.info,
+	    		cible: $scope.confrontation.cible,
 	    		source: $scope.joueurId
 	    	}).success(function(){
 	    		$scope.partie.dispo.duel = false;
@@ -309,31 +358,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 					defenseFinished = true;
 				}
 				else if (action.types[0] == 'cartes_perte'){
-					for (var i in $scope.confrontation.cartes.liste){
-						if ($scope.confrontation.cartes.liste[i].filled){
-							var index = -1;
-							var j = 0;
-							while (index < 0 && j < $scope.jeu.main.length){
-								if ($scope.jeu.main[j].id == $scope.confrontation.cartes.liste[i].id){
-									index = j;
-								}
-								j ++;
-							}
-							Cartes.moveCartes({
-					    		carteIds: [$scope.confrontation.cartes.liste[i].id],
-					    		position: -2
-					    	}).success(function(){
-					    		var carte = $scope.jeu.main[index];
-					    		carte.main = {};
-					    		delete carte.filled;
-								$scope.defausses.pioche.push(carte);
-								$scope.jeu.main.splice(carte.index,1);
-								$scope.focusIndex = -2;
-					    	}).error(function(){
-
-					    	})
-						}
-					}
+					deplacerCartes(-2);
 					defenseFinished = true;
 				}
 				else if (action.types[0] == 'cartes_perte_test'){
@@ -361,20 +386,23 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 			}
 			else if (confrontation.type == 'duel'){
 				if (confrontation.info.completed){
+					deplacerCartes(confrontation.source);
 					defenseFinished = true;
 				}
 				else {
 					if (confrontation.info.result_cible > confrontation.info.result_source){
 						$scope.confrontation.display.description = true;
-						$scope.description = 'Tu as gagné ! ' + $scope.joueurs[confrontation.source] + ' te donnera 2 cartes';
+						$scope.description = 'Tu as gagné ! ' + $scope.joueurs[confrontation.source] + ' te donnera 2 cartes' + $scope.joueurs[$scope.confrontation.source].nom + " :";
 					}
 					else if (confrontation.info.result_cible < confrontation.info.result_source){
 						startCartePerte(2);
-						$scope.confrontation.description = "Tu as perdu. Choisis 2 cartes à défausser :";
+						$scope.confrontation.description = "Tu as perdu. Choisis 2 cartes à donner à " + $scope.joueurs[$scope.confrontation.source].nom + " :";
+						$scope.confrontation.ready = false;
 					}
 					else {
 						startCartePerte(1);
-						$scope.confrontation.description = "Egalité. Choisis 1 carte à défausser :";
+						$scope.confrontation.description = "Egalité. Choisis 1 carte à donner à " + $scope.joueurs[$scope.confrontation.source].nom + " :";
+						$scope.confrontation.ready = false;
 					}
 					$scope.confrontation.display.duel_results = false;
 					$scope.confrontation.info.completed = true;
@@ -392,7 +420,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 				// On skippe les tours eventuellement:
 				else {
 					if ($scope.toursToSkip > 0){
-						PartieTourService.moveTour($scope,7,$scope.toursToSkip - 1);
+						$scope.$emit('partie-tours-move', {numberTours: 7,toursToSkip: $scope.toursToSkip});
 					}
 				}
 			}
