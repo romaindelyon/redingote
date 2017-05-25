@@ -1,18 +1,52 @@
 /*Patient page divs*/
 
-.plateaux-paysage-case,
-.plateaux-paysage-case-clicked {
+.plateaux-paysage-case {
+	width: 65px;
+	height: 70px;
+	outline: none;
+}
+
+.plateaux-paysage-case-info,
+.plateaux-paysage-case-info-clicked {
+	position: absolute;
 	width: 65px;
 	height: 70px;
 	background-color: rgba(255,255,255,0);
 	color: rgba(255,255,255,0);
-	outline: none;
 }
 
-.plateaux-paysage-case:hover,
-.plateaux-paysage-case-clicked {
+.plateaux-paysage-case-info:hover,
+.plateaux-paysage-case-info-clicked {
 	background-color: rgba(255,255,255,0.4);
 	color: rgba(0,0,0,1);
+}
+
+/*Pions*/
+
+.plateaux-paysage-pions-container {
+	position: absolute;
+	width: 65px;
+	height: 70px;
+}
+
+.plateaux-paysage-pion {
+	width: 30px;
+	height: 30px;
+}
+
+.plateaux-paysage-pion-small {
+	width: 20px;
+	height: 20px;
+}
+
+.plateaux-paysage-pion-move {
+	width: 30px;
+	height: 30px;	
+}
+.plateaux-paysage-pion-move:hover {
+	width: 30px;
+	height: 30px;
+	opacity: 0.6;	
 }
 
 .plateaux-paysage-case-tooltip-topleft,

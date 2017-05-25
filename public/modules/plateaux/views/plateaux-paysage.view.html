@@ -5,28 +5,50 @@
 		<!-- Rangees -->
 		<div ng-repeat="ligne in plateauPaysage" layout="row">
 			<!-- Colonnes -->
-			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(ligne.id,case.id)" layout="column" layout-align="space-between center" ng-class="selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id ? 'plateaux-paysage-case-clicked' : 'plateaux-paysage-case'">
-
-				<!-- Case -->
-				<div layout="row" layout-align="space-between center" style="width: 100%;">
-					<span>
-						{{case.numero}}
-					</span>
-					<span ng-if="case.question">
-						?
-					</span>
-				</div>
-				<div layout="row" layout-align="space-between center" style="width: 100%;">
-					<div>
-						<span ng-if="case.achat">
-							G
-						</span>
+			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(ligne.id,case.id)" layout="column" layout-align="space-between center" class="plateaux-paysage-case">
+				<!-- Case Info -->
+				<div layout="column" layout-align="space-between center" ng-class="selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id ? 'plateaux-paysage-case-info-clicked' : 'plateaux-paysage-case-info'" >
+					<div layout="column" layout-align="space-between center" style="position: absolute;	width: 65px;height: 70px;">
+						<div layout="row" layout-align="space-between center" style="width: 100%;">
+							<span>
+								{{case.numero}}
+							</span>
+							<span ng-if="case.question">
+								?
+							</span>
+						</div>
+						<div layout="row" layout-align="space-between center" style="width: 100%;">
+							<div>
+								<span ng-if="case.achat">
+									G
+								</span>
+							</div>
+							<span ng-if="case.action">
+								!
+							</span>
+						</div>
 					</div>
-					<span ng-if="case.action">
-						!
-					</span>
+					<!-- Pions -->
+					<div ng-if="!(selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id && partie.dispo.plateaux.paysage > 0) && case.joueursNumber > 0" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
+						<div ng-if="case.joueursNumber == 1">
+							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[0]+'.png'}}" class="plateaux-paysage-pion">
+						</div>
+						<div ng-if="case.joueursNumber == 2" layout="row">
+							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[0]+'.png'}}" class="plateaux-paysage-pion">
+							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[1]+'.png'}}" class="plateaux-paysage-pion">
+						</div>
+						<div ng-if="case.joueursNumber == 3" layout="column">
+							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[0]+'.png'}}" class="plateaux-paysage-pion-small">
+							<div layout="row">
+								<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[1]+'.png'}}" class="plateaux-paysage-pion-small">
+								<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[2]+'.png'}}" class="plateaux-paysage-pion-small">
+							</div>
+						</div>
+					</div>
+					<div ng-if="selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id && partie.dispo.plateaux.paysage > 0" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
+						<img ng-click="movePion(case.numero)" ng-src="{{'modules/plateaux/img/plateau_pion_move.png'}}" class="plateaux-paysage-pion-move">
+					</div>
 				</div>
-
 				<!-- Tooltips -->
 				<!-- 1. Zone info -->
 				<div ng-if="selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id" class="plateaux-paysage-case-tooltip-topleft">
@@ -45,7 +67,6 @@
 				<div ng-if="case.achat && selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id" class="plateaux-paysage-case-tooltip-bottomleft">
 					Description des achats disponibles.
 				</div>
-
 			</div>
 		</div>
 	</div>

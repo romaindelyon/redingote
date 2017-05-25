@@ -1,4 +1,4 @@
-<div ng-controller="JeuOuvertesController" ng-if="jeu.ouvertes.length > 0" layout="row" flex layout-align="center center">
+<div ng-controller="JeuOuvertesController" ng-if="jeu.ouvertes.length > 0" layout="row" flex layout-align="start center">
 
 	<div layout="column" layout-align="center center" style="width: 150px;margin-right: 100px;">
 		<div ng-if="focusIndex >= 0">
@@ -9,7 +9,7 @@
 	</div>
 
     <div ng-repeat="carte in jeu.ouvertes" ng-click="focusCarte($index)" layout-align="center center" style="outline: none;width: 160px;height: 260px;padding: 5px;" ng-class="{'jeu-ouvertes-carte-focused': focusIndex == $index,'jeu-ouvertes-carte': focusIndex != $index}">
-        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.id+'.png'}}" style="width: 160px;height: 250px;">
+        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" style="width: 160px;height: 250px;">
     </div>
 
 </div>

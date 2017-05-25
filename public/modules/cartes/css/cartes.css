@@ -1,0 +1,61 @@
+.cartes-container {
+	min-width: 1024px;
+}
+
+.cartes-menu-item,
+.cartes-menu-item-focused {
+	height: 80px;
+	background-color: #fbfbff;
+	font-size: 18px;
+	outline: none;
+}
+
+.cartes-menu-item-focused {
+	background-color: #e8fbff;
+}
+
+.cartes-table,
+.cartes-table thead,
+.cartes-table tbody,
+.cartes-table thead tr {
+	width: 100%;
+}
+
+.cartes-table tr {
+	height: 30px;
+}
+
+.cartes-table thead td {
+	font-weight: bold;
+}
+
+.cartes-table td {
+	text-align: center;
+	vertical-align: middle;
+	padding: 5px;
+}
+
+.cartes-table td:first-letter {
+	text-transform: capitalize;
+}
+
+.cartes-table tbody tr:nth-child(odd) {
+	background-color: #e8fbff;
+}
+.cartes-table tbody tr:nth-child(even) {
+	background-color: white;
+}
+
+.cartes-input{
+	padding: 10px;
+}
+.cartes-input-exemple {
+	color: #bdbdbd;
+}
+
+.cartes-nouvelle-titre {
+	font-size: 20px;
+    height: 30px;
+    padding: 10px;
+}
+}

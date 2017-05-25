@@ -1,0 +1,34 @@
+<div ng-controller="CartesCreationContraintesController">
+	<div ng-repeat="index in carte.contraintes" layout="row">
+		<md-input-container class="cartes-input" style="width: 300px;">
+			<md-select ng-model="carte.info.contraintes[$index].categorie" required aria-label="Contrainte">
+				<md-option ng-repeat="(categorie_nom,categorie) in contraintes | orderBy:'categorie_nom'">{{categorie_nom}}</md-option>
+			</md-select>
+			<label>Contrainte - Catégorie</label>
+		</md-input-container>
+		<md-input-container ng-if="carte.info.contraintes[$index].categorie != undefined" class="cartes-input" style="width: 300px;">
+			<md-select ng-model="carte.info.contraintes[$index].type" required aria-label="Contrainte">
+				<md-option ng-repeat="(type_nom,type) in contraintes[carte.info.contraintes[$index].categorie] | orderBy:'type_nom'">{{type_nom}}</md-option>
+			</md-select>
+			<label>Contrainte - Type</label>
+		</md-input-container>
+		<md-input-container ng-if="carte.info.contraintes[$index].type != undefined" class="cartes-input" style="width: 200px;">
+			<md-select ng-model="carte.info.contraintes[$index].valeur" required aria-label="Type">
+				<md-option ng-repeat="valeur in contraintes[carte.info.contraintes[$index].categorie][carte.info.contraintes[$index].type] | orderBy:'valeur'">{{valeur}}</md-option>
+			</md-select>
+			<label>Contrainte - Valeur</label>
+		</md-input-container>
+	</div>
+	<div ng-if="carte.contraintes.length >= 1" style="padding-left: 10px;">
+		<a ng-click="retirerElement('contraintes',carte)" style="outline: none;">Retirer une contrainte</a>
+	</div>
+	<div ng-if="carte.contraintes.length < 3" style="padding-left: 10px;">
+		<a ng-click="ajouterElement('contraintes',carte)" style="outline: none;">Ajouter une contrainte</a>
+	</div>
+	<md-input-container ng-if="carte.contraintes.length > 1" class="cartes-input" style="width: 400px;">
+		<md-select ng-model="carte.info.exclusivite.contraintes" required aria-label="Type">
+			<md-option ng-repeat="valeur in ['Exclusives','Non exclusives']">{{valeur}}</md-option>
+		</md-select>
+		<label>Contraintes - Exclusivité</label>
+	</md-input-container>	
+</div>

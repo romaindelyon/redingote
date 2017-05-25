@@ -1,0 +1,9 @@
+<div ng-controller="JeuMissionsController" layout="row">
+	<div layout="column" layout-align="center center" style="width: 160px;height: 250px;">
+		<span>Mission:</span>
+		<span>Trouver une Orque et un Quart de singe</span>
+	</div>
+    <div ng-repeat="carte in jeu.missions[0].info.cartes" layout-align="center center" style="outline: none;width: 160px;height: 260px;padding: 5px;">
+        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" ng-class="carte.completed ? 'jeu-missions-carte-completed' : 'jeu-missions-carte'">
+    </div>
+</div>

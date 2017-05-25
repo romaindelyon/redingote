@@ -7,8 +7,8 @@
 "dispo": {
 	"des": {
 		"rhombo": 0,
-		"paysage": 0,
-		"duel": 3,
+		"paysage": 1,
+		"duel": 0,
 		"echecs": 0,
 		"labyrinthe": 0
 	},
@@ -23,7 +23,11 @@
 		"main_jeter": false,
 		"ouvertes_jeter": false,
 		"utiliser": true
-	}
-},
-"duel": true
+	},
+	"plateaux": {
+		"paysage": 0,
+		"labyrinthe": 0
+	},
+	"duel": false
+}
 }]

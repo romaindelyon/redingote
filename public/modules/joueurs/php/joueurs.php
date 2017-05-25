@@ -11,7 +11,7 @@ header("Content-Type: application/json; charset=UTF-8");
     $stmt = $con -> prepare("SELECT * FROM joueurs");
 
     $stmt -> execute();
-    $stmt -> bind_result($id,$nom,$diable,$belette,$notes_titre,$notes,$backgroundColor);
+    $stmt -> bind_result($id,$nom,$diable,$belette,$notes_titre,$notes,$backgroundColor,$pions);
 
     $results = array();
     while($stmt->fetch()) {
@@ -23,6 +23,7 @@ header("Content-Type: application/json; charset=UTF-8");
             $result["notes_titre"] = $notes_titre;
             $result["notes"] = $notes;
             $result["backgroundColor"] = $backgroundColor;
+            $result["pions"] = json_decode($pions);
             array_push($results, $result);
         }
     mysqli_close($con); 

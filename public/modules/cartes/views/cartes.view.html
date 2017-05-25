@@ -1,0 +1,222 @@
+<div ng-controller="CartesController" layout="column" class="cartes-container">
+
+	<div layout="row" flex>
+		<div ng-repeat="tab in tabs" ng-click="changeTab($index)" layout="row" flex layout-align="center center" ng-class="focusedTab == $index ? 'cartes-menu-item-focused' : 'cartes-menu-item'" class="red-font">
+			{{tab.nom}}
+		</div>
+	</div>
+
+	<table ng-if="view == 'table'" layout="column" class="cartes-table red-font">
+		<thead layout="row" flex>
+			<tr layout="row" flex>
+				<td width="30%">
+					Nom
+				</td>
+				<td width="20%">
+					Pile
+				</td>
+				<td width="20%">
+					Categorie
+				</td>
+				<td colspan="2" width="20%">
+					Utilisations
+				</td>
+				<td width="10%">
+					
+				</td>
+			</tr>
+		</thead>
+		<tbody flex>
+			<tr ng-repeat="(key,carte) in cartesTable" layout="row" flex>
+				<td width="30%">
+					{{carte.nom}}
+				</td>
+				<td width="20%">
+					{{carte.pile}}
+				</td>
+				<td width="20%">
+					{{carte.categorie}}
+				</td>
+				<td width="10%">
+					{{carte.utilisation[0]}}
+				</td>
+				<td width="10%">
+					{{carte.utilisation[1]}}
+				</td>
+				<td width="10%">
+					<a ng-click="modifierCarte(key)">Modifier</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<form ng-submit="NouvelleCarte.$valid && submitForm()" name="NouvelleCarte" ng-if="view == 'nouvelle_carte' || view == 'modifier_carte'" layout="column" flex>
+		<div class="cartes-nouvelle-titre red-font">
+			Nouvelle carte
+		</div>
+		<div layout="row">
+			<md-input-container class="cartes-input" style="width: 200px;">
+				<input ng-model="carte.nom" required aria-label="Nom">
+				<label>Nom</label>
+				<div ng-messages>
+					<div style="color: #bdbdbd;">
+						ex: Est-il en forêt ?
+					</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="cartes-input" style="width: 200px;">
+				<input ng-model="carte.code" required aria-label="Code">
+				<label>Code</label>
+				<div ng-messages>
+					<div style="color: #bdbdbd;">
+						ex: est_il_en_foret
+					</div>
+				</div>
+			</md-input-container>
+		</div>
+		<div layout="row">
+			<md-input-container class="cartes-input" style="width: 200px;">
+				<md-select ng-model="carte.pile" required aria-label="Pile">
+					<md-option ng-repeat="(pile_nom,pile) in piles | orderBy:'pile'">{{pile_nom}}</md-option>
+				</md-select>
+				<label>Pile</label>
+			</md-input-container>
+			<md-input-container ng-if="carte.pile != undefined" class="cartes-input" style="width: 200px;">
+				<md-select ng-model="carte.categorie" required ng-change="updateCategorie()" aria-label="Categorie">
+					<md-option ng-repeat="(categorie_nom,categorie) in piles[carte.pile].categories | orderBy:'categorie'">{{categorie_nom}}</md-option>
+				</md-select>
+				<label>Categorie</label>
+			</md-input-container>
+			<md-input-container ng-if="carte.pile == 'Pioche' && carte.categorie != undefined && carte.categorie != 'Objet'" class="cartes-input" style="width: 200px;">
+				<md-select ng-model="carte.utilisation" required aria-label="Utilisation">
+					<md-option ng-repeat="utilisation in piles[carte.pile].categories[carte.categorie].utilisations | orderBy:'utilisation'">{{utilisation}}</md-option>
+				</md-select>
+				<label>Utilisation</label>
+			</md-input-container>
+		</div>
+		<div layout="column" ng-if="carte.pile == 'Pioche' && carte.categorie == 'Action'">
+			<div class="cartes-nouvelle-titre red-font">
+				Action
+			</div>
+			<div layout="row">
+				<div layout="row">
+					<md-input-container class="cartes-input" style="width: 200px;">
+						<md-select ng-model="carte.info.action.type" required aria-label="Action">
+							<md-option ng-repeat="action in piles['Pioche'].categories['Action'].info.actions.types | orderBy:'action'">{{action}}</md-option>
+						</md-select>
+						<label>Action</label>
+					</md-input-container>
+					<md-input-container class="cartes-input" style="width: 200px;">
+						<md-select ng-model="carte.info.cible" required aria-label="Cible">
+							<md-option ng-repeat="cible in piles['Pioche'].categories['Action'].info.cibles | orderBy:'cible'">{{cible}}</md-option>
+						</md-select>
+						<label>Cible</label>
+					</md-input-container>
+					<div layout="column">
+						<div layout="row">
+							<div ng-repeat="type in piles['Pioche'].categories['Action'].types | orderBy:'type'" layout="row">
+								<md-input-container ng-if="$index < 5" class="cartes-input">
+									<input type="checkbox" ng-model="carte.types[type]" aria-label="checkbox">
+									<label>{{type}}</label>
+								</md-input-container>
+							</div>
+						</div>
+						<div layout="row">
+							<div ng-repeat="type in piles['Pioche'].categories['Action'].types | orderBy:'type'" layout="row">
+								<md-input-container ng-if="$index > 5" class="cartes-input">
+									<input type="checkbox" ng-model="carte.types[type]" aria-label="checkbox">
+									<label>{{type}}</label>
+								</md-input-container>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<red-cartes-creation-consequences carte="carte"></red-cartes-creation-consequences>
+			<red-cartes-creation-contraintes carte="carte"></red-cartes-creation-contraintes>
+		</div>
+
+		<div ng-if="carte.pile == 'Pioche' && carte.categorie == 'Objet'" layout="row" flex>
+			<div ng-repeat="objet in objets" layout="column" width="50%">
+				<div class="cartes-nouvelle-titre red-font">
+					Objet {{$index + 1}}
+				</div>
+				<div layout="row">
+					<md-input-container class="cartes-input" style="width: 200px;">
+						<input ng-model="objet.nom" required aria-label="Nom">
+						<label>Nom</label>
+						<div ng-messages>
+							<div style="color: #bdbdbd;">
+								ex: Lampe torche
+							</div>
+						</div>
+					</md-input-container>
+					<md-input-container class="cartes-input" style="width: 200px;">
+						<input ng-model="objet.code" required aria-label="Code">
+						<label>Code</label>
+						<div ng-messages>
+							<div style="color: #bdbdbd;">
+								ex: lampe_torche
+							</div>
+						</div>
+					</md-input-container>
+				</div>
+				<div layout="row">
+					<md-input-container class="cartes-input" style="width: 400px;">
+						<label>Description</label>
+						<textarea ng-model="objet.description" required aria-label="Description">
+						</textarea>
+					</md-input-container>
+				</div>
+				<div layout="row">
+					<md-input-container class="cartes-input" style="width: 200px;">
+						<md-select ng-model="objet.utilisation" required aria-label="Utilisation">
+							<md-option ng-repeat="utilisation in piles['Pioche'].categories['Objet'].utilisations | orderBy:'utilisation'">{{utilisation}}</md-option>
+						</md-select>
+						<label>Utilisation</label>
+					</md-input-container>
+					<div layout="column">
+						<div layout="row">
+							<div ng-repeat="type in piles['Pioche'].categories['Objet'].types | orderBy:'type'" layout="row">
+								<md-input-container ng-if="$index < 5" class="cartes-input">
+									<input type="checkbox" ng-model="objet.types[type]" aria-label="checkbox">
+									<label>{{type}}</label>
+								</md-input-container>
+							</div>
+						</div>
+						<div layout="row">
+							<div ng-repeat="type in piles['Pioche'].categories['Objet'].types | orderBy:'type'" layout="row">
+								<md-input-container ng-if="$index > 5" class="cartes-input">
+									<input type="checkbox" ng-model="objet.types[type]" aria-label="checkbox">
+									<label>{{type}}</label>
+								</md-input-container>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div ng-if="objet.utilisation == 'Action' || objet.utilisation == 'Réaction' || objet.utilisation == 'Ouverture'" layout="column">
+					<red-cartes-creation-consequences carte="objet"></red-cartes-creation-consequences>
+					<red-cartes-creation-contraintes carte="objet"></red-cartes-creation-contraintes>
+					<red-cartes-creation-circonstances ng-if="objet.utilisation == 'Réaction'" carte="objet"></red-cartes-creation-circonstances>
+				</div>
+			</div>
+		</div>
+		<div ng-if="!carteSubmitted">
+            <md-button type="submit" ng-if="view == 'nouvelle_carte'" ng-disabled="submitButtonDisabled" class="confrontations-button red-font md-primary md-raised">
+                OK !
+            </md-button>
+            <md-button type="submit" ng-if="view == 'modifier_carte'" ng-disabled="submitButtonDisabled" class="confrontations-button red-font md-primary md-raised">
+                Sauver les modifications
+            </md-button>
+		</div>
+		<div ng-if="carteSubmitted" layout="row" layout-align="start center">
+			<div class="red-font" style="width: 400px;text-align: center;color: #35bc35;font-weight: bold;">
+				Carte créée ! Envoie l'image de la carte à Romain ({{carteImageFileName}})
+			</div>
+            <md-button type="button" ng-click="carteSupplementaire()" class="confrontations-button red-font md-primary md-raised">
+                Créer une carte supplémentaire
+            </md-button>
+		</div>
+	</form>
+
+</div>

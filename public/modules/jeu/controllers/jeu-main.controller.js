@@ -26,10 +26,11 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$timeout','Cart
 
 	$scope.ouvrirCarte = function(index){
 		var carte = $scope.jeu.main[index];
-		carte.main.ouverte = true;
+		carte.statut.ouverte = true;
+		console.log(carte);
 		Cartes.changementMain({
     		carteId: $scope.jeu.main[index].id,
-    		main: carte.main
+    		statut: carte.statut
     	}).success(function(){
 			$timeout(function(){
 				$scope.jeu.ouvertes.push(carte);
@@ -47,7 +48,7 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$timeout','Cart
     		position: -2
     	}).success(function(){
     		var carte = $scope.jeu.main[index];
-    		carte.main = {};
+    		carte.statut = {};
 			$scope.defausses.pioche.push(carte);
 			$scope.jeu.main.splice(index,1);
 			$scope.focusIndex = -2;

@@ -34,6 +34,9 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 				$scope.partie.dispo.des.rhombo ++;
 				$scope.partie.dispo.cartes.main_jeter = true;
 			}
+			else if (tourAction == 3){
+				$scope.partie.dispo.des.paysage = 1;
+			}
 			else if (tourAction == 5){
 				$scope.partie.dispo.duel = true;
 				$scope.partie.dispo.des.duel = 3;

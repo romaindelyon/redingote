@@ -26,3 +26,12 @@ angular.module('jeu').directive('redJeuOuvertes', [
 		};
 	}
 ]);
+
+angular.module('jeu').directive('redJeuMission', [
+	function() {
+		return {
+			templateUrl: 'modules/jeu/views/jeu-mission.view.html',
+			restrict: 'E'
+		};
+	}
+]);

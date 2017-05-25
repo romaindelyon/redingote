@@ -36,7 +36,6 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 		$scope.confrontation.type = type;
 		$scope.confrontation.info = info;
 		$scope.confrontation.carteIndex = carteIndex;
-		console.log($scope.confrontation.carteIndex);
 		$scope.confrontation.source = source;
 		$scope.confrontation.cible = cible;
 		$scope.confrontation.ready = false;
@@ -48,30 +47,32 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 		};
 
 		// fill confrontation content:
-
 		var description = "";
 		var titre = "";
 		if (type == 'action'){
-			var action = $scope.cartes[info].action;
+			var consequence = $scope.cartes[info].info.consequences[0];
+			var action = $scope.cartes[info].info.action.type;
+			$scope.confrontation.code = $scope.cartes[info].code;
 		}
 
-		if (categorie == 'attaque' && type == 'action'){
+		if (categorie === 'attaque' && type === 'action'){
 			$scope.confrontation.ready = true;
 			$scope.confrontation.display.carte_image = true;
 			$scope.confrontation.display.joueur_selection = true;
 			$scope.confrontation.display.description = true;
 			$scope.confrontation.display.description_type = 'cible_left';
+			console.log(consequence);
 			// titre:
 			titre = "Action : " + $scope.cartes[info].nom;
 			// description:
-			if (action.types[0] == 'cartes_perte'){
-				description = " perd " + action.valeur + " cartes !";
+			if (action === "immediat" && consequence.categorie === 'carte' && consequence.type === 'defausse'){
+				description = " perd " + consequence.valeur + " cartes !";
 			}
-			else if (action.types[0] == 'tour_passe'){
-				description = " passe " + action.valeur + " tour !";
+			else if (action === "immediat" && consequence.categorie === 'tour' && consequence.type === 'passer'){
+				description = " passe " + consequence.valeur + " tour !";
 			}
-			else if (action.types[0] == 'cartes_perte_test'){
-				description = " risque de perdre " + action.valeur + " cartes !";
+			else if (action === "test" && consequence.categorie === 'carte' && consequence.type === 'vol'){
+				description = " risque de perdre " + consequence.valeur + " cartes !";
 			}
 		}
 
@@ -81,20 +82,20 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 			$scope.confrontation.display.duel_results = true;
 		}
 
-		else if (categorie == 'defense'){
-			if (type == 'action'){
+		else if (categorie === 'defense'){
+			if (type === 'action'){
 				titre = $scope.joueurs[source].nom + " t'attaque !";
-				if (action.types[0] == 'cartes_perte'){
+				if (action === "immediat" && consequence.categorie === 'carte' && consequence.type === 'defausse'){
 					$scope.confrontation.display.carte_image = true;
-					startCartePerte(action.valeur);
-					if (action.valeur == 1){
-						$scope.confrontation.description = "Choisis " + action.valeur + " carte à défausser :";
+					startCartePerte(consequence.valeur);
+					if (consequence.valeur == 1){
+						$scope.confrontation.description = "Choisis " + consequence.valeur + " carte à défausser :";
 					}
 					else {
-						$scope.confrontation.description = "Choisis " + action.valeur + " cartes à défausser :";
+						$scope.confrontation.description = "Choisis " + consequence.valeur + " cartes à défausser :";
 					}
 				}
-				else if (action.types[0] == 'cartes_perte_test'){
+				else if (action === "test" && consequence.categorie === 'carte' && consequence.type === 'vol'){
 					$scope.confrontation.display.test = true;
 					$scope.confrontation.ready = true;
 					$scope.confrontation.test = {
@@ -103,16 +104,16 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 					};
 					description = "Quelle heure est-il ?";
 				}
-				else if (action.types[0] == 'tour_passe'){
+				else if (action === "immediat" && consequence.categorie === 'tour' && consequence.type === 'passer'){
 					$scope.confrontation.display.carte_image = true;
 					$scope.confrontation.display.description = true;
 					$scope.confrontation.display.description_type = 'text_only';
 					$scope.confrontation.ready = true;
-					if (action.valeur == 1){
-						description = "Tu passes " + action.valeur + " tour";
+					if (consequence.valeur == 1){
+						description = "Tu passes " + consequence.valeur + " tour";
 					}
 					else {
-						description = "Tu passes " + action.valeur + " tour";
+						description = "Tu passes " + consequence.valeur + " tour";
 					}
 				}
 			}
@@ -298,7 +299,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 						}
 						console.log(index);
 			    		var carte = $scope.jeu.main[index];
-			    		carte.main = {};
+			    		carte.statut = {};
 			    		delete carte.filled;
 						$scope.defausses.pioche.push(carte);
 						$scope.jeu.main.splice(index,1);
@@ -353,21 +354,22 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 		else if (confrontation.categorie == 'defense'){
 			var defenseFinished = false; // is it the last step of this defense activity?
 			if (confrontation.type == 'action'){
-				var action = $scope.cartes[confrontation.info].action;
-				if (action.types[0] == 'tour_passe'){
+				var consequence = $scope.cartes[confrontation.info].info.consequences[0];
+				var action = $scope.cartes[confrontation.info].info.action.type;
+				if (action == 'immediat' && consequence.categorie === 'tour' && consequence.type === 'passer'){
 					$scope.toursToSkip ++;
 					defenseFinished = true;
 				}
-				else if (action.types[0] == 'cartes_perte'){
+				else if (action == 'immediat' && consequence.categorie === 'carte' && consequence.type === 'defausse'){
 					deplacerCartes(-2);
 					defenseFinished = true;
 				}
-				else if (action.types[0] == 'cartes_perte_test'){
+				else if (action === "test" && consequence.categorie === 'carte' && consequence.type === 'vol'){
 					if ($scope.confrontation.test.completed){
 						defenseFinished = true;
 					}
 					else {
-						if (action.question == "19h42"){
+						if ($scope.cartes[confrontation.info].code == "quelle_heure_est_il"){
 							if ($scope.confrontation.test.values.hours == "19" && $scope.confrontation.test.values.minutes == "42"){
 								$scope.confrontation.test.correct = true;
 								$scope.confrontation.description = "Bonne réponse !";

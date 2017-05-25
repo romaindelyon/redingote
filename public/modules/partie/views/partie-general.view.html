@@ -6,22 +6,46 @@
 
 		<red-joueurs-recap-left style="width: 38%;"></red-joueurs-recap-left>
 
-		<div style="width: 24%;height: 100%;" layout="column" style="font-size: 30px;">
-			<div layout="row" style="height: 50%;width: 100%;">
-				<div ng-click="goToPlateau(1)" layout="row" flex layout-align="center center" style="margin: 20px;background-color:#8cd5d1;outline: none;">
-					<span>
-						Labyrinthe
-					</span>
+		<div layout="column" style="width: 24%;height: 100%;">
+
+			<!-- Toolbar -->
+
+			<div ng-controller="PartieMenuController" layout="row" layout-align="space-around center" style="width: 100%;height: 10%;">
+				<div ng-click="goTo('accueil')" class="partie-menu-icone">
+					<img src="modules/partie/img/partie-icones-home.png">
 				</div>
-				<div ng-click="goToPlateau(2)" layout="row" flex layout-align="center center" style="margin: 20px;background-color:#ffc176;outline: none;">
-					<span>
-						Escalier
-					</span>
+				<div class="partie-menu-icone">
+					<img src="modules/partie/img/partie-icones-historique.png">
+				</div>
+				<div class="partie-menu-icone">
+					<img src="modules/partie/img/partie-icones-aide.png">
+				</div>
+				<div ng-click="goTo('cartes')" class="partie-menu-icone">
+					<img src="modules/partie/img/partie-icones-cartes.png">
+				</div>
+
+			</div>
+
+			<!-- Plateaux -->
+
+			<div layout="column" style="width: 100%;height: 90%;">
+				<div layout="row" style="height: 40%;width: 100%;">
+					<div ng-click="goToPlateau(1)" layout="row" flex layout-align="center center" style="margin: 20px;background-color:#8cd5d1;outline: none;">
+						<span>
+							Labyrinthe
+						</span>
+					</div>
+					<div ng-click="goToPlateau(2)" layout="row" flex layout-align="center center" style="margin: 20px;background-color:#ffc176;outline: none;">
+						<span>
+							Escalier
+						</span>
+					</div>
+				</div>
+				<div layout="row" flex layout-align="center center" style="width: 100%;height: 60%;outline: none;">
+					<img ng-click="goToPlateau(0)" src="modules/plateaux/img/plateau_paysage.jpeg" style="height: 100%;width: 300px;outline: none;">
 				</div>
 			</div>
-			<div layout="row" flex layout-align="center center" style="width: 100%;height: 50%;outline: none;">
-				<img ng-click="goToPlateau(0)" src="modules/plateaux/img/plateau_paysage.jpeg" style="height: 100%;width: 300px;outline: none;">
-			</div>
+
 		</div>
 
 		<red-joueurs-recap-right style="width: 38%;"></red-joueurs-recap-right>

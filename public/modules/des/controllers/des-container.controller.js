@@ -23,6 +23,9 @@ angular.module('des').controller('DesContainerController', ['$scope',
 			if (de == 'rhombo'){
 				$scope.partie.dispo.pioches.pioche += result;
 			}
+			else if (de == 'paysage'){
+				$scope.partie.dispo.plateaux.paysage = 1;
+			}
 			else if (de == 'duel'){
 				$scope.$emit('confrontations-duel-de', {result: result});
 			}

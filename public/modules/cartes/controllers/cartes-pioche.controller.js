@@ -17,16 +17,16 @@ angular.module('cartes').controller('CartesPiocheController',
 	        	templateUrl: 'modules/cartes/views/cartes-pioche-popup.view.html',
 	        	clickOutsideToClose: true,
 			    controller: function($scope){
-		        	$scope.image = 'modules/cartes/img/pioche/cartes_pioche_'+carte.id+'.png';
+		        	$scope.image = 'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png';
 		        	var flipped = false;
 		        	$scope.flip = function(){
 		        		if (carte.categorie == 'objet'){
 			        		if (!flipped){
-			        			$scope.image = 'modules/cartes/img/pioche/cartes_pioche_'+carte.id+'_flipped.png';
+			        			$scope.image = 'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'_flipped.png';
 			        			flipped = true;
 			        		}
 			        		else {
-			        			$scope.image = 'modules/cartes/img/pioche/cartes_pioche_'+carte.id+'.png';
+			        			$scope.image = 'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png';
 			        			flipped = false;
 			        		}
 		        		}

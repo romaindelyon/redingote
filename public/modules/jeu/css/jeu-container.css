@@ -47,3 +47,13 @@
 	height: 256px;
 	border: solid green 3px;
 }
+
+.jeu-missions-carte,
+.jeu-missions-carte-completed {
+	width: 160px;
+	height:250px;
+}
+.jeu-missions-carte {
+	filter: grayscale(100%);
+    opacity: 0.4;
+}

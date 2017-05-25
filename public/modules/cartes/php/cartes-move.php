@@ -17,7 +17,7 @@ header("Content-Type: application/json; charset=UTF-8");
             $stmt = $con -> prepare("UPDATE cartes SET position = ? WHERE id = ?");
         }
         else {
-            $stmt = $con -> prepare("UPDATE cartes SET position = ?, main = '{}' WHERE id = ?");
+            $stmt = $con -> prepare("UPDATE cartes SET position = ?, statut = '{}' WHERE id = ?");
         }
 
         $stmt -> bind_param('ii',$position,$carteId);

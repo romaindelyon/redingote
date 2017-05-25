@@ -1,41 +1,78 @@
 'use strict';
 
-angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$state','$stateParams',
-	function($scope,$state,$stateParams) {
+angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$http',
+	function($scope,$http) {
+
+		$scope.plateauPaysage = [];
+
+		// Usability functions
+
+		function getCoordinates(numero){
+			var coordinates = {
+				col: -1,
+				row: -1
+			}
+			for (var i = 0;i < 14;i ++){
+				for (var j = 0;j < 24;j ++){
+					if ($scope.plateauPaysage[i].colonnes[j].numero == numero){
+						coordinates = {
+							row: i,
+							col: j
+						}
+					}
+				}
+			}
+			return coordinates;
+		}
 
 		// Initialiser plateau paysage:
-		$scope.plateauPaysage = [];
 		
-		for (var i = 0;i < 14;i ++){
-			$scope.plateauPaysage.push({
-				id: i,
-				colonnes: []
-			});
-			for (var j = 0;j < 24;j ++){
-				var numero = Math.floor((Math.random() * 1000) + 1);
-				var question = Math.random();
-				var action = Math.random();
-				var achat = Math.random();
-				var paysagesNoms = ['Desert','Ville','Foret','Marecage','Mer','Royaume des tenebres','Montagne','Village','Prairie'];
-				var paysageIndex = Math.floor((Math.random() * 8));
-				var paysage2 = Math.random();
-				if (paysage2 > 0.7){
-					var paysageIndex2 = Math.floor((Math.random() * 8));
-					var zones = [paysagesNoms[paysageIndex],paysagesNoms[paysageIndex2]];
-				}
-				else {
-					var zones = [paysagesNoms[paysageIndex]];
-				}
-				$scope.plateauPaysage[i].colonnes.push({
-					id: j,
-					numero: numero,
-					question: question > 0.7,
-					zones: zones,
-					action: action > 0.75,
-					achat: achat > 0.6 
-				});
+
+		function addPionToCase(coordinates,joueurId){
+			if ($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs != undefined &&
+				$scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs.length > 0){
+    			$scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs.push(joueurId);
+    			$scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueursNumber ++;
+    			
+    		}
+    		else {
+    			$scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs = [joueurId];
+    			$scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueursNumber = 1;
+    		}
+    		console.log($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col]);
+    	}
+		
+		function removePionFromCase(coordinates,joueurId){
+			var index = $scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs.indexOf(joueurId);
+			if (index >= 0){
+				$scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs.splice(index,1);
+				$scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueursNumber --;
 			}
 		}
+
+		$http({
+	        method: 'GET', 
+	        url: 'modules/plateaux/json/plateaux-paysage.json'
+	    }).success(function(response){
+	    	$scope.plateauPaysage = response;
+	    	for (var i in $scope.joueurs){
+	    		var coordinates = getCoordinates($scope.joueurs[i].pions[0].case);
+	    		console.log(coordinates);
+	    		console.log($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs);
+	    		addPionToCase(coordinates,i);
+	    	}
+	    })
+
+	    $scope.movePion = function(numero){
+	    	var previousCoordinates = getCoordinates($scope.joueurs[$scope.joueurId].pions[0].case);
+	    	removePionFromCase(previousCoordinates,$scope.joueurId);
+	    	var coordinates = getCoordinates(numero);
+	    	console.log(coordinates);
+	    	$scope.joueurs[$scope.joueurId].pions[0].case = numero;
+	    	addPionToCase(coordinates,$scope.joueurId);
+	    	$scope.partie.dispo.plateaux.paysage --;
+	    	//Joueurs.movePion({numero: numero})
+	    }
 
 		$scope.selectedCase = {
 			clicked: false,

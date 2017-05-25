@@ -1,0 +1,34 @@
+<div ng-controller="CartesCreationCirconstancesController">
+	<div ng-repeat="index in carte.circonstances" layout="row">
+		<md-input-container class="cartes-input" style="width: 300px;">
+			<md-select ng-model="carte.info.circonstances[$index].categorie" required aria-label="Circonstance">
+				<md-option ng-repeat="(categorie_nom,categorie) in circonstances | orderBy:'categorie_nom'">{{categorie_nom}}</md-option>
+			</md-select>
+			<label>Circonstance - Catégorie</label>
+		</md-input-container>
+		<md-input-container ng-if="carte.info.circonstances[$index].categorie != undefined && circonstances[carte.info.circonstances[$index].categorie].length != 0" class="cartes-input" style="width: 300px;">
+			<md-select ng-model="carte.info.circonstances[$index].type" required aria-label="Circonstance">
+				<md-option ng-repeat="(type_nom,type) in circonstances[carte.info.circonstances[$index].categorie] | orderBy:'type_nom'">{{type_nom}}</md-option>
+			</md-select>
+			<label>Circonstance - Type</label>
+		</md-input-container>
+		<md-input-container ng-if="carte.info.circonstances[$index].type != undefined && circonstances[carte.info.circonstances[$index].categorie][carte.info.circonstances[$index].type].length > 0" class="cartes-input" style="width: 200px;">
+			<md-select ng-model="carte.info.circonstances[$index].valeur" required aria-label="Type">
+				<md-option ng-repeat="valeur in circonstances[carte.info.circonstances[$index].categorie][carte.info.circonstances[$index].type] | orderBy:'valeur'">{{valeur}}</md-option>
+			</md-select>
+			<label>Circonstance - Valeur</label>
+		</md-input-container>
+	</div>
+	<div ng-if="carte.circonstances.length >= 1" style="padding-left: 10px;">
+		<a ng-click="retirerElement('circonstances',carte)" style="outline: none;">Retirer une circonstance</a>
+	</div>
+	<div ng-if="carte.circonstances.length < 3" style="padding-left: 10px;">
+		<a ng-click="ajouterElement('circonstances',carte)" style="outline: none;">Ajouter une circonstance</a>
+	</div>
+	<md-input-container ng-if="carte.circonstances.length > 1" class="cartes-input" style="width: 400px;">
+		<md-select ng-model="carte.info.exclusivite.circonstances" required aria-label="Type">
+			<md-option ng-repeat="valeur in ['Exclusives','Non exclusives']">{{valeur}}</md-option>
+		</md-select>
+		<label>Circonstances - Exclusivité</label>
+	</md-input-container>	
+</div>

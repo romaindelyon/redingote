@@ -22,7 +22,7 @@
 	<div ng-controller="JeuOuvertesController" ng-if="joueurs[joueurLeft].ouvertes.length > 0" layout="row" style="width: 100%;">
 
 	    <div ng-repeat="carte in joueurs[joueurLeft].ouvertes" layout-align="center center" style="outline: none;width: 80px;height: 130px;padding: 5px;">
-	        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.id+'.png'}}" style="width: 75px;height: 125px;">
+	        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" style="width: 75px;height: 125px;">
 	    </div>
 
 	</div>

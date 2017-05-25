@@ -104,6 +104,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.jeu.main = [];
 	$scope.jeu.ouvertes = [];
+	$scope.jeu.missions = [];
 
 	//Cartes 
 
@@ -122,15 +123,22 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    				$scope.pioches.pioche.push(carte);
 	    			}
 	    			else if (carte.position == $scope.joueurId){
-	    				if (carte.main.ouverte){
+	    				if (carte.statut.ouverte){
 	    					$scope.jeu.ouvertes.push(carte);
 	    				}
 	    				else {
 	    					$scope.jeu.main.push(carte);
 	    				}
 	    			}
-	    			else if (carte.main.ouverte){
+	    			else if (carte.statut.ouverte){
 	    				$scope.joueurs[carte.position].ouvertes.push(carte);
+	    			}
+	    		}
+	    		else if (carte.pile == 'missions'){
+	    			console.log('found mission');
+	    			if (carte.position == $scope.joueurId){
+	    				console.log('and joueur');
+	    				$scope.jeu.missions.push(carte);
 	    			}
 	    		}
 	    	}

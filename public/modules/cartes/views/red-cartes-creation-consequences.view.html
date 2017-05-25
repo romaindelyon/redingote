@@ -1,0 +1,34 @@
+<div ng-controller="CartesCreationConsequencesController">
+	<div ng-repeat="index in carte.consequences" layout="row">
+		<md-input-container class="cartes-input" style="width: 300px;">
+			<md-select ng-model="carte.info.consequences[$index].categorie" required aria-label="Type">
+				<md-option ng-repeat="(categorie_nom,categorie) in consequences">{{categorie_nom}}</md-option>
+			</md-select>
+			<label>Conséquence - Catégorie</label>
+		</md-input-container>
+		<md-input-container ng-if="carte.info.consequences[$index].categorie != undefined" class="cartes-input" style="width: 300px;">
+			<md-select ng-model="carte.info.consequences[$index].type" required aria-label="Type">
+				<md-option ng-repeat="(type_nom,type) in consequences[carte.info.consequences[$index].categorie]">{{type_nom}}</md-option>
+			</md-select>
+			<label>Conséquence - Type</label>
+		</md-input-container>
+		<md-input-container ng-if="carte.info.consequences[$index].type != undefined && consequences[carte.info.consequences[$index].categorie][carte.info.consequences[$index].type].length > 0" class="cartes-input" style="width: 200px;">
+			<md-select ng-model="carte.info.consequences[$index].valeur" required aria-label="Type">
+				<md-option ng-repeat="valeur in consequences[carte.info.consequences[$index].categorie][carte.info.consequences[$index].type] | orderBy:'valeur'">{{valeur}}</md-option>
+			</md-select>
+			<label>Conséquence - Valeur</label>
+		</md-input-container>
+	</div>
+	<div ng-if="carte.consequences.length > 1" style="padding-left: 10px;">
+		<a ng-click="retirerElement('consequences',carte)" style="outline: none;">Retirer une conséquence</a>
+	</div>
+	<div ng-if="carte.consequences.length < 3" style="padding-left: 10px;">
+		<a ng-click="ajouterElement('consequences',carte)" style="outline: none;">Ajouter une conséquence</a>
+	</div>
+	<md-input-container ng-if="carte.consequences.length > 1" class="cartes-input" style="width: 400px;">
+		<md-select ng-model="carte.info.exclusivite.consequences" required aria-label="Type">
+			<md-option ng-repeat="valeur in ['Exclusives','Non exclusives']">{{valeur}}</md-option>
+		</md-select>
+		<label>Conséquences - Exclusivité</label>
+	</md-input-container>
+</div>

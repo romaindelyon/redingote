@@ -5,6 +5,23 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 		return {
 			// Get all the cartes:
 			getCartes: function(){
+				// if (configService.local){
+				// 	return $http({
+				//         method: 'GET', 
+				//         url: 'modules/cartes/json/cartes.json'
+				//     });
+				// }
+				// else {
+					return $http({
+				        method: 'GET', 
+				        url: 'modules/cartes/php/cartes.php',
+				        headers: {
+				        	'Cache-Control': 'no-cache'
+				        }
+				    });
+				//}
+			},
+			createCarte: function(params){
 				if (configService.local){
 					return $http({
 				        method: 'GET', 
@@ -13,13 +30,34 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 				}
 				else {
 					return $http({
-				        method: 'GET', 
-				        url: 'modules/cartes/php/cartes.php',
+				        method: 'POST', 
+				        url: 'modules/cartes/php/cartes-create.php',
+			        	params: params,
+			        	statut: {},
 				        headers: {
-				        	'Cache-Control': 'no-cache'
+				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
 				        }
 				    });
+				}				
+			},
+			modifierCarte: function(params){
+				if (configService.local){
+					return $http({
+				        method: 'GET', 
+				        url: 'modules/cartes/json/cartes.json'
+				    });
 				}
+				else {
+					return $http({
+				        method: 'POST', 
+				        url: 'modules/cartes/php/cartes-modifier.php',
+			        	params: params,
+			        	statut: {},
+				        headers: {
+				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
+				        }
+				    });
+				}				
 			},
 			moveCartes: function(params){
 				if (configService.local){
@@ -57,7 +95,7 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 				        url: 'modules/cartes/php/cartes-changement-main.php',
 			        	params: {
 		        			carteId: params.carteId,
-		        			main: params.main
+		        			statut: params.statut
 		        		},
 				        headers: {
 				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
