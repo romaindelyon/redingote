@@ -55,6 +55,7 @@ angular.module('cartes').controller('CartesCreationCirconstancesController', ['$
 			'Paysage': [2,3,4,5,7,12,16,73]
 		},
 		'Echange': [],
+		'Interlude musical': [],
 		'Mission': {
 			'Pioche': [],
 			'Réussie': []

@@ -21,7 +21,7 @@ header("Pragma: no-cache");
             $result["code"] = $code;
             $result["description"] = utf8_encode($description);
             $result["nom"] = utf8_encode($nom);
-            $result["utilisation"] = json_decode($utilisation);
+            $result["utilisation"] = $utilisation;
             $result["info"] = json_decode($info);
             $result["types"] = json_decode($types);
             array_push($results, $result);

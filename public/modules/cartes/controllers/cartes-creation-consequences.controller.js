@@ -95,6 +95,9 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 		'Modulation': {
 			'Modulation': ['Fi mineur','La majeur','Ré mineur']
 		},
+		'Montée de marche': {
+			'Jeu': ['Echouer','Gagner','Rejouer']
+		},
 		'Objet': {
 			'Création': ['Photo'],
 			'Transformation': []

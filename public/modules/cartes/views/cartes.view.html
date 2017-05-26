@@ -1,5 +1,8 @@
 <div ng-controller="CartesController" layout="column" class="cartes-container">
 
+	<!-- Toolbar -->
+	<red-core-toolbar></red-core-toolbar>
+
 	<div layout="row" flex>
 		<div ng-repeat="tab in tabs" ng-click="changeTab($index)" layout="row" flex layout-align="center center" ng-class="focusedTab == $index ? 'cartes-menu-item-focused' : 'cartes-menu-item'" class="red-font">
 			{{tab.nom}}
@@ -154,7 +157,7 @@
 						</div>
 						<div layout="row">
 							<div ng-repeat="type in piles['Pioche'].categories['Action'].types | orderBy:'type'" layout="row">
-								<md-input-container ng-if="$index > 5" class="cartes-input">
+								<md-input-container ng-if="$index >= 5" class="cartes-input">
 									<input type="checkbox" ng-model="carte.types[type]" aria-label="checkbox">
 									<label>{{type}}</label>
 								</md-input-container>
@@ -167,7 +170,7 @@
 			<red-cartes-creation-contraintes carte="carte"></red-cartes-creation-contraintes>
 		</div>
 
-		<div ng-if="carte.pile == 'Pioche' && carte.categorie == 'Objet'" layout="row" flex>
+		<div ng-if="carte.pile == 'Pioche' && carte.categorie == 'Objet'" layout="column" flex>
 			<div ng-repeat="objet in objets" layout="column" width="50%">
 				<div class="cartes-nouvelle-titre red-font">
 					Objet {{$index + 1}}
@@ -217,7 +220,7 @@
 						</div>
 						<div layout="row">
 							<div ng-repeat="type in piles['Pioche'].categories['Objet'].types | orderBy:'type'" layout="row">
-								<md-input-container ng-if="$index > 5" class="cartes-input">
+								<md-input-container ng-if="$index >= 5" class="cartes-input">
 									<input type="checkbox" ng-model="objet.types[type]" aria-label="checkbox">
 									<label>{{type}}</label>
 								</md-input-container>

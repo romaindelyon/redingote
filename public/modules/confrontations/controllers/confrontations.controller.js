@@ -53,6 +53,8 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 			var consequence = $scope.cartes[info].info.consequences[0];
 			var action = $scope.cartes[info].info.action.type;
 			$scope.confrontation.code = $scope.cartes[info].code;
+			console.log(action);
+			console.log(consequence);
 		}
 
 		if (categorie === 'attaque' && type === 'action'){

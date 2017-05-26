@@ -22,7 +22,7 @@
 }
 
 .cartes-table tr {
-	height: 30px;
+	min-height: 30px;
 }
 
 .cartes-table thead td {
