@@ -17,7 +17,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 
 	$scope.focusedTab = 0;
 
-	$scope.view = 'table';
+	$scope.view = 'table_cartes';
 
 
 	$scope.formSubmitted = false;
@@ -27,10 +27,15 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			initializeCartes();	
 		}
 		$scope.focusedTab = index;
-		if ($scope.tabs[index].id != 'nouvelle_carte'){
+		if ($scope.tabs[index].id != 'nouvelle_carte' && $scope.tabs[index].id != 'objets'){
 			$scope.cartesTable = $scope.cartes[$scope.tabs[index].id];
-			$scope.view = 'table';
+			$scope.view = 'table_cartes';
 			$scope.formSubmitted = false;
+		}
+		else if ($scope.tabs[index].id === 'objets'){
+			$scope.cartesTable = $scope.cartes.objets;
+			$scope.view = 'table_objets';
+			$scope.formSubmitted = false;			
 		}
 		else {
 			$scope.view = 'nouvelle_carte';
@@ -116,7 +121,15 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				} 
 			}
 			$scope.cartesTable = $scope.cartes.pioche;
-			console.log($scope.cartesTable);
+			Objets.getObjets().success(function(responseObjets){
+				for (var i in responseObjets){
+					// agreger objets par code:
+					if ($scope.cartes.objets[responseObjets[i].code] === undefined){
+						$scope.cartes.objets[responseObjets[i].code] = responseObjets[i];
+					}
+				}
+				console.log($scope.cartesTable);
+			});
 		});
 	}
 	initializeCartes();

@@ -5,13 +5,13 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 		return {
 			// Get all the cartes:
 			getCartes: function(){
-				// if (configService.local){
-				// 	return $http({
-				//         method: 'GET', 
-				//         url: 'modules/cartes/json/cartes.json'
-				//     });
-				// }
-				// else {
+				if (configService.local){
+					return $http({
+				        method: 'GET', 
+				        url: 'modules/cartes/json/cartes.json'
+				    });
+				}
+				else {
 					return $http({
 				        method: 'GET', 
 				        url: 'modules/cartes/php/cartes.php',
@@ -19,7 +19,7 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 				        	'Cache-Control': 'no-cache'
 				        }
 				    });
-				//}
+				}
 			},
 			createCarte: function(params){
 				if (configService.local){

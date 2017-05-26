@@ -6,7 +6,7 @@
 		</div>
 	</div>
 
-	<table ng-if="view == 'table'" layout="column" class="cartes-table red-font">
+	<table ng-if="view == 'table_cartes'" layout="column" class="cartes-table red-font">
 		<thead layout="row" flex>
 			<tr layout="row" flex>
 				<td width="30%">
@@ -45,6 +45,35 @@
 				</td>
 				<td width="10%">
 					<a ng-click="modifierCarte(key)">Modifier</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+<table ng-if="view == 'table_objets'" layout="column" class="cartes-table red-font">
+		<thead layout="row" flex>
+			<tr layout="row" flex>
+				<td width="30%">
+					Nom
+				</td>
+				<td width="50%">
+					Description
+				</td>
+				<td width="20%">
+					Animaux
+				</td>
+			</tr>
+		</thead>
+		<tbody flex>
+			<tr ng-repeat="(key,carte) in cartesTable" layout="row" flex>
+				<td width="30%">
+					{{carte.nom}}
+				</td>
+				<td width="50%">
+					{{carte.description}}
+				</td>
+				<td width="20%">
+					{{carte.types.animal}}
 				</td>
 			</tr>
 		</tbody>
