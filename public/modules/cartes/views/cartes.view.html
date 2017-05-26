@@ -73,7 +73,9 @@
 					{{carte.description}}
 				</td>
 				<td width="20%">
-					{{carte.types.animal}}
+					<span ng-if="carte.types.animal">
+						Animal
+					</span>
 				</td>
 			</tr>
 		</tbody>

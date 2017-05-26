@@ -12,7 +12,7 @@ header("Pragma: no-cache");
     $stmt = $con -> prepare("SELECT * FROM objets");
 
     $stmt -> execute();
-    $stmt -> bind_result($id,$code,$description,$nom,$utilisation,$info,$types);
+    $stmt -> bind_result($id,$code,$types,$utilisation,$info,$nom,$description);
 
     $results = array();
     while($stmt->fetch()) {

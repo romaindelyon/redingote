@@ -8,7 +8,7 @@ angular.module('cartes').factory('Objets', ['$http','configService',
 				if (configService.local){
 					return $http({
 				        method: 'GET', 
-				        url: 'modules/cartes/json/cartes.json'
+				        url: 'modules/cartes/json/objets.json'
 				    });
 				}
 				else {

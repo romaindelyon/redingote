@@ -91,6 +91,24 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			pouvoirs: [1]
 		};
 		$scope.carte = $scope.cartes.toutes[code];
+		if ($scope.carte.pile === 'pioche' && $scope.carte.categorie === 'objet'){
+			$scope.objets = [
+				{types:[],
+				consequences: [1],
+				contraintes: [],
+				circonstances: [1],
+				pouvoirs: [1]},
+				{types:[],
+				consequences: [1],
+				contraintes: [],
+				circonstances: [1],
+				pouvoirs: [1]}
+			];
+			$scope.objets[0] = $scope.cartes.objets[$scope.carte.info.0];
+			keyToTextTransformation($scope.objets[0]);
+			$scope.objets[1] = $scope.cartes.objets[$scope.carte.info.1];
+			keyToTextTransformation($scope.objets[1]);
+		}
 		console.log($scope.carte);
 		keyToTextTransformation($scope.carte);
 		$scope.view = 'modifier_carte';
