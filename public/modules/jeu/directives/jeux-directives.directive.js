@@ -35,3 +35,21 @@ angular.module('jeu').directive('redJeuMission', [
 		};
 	}
 ]);
+
+angular.module('jeu').directive('redJeuGrandesCartes', [
+	function() {
+		return {
+			templateUrl: 'modules/jeu/views/jeu-grandes-cartes.view.html',
+			restrict: 'E'
+		};
+	}
+]);
+
+angular.module('jeu').directive('redJeuHorsPioche', [
+	function() {
+		return {
+			templateUrl: 'modules/jeu/views/jeu-hors-pioche.view.html',
+			restrict: 'E'
+		};
+	}
+]);

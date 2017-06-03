@@ -35,3 +35,30 @@ angular.module('cartes').directive('redCartesCreationCirconstances', [
 		};
 	}
 ]);
+
+angular.module('cartes').directive('redCartesCreationMission', [
+	function() {
+		return {
+			templateUrl: 'modules/cartes/views/red-cartes-creation-mission.view.html',
+			restrict: 'E',
+		    scope: {
+		      carte:"="
+		    }
+		};
+	}
+]);
+
+angular.module('cartes').directive('redCarte', [
+	function() {
+		return {
+			templateUrl: 'modules/cartes/views/red-cartes-carte.view.html',
+			restrict: 'E',
+		    scope: {
+		      carte: "=",
+		      focused: "=",
+		      focusCarte: "&",
+		      index: "="
+		    }
+		};
+	}
+]);

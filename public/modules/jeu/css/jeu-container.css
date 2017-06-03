@@ -3,7 +3,7 @@
 .jeu-container {
 	width: 1200px;
 	margin-top: 20px;
-	padding: 5px;
+	padding: 0px;
 	border: solid 1px black;
 }
 
@@ -16,6 +16,7 @@
 	transition: margin-left 0.2s;
 	z-index: 1;
 }
+
 .jeu-main-carte-focused {
 	outline: none;
 	width: 166px;

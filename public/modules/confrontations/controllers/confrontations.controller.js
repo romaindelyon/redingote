@@ -129,6 +129,14 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 			}
 		}
 
+		else if (categorie === 'combat'){
+			$scope.confrontation.code = $scope.cartes[info].code;
+			titre = $scope.cartes[info].nom;
+			$scope.confrontation.display.carte_image = true;
+			$scope.confrontation.display.joueur_selection = true;
+			$scope.confrontation.display.joueur_selection_type = 'all';
+		}
+
 		$scope.confrontation.titre = titre;
 		$scope.confrontation.description = description;
 	}
@@ -157,6 +165,10 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	}
 	$rootScope.$on('confrontations-defense-start', function(event, args) {
 		startDefense();
+	});
+
+	$rootScope.$on('confrontations-combat-start', function(event, args) {
+		startConfrontation('combat','combat',args.carte.id,args.carteIndex,$scope.joueurId);
 	});
 
 	// Start attaque duel:

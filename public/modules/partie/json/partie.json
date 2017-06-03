@@ -1,6 +1,6 @@
 [{"id":1,
 "tour_joueur":0,
-"tour_action":0,
+"tour_action":1,
 "tour_skip": [0,0,0],
 "tonalite":"sol",
 "temps": 0,
@@ -19,7 +19,7 @@
 		"missions": 0
 	},
 	"cartes": {
-		"ouvertures": false,
+		"ouvertures": true,
 		"main_jeter": false,
 		"ouvertes_jeter": false,
 		"utiliser": true

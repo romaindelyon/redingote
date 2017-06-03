@@ -1,6 +1,6 @@
 <div ng-controller="JeuMainController" ng-if="jeu.main.length > 0" layout="row" flex>
 
-	<div layout="column" layout-align="center center" style="width: 150px;margin-right: 100px;">
+	<div layout="column" layout-align="center center" style="width: 20%;margin-right: 100px;">
 		<div ng-if="focusIndex >= 0">
 			<md-button ng-if="partie.dispo.cartes.utiliser && jeu.main[focusIndex].utilisation.indexOf('action') > -1 && !confrontation.active" ng-click="utiliserCarte(focusIndex)" class="md-primary">
 				Utiliser
@@ -24,8 +24,8 @@
         <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+jeu.main[focusIndex].id+'.png'}}" style="width: 150px;height: 250px;border: solid green 5px;margin: 0 25px 0 0;">
     </div> -->
 
-    <div ng-repeat="carte in jeu.main" ng-click="focusCarte($index)" layout-align="center center" ng-class="{'jeu-main-carte-focused': focusIndex == $index, 'jeu-main-carte-neighbor-focused' : focusIndex == $index - 1,'jeu-main-carte': focusIndex != $index - 1 && focusIndex != $index}">
-        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" style="width: 160px;height: 250px;">
+    <div ng-repeat="carte in jeu.main" layout-align="center center" ng-class="{'jeu-main-carte-focused': focusIndex == $index, 'jeu-main-carte-neighbor-focused' : focusIndex == $index - 1,'jeu-main-carte': focusIndex != $index - 1 && focusIndex != $index}">
+    	<red-carte carte="carte" focused="focusedIndex === $index" focus-carte="focusCarte(index)" index="$index"></red-carte>
     </div>
 
 </div>

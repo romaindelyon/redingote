@@ -43,19 +43,22 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				consequences: [1],
 				contraintes: [],
 				circonstances: [1],
-				pouvoirs: [1]
+				info: {
+					etapes: [{
+						cartes: [1],
+						cases: [1]
+					}]
+				}
 			};
 			$scope.objets = [
 				{types:[],
 				consequences: [1],
 				contraintes: [],
-				circonstances: [1],
-				pouvoirs: [1]},
+				circonstances: [1]},
 				{types:[],
 				consequences: [1],
 				contraintes: [],
-				circonstances: [1],
-				pouvoirs: [1]}
+				circonstances: [1]}
 			];
 		}
 	}
@@ -106,8 +109,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		$scope.carte = {
 			consequences: [1],
 			contraintes: [],
-			circonstances: [1],
-			pouvoirs: [1]
+			circonstances: [1]
 		};
 		$scope.carte = $scope.cartes.toutes[code];
 		if ($scope.carte.pile === 'pioche' && $scope.carte.categorie === 'objet'){
@@ -115,13 +117,11 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				{types:[],
 				consequences: [1],
 				contraintes: [],
-				circonstances: [1],
-				pouvoirs: [1]},
+				circonstances: [1]},
 				{types:[],
 				consequences: [1],
 				contraintes: [],
-				circonstances: [1],
-				pouvoirs: [1]}
+				circonstances: [1]}
 			];
 			$scope.objets[0] = $scope.cartes.objets[$scope.carte.info[0]];
 			keyToTextTransformation($scope.objets[0],'objet');
@@ -170,6 +170,18 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		});
 	}
 	initializeCartes();
+
+	var cartesCodes = [];
+	$scope.cartesNoms = [];
+	Cartes.getCartes().success(function(response){
+		for (var i in response){
+			// agreger cartes par code:
+			if (response[i].pile === 'pioche' || response[i].pile === 'hors_pioche' && cartesCodes.indexOf(response[i].code < 0)){
+				cartesCodes.push(response[i].code);
+				$scope.cartesNoms.push(response[i].nom);
+			}
+		}
+	});
 
 	$scope.retirerElement = function(type,object){
 		console.log(object[type])
@@ -415,10 +427,30 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				}
 			}
 		}
+
+		else if (carte.pile === 'missions'){
+			carte.info = {
+				etapes: []
+			}
+			for (var i in $scope.carte.info.etapes){
+				carte.info.etapes.push({
+					categorie: textToKeyTransformation($scope.carte.info.etapes[i].categorie),
+					case: $scope.carte.info.etapes[i].case,
+					cartes: []
+				});
+				if ($scope.carte.info.etapes[i].cartes !== undefined){
+					for (var j in $scope.carte.info.etapes[i].cartes){
+						var carteNom = $scope.carte.info.etapes[i].cartes[j];
+						var carteCode = cartesCodes[$scope.cartesNoms.indexOf(carteNom)];
+						carte.info.etapes[i].cartes.push(carteCode);
+					}
+				}
+			}
+		}
+
 		console.log($scope.view);
 		if ($scope.view === 'nouvelle_carte'){
 			Cartes.createCarte(carte).success(function(){
-				console.log('successfully created !');
 				console.log(carte);
 				$scope.submitButtonDisabled = false;
 				$scope.carteSubmitted = true;

@@ -1,4 +1,4 @@
-<div ng-controller="ConfrontationsController" layout="column" ng-class="{'confrontations-container-action': confrontation.type == 'action','confrontations-container-duel': confrontation.type == 'duel'}">
+<div ng-controller="ConfrontationsController" layout="column" ng-class="{'confrontations-container-action': confrontation.type == 'action','confrontations-container-duel': confrontation.type == 'duel','confrontations-container-combat': confrontation.type == 'combat'}">
 
 	<!-- Titre -->
  	<div layout="row" layout-align="center center" class="confrontations-titre red-font">
@@ -16,12 +16,24 @@
         </div>
 
         <!-- Module 2 - Joueur selection -->
-        <div ng-if="confrontation.display.joueur_selection" layout="column" layout-align="space-around center" class="confrontations-cible">
+        <div ng-if="confrontation.display.joueur_selection && confrontation.display.joueur_selection_type !== 'all'" layout="column" layout-align="space-around center" class="confrontations-cible">
             <div ng-click="selectCible(autresJoueurs[0])" ng-class="confrontation.cible == autresJoueurs[0] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
                 <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[0]+'.png'}}">
             </div>
             <div ng-click="selectCible(autresJoueurs[1])" ng-class="confrontation.cible == autresJoueurs[1] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
                 <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[1]+'.png'}}">
+            </div>
+        </div>
+
+        <div ng-if="confrontation.display.joueur_selection && confrontation.display.joueur_selection_type === 'all'" layout="row" layout-align="space-around center" class="confrontations-joueurs-all">
+            <div ng-click="selectCible(joueurs[0])" ng-class="confrontation.cible == joueurs[0] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
+                <img src="modules/joueurs/img/joueurs_picture_0.png">
+            </div>
+            <div ng-click="selectCible(joueurs[1])" ng-class="confrontation.cible == joueurs[1] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
+                <img src="modules/joueurs/img/joueurs_picture_1.png">
+            </div>
+            <div ng-click="selectCible(joueurs[2])" ng-class="confrontation.cible == joueurs[2] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
+                <img src="modules/joueurs/img/joueurs_picture_2.png">
             </div>
         </div>
 

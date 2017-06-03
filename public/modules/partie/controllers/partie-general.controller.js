@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','Cartes','Partie','Joueurs','Confrontations',
-	function($scope,$state,$stateParams,Cartes,Partie,Joueurs,Confrontations) {
+angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','Cartes','Objets','Partie','Joueurs','Confrontations',
+	function($scope,$state,$stateParams,Cartes,Objets,Partie,Joueurs,Confrontations) {
 
 	// Tracking if all information has been well retrieved:
 	$scope.loaded = {
@@ -148,6 +148,18 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    	console.log("Error while trying to get cartes");
 	    });
 	}
+
+	// Objets:
+	$scope.objets = {};
+	Objets.getObjets().success(function(responseObjets){
+		for (var i in responseObjets){
+			// agreger objets par code:
+			if ($scope.objets[responseObjets[i].code] === undefined){
+				$scope.objets[responseObjets[i].code] = responseObjets[i];
+			}
+		}
+		console.log($scope.cartesTable);
+	});
 
 	// Joueurs:
 

@@ -29,4 +29,12 @@ angular.module('jeu').controller('JeuOuvertesController', ['$scope','Cartes',
     	})
     }
 
+    $scope.utiliserCarte = function(index){
+    	var carte = $scope.jeu.ouvertes[index];
+		console.log(index);
+		if (carte.categorie == 'combat'){
+			$scope.$emit('confrontations-combat-start', {carte: carte,carteIndex: index});
+		}
+    }
+
 }]);

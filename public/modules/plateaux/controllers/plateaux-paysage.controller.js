@@ -61,7 +61,7 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$h
 	    		console.log($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs);
 	    		addPionToCase(coordinates,i);
 	    	}
-	    })
+	    });
 
 	    $scope.movePion = function(numero){
 	    	var previousCoordinates = getCoordinates($scope.joueurs[$scope.joueurId].pions[0].case);

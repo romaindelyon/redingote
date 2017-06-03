@@ -170,6 +170,13 @@
 			<red-cartes-creation-contraintes carte="carte"></red-cartes-creation-contraintes>
 		</div>
 
+		<div layout="column" ng-if="carte.pile == 'Missions'">
+			<div class="cartes-nouvelle-titre red-font">
+				Mission
+			</div>
+			<red-cartes-creation-mission carte="carte"></red-cartes-creation-mission>
+		</div>
+
 		<div ng-if="carte.pile == 'Pioche' && carte.categorie == 'Objet'" layout="column" flex>
 			<div ng-repeat="objet in objets" layout="column" width="50%">
 				<div class="cartes-nouvelle-titre red-font">

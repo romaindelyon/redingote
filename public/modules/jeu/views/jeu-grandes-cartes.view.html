@@ -1,0 +1,7 @@
+<div ng-controller="JeuGrandesCartesController" layout="row" flex layout-align="space-around center">
+
+    <div ng-repeat="carte in grandesCartes" layout-align="center center" style="outline: none;width: 140px;height: 220px;">
+        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" style="width: 140px;height: 220px;" class="jeu-missions-carte">
+    </div>
+
+</div>
