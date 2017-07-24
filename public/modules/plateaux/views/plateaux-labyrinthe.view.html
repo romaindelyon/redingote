@@ -1,2 +1,62 @@
-<div layout="column">
+<div ng-controller="PlateauxLabyrintheController" layout="row" layout-align="space-around center" style="width: 1560px;height: 650px;">
+	<div style="position: relative;width: 500px;" class="red-font">
+		<div ng-if="plateauLabyrintheTourDeJeu.de > 0">
+			<span>{{plateauLabyrintheTourDeJeu.de}} actions restantes</span>
+			<span ng-if="plateauLabyrintheTourDeJeu.type === 'couronnes'">(Couronnes)</span>
+			<span ng-if="plateauLabyrintheTourDeJeu.type === 'deplacement'">(Déplacement)</span>
+		</div>
+	</div>
+	<div style="position: relative;width: 300px;margin-left: 20px;">
+		<!-- Couronne 0 -->
+		<div style="position: absolute;transition: all linear 0.5s;margin-left: -60px;margin-top: -60px;">
+			<img src="modules/plateaux/img/labyrinthe/plateaux_labyrinthe_case_0_0.png" class="plateaux-labyrinthe-couronne-1-case">
+		</div>
+		<div ng-repeat="i in [1,2,3,4]">
+			<div ng-repeat="case in plateauLabyrinthe[i]"
+			style="position: absolute;transition: all linear 0.5s;"
+			ng-style="{
+				'transform': 'rotate(' + case.angle + 'deg)',
+				'margin-left':'' + case.x + 'px',
+				'margin-top':''+ case.y +'px',
+				'opacity':''+ case.opacity +''
+			}">
+				<img ng-if="plateauLabyrintheTourDeJeu.casesDisponibles.indexOf(case.numero) < 0" ng-src="{{'modules/plateaux/img/labyrinthe/plateaux_labyrinthe_case_'+i+'_'+($index)+'.png'}}"
+				ng-class="hoveredCouronne === i ? 'plateaux-labyrinthe-couronne-'+{{i}}+'-case-hovered' : 'plateaux-labyrinthe-couronne-'+{{i}}+'-case'">
+				<img ng-if="plateauLabyrintheTourDeJeu.casesDisponibles.indexOf(case.numero) >= 0" ng-click="movePion(case.numero)" ng-src="{{'modules/plateaux/img/labyrinthe/plateaux_labyrinthe_case_'+i+'_'+($index)+'.png'}}"
+				ng-class="hoveredCouronne === i ? 'plateaux-labyrinthe-couronne-'+{{i}}+'-case-hovered' : 'plateaux-labyrinthe-couronne-'+{{i}}+'-case-disponible'">
+				<div ng-if="case.joueursNumber > 0" style="position: absolute;left: 18px;top: 18px;">
+					<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[0]+'.png'}}" class="plateaux-paysage-pion">
+				</div>
+				<img ng-if="plateauLabyrintheTourDeJeu.monteeDisponible.indexOf(case.numero) >= 0 && plateauLabyrintheTourDeJeu.type != 'couronnes' && case.joueurs.indexOf(joueurId) >= 0" src="modules/plateaux/img/plateau_labyrinthe_couronne_up.png" ng-click="monteeCouronne()" style="position: absolute;margin-left: 47px;height: 36px;margin-top: -44px;outline: none;">
+			</div>
+		</div>
+
+	</div>
+	<div style="position: relative;width: 200px;">
+		<div ng-repeat="i in [4,3,2,1]">
+			<div ng-repeat="position in ['up','down']">
+				<img ng-if="plateauLabyrintheTourDeJeu.de > 0 &&
+					(plateauLabyrintheTourDeJeu.type == undefined ||
+					(plateauLabyrintheTourDeJeu.type === 'couronnes' &&
+					plateauLabyrintheTourDeJeu.couronne === i))"
+				ng-mouseover="hoverCouronne(i)" ng-mouseleave="hoverCouronne(0)"
+				ng-src="{{'modules/plateaux/img/labyrinthe/plateaux_labyrinthe_fleche_'+i+'_'+position+'.png'}}"
+				ng-click="updatePositionCouronne(i,position)"
+				class="plateaux-labyrinthe-fleches"
+				ng-style="{
+					'margin-left': flechesPositions[position][i].left+'px',
+					'height': flechesPositions[position][i].height+'px',
+					'margin-top': flechesPositions[position][i].top+'px'
+				}">
+<!-- 				<img ng-if="plateauLabyrintheTourDeJeu.de == undefined || plateauLabyrintheTourDeJeu.de <= 0"
+				ng-src="{{'modules/plateaux/img/labyrinthe/plateaux_labyrinthe_fleche_'+i+'_'+position+'.png'}}"
+				class="plateaux-labyrinthe-fleches-disabled"
+				ng-style="{
+					'margin-left': flechesPositions[position][i].left+'px',
+					'height': flechesPositions[position][i].height+'px',
+					'margin-top': flechesPositions[position][i].top+'px'
+				}"> -->
+			</div>
+		</div>
+	</div>
 </div>

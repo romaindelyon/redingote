@@ -14,7 +14,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	// Get param:
 
-	$scope.joueurId = $stateParams.joueur;
+	$scope.joueurId = parseInt($stateParams.joueur);
 
 	// Attaques:
 
@@ -54,19 +54,6 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	// Partie:
 
-	Partie.getPartie().success(function(response){
-		$scope.partie = {
-			tour_joueur: response[0].tour_joueur,
-			tour_action: response[0].tour_action,
-			tour_skip: response[0].tour_skip,
-			tonalite: response[0].tonalite,
-			temps: response[0].temps,
-			dispo: response[0].dispo
-		};
-		$scope.loaded.partie = true;
-		$scope.initiateConfrontations();
-	})
-
 	$scope.resetDispos = function(){
 		$scope.partie.dispo = {
 			des: {
@@ -92,9 +79,27 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 				paysage: 0,
 				layrinthe: 0
 			},
-			duel: false
+			duel: false,
+			action_de_case: false
 		}
 	}
+
+	
+	Partie.getPartie().success(function(response){
+		$scope.partie = {
+			tour_joueur: response[0].tour_joueur,
+			tour_action: response[0].tour_action,
+			tour_skip: response[0].tour_skip,
+			tonalite: response[0].tonalite,
+			temps: response[0].temps,
+			dispo: response[0].dispo
+		};
+		if ($scope.partie.tour_joueur !== $scope.joueurId){
+			$scope.resetDispos();
+		}
+		$scope.loaded.partie = true;
+		$scope.initiateConfrontations();
+	})
 
 	// Jeu:
 
@@ -135,7 +140,9 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    			}
 	    		}
 	    		else if (carte.pile == 'missions'){
-	    			console.log('found mission');
+	    			if (carte.position == -1) {
+	    				$scope.pioches.missions.push(carte);
+	    			}
 	    			if (carte.position == $scope.joueurId){
 	    				console.log('and joueur');
 	    				$scope.jeu.missions.push(carte);
@@ -187,6 +194,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			$scope.joueurs[i].ouvertes = [];
 		}
 		getCartes();
+		$scope.$emit('partie-general-joueurs-loaded');
 	})
 
 
@@ -198,6 +206,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.pioches = {};
 	$scope.pioches.pioche = [];
+	$scope.pioches.missions = [];
 	
 	$scope.defausses = {};
 	$scope.defausses.pioche = [];

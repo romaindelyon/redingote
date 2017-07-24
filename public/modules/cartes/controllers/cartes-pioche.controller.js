@@ -95,6 +95,49 @@ angular.module('cartes').controller('CartesPiocheController',
 	    }
 	}
 
+	$scope.carteMission = function(){
+		$scope.piochesDisponibles = false;
+		// Cas ou il reste des cartes quelque part:
+		if ($scope.pioches.missions.length > 0){
+			var carteOrder = Math.floor(Math.random() * $scope.pioches.missions.length);
+			Cartes.moveCartes({
+	    		carteIds: [$scope.pioches.missions[carteOrder].id],
+	    		position: $scope.joueurId
+	    	}).success(function(){
+				var carte = $scope.pioches.missions[carteOrder];
+				var piocheCartePopup = $mdDialog.confirm({
+		        	templateUrl: 'modules/cartes/views/cartes-pioche-popup.view.html',
+		        	clickOutsideToClose: true,
+				    controller: function($scope){
+			        	$scope.image = 'modules/cartes/img/missions/cartes_missions_'+carte.code+'.png';
+		            }
+		        });
+		        $mdDialog.show(piocheCartePopup);
+		        // Ajouter la carte a la main
+		        $scope.jeu.missions.push($scope.pioches.missions[carteOrder]);
+		        // Retirer la carte de la pioche
+				$scope.pioches.missions.splice(carteOrder,1);
+				$scope.piochesDisponibles = true;
+				$scope.partie.dispo.pioches.missions --;
+	    	}).error(function(){
+	    		$scope.piochesDisponibles = true;
+	    	})
+	    }
+	    // Cas ou il n'y a pas de cartes disponibles:
+	    else {
+			var piocheCartePopup = $mdDialog.confirm({
+				templateUrl: 'modules/core/views/core-warning-popup.view.html',
+	        	clickOutsideToClose: true,
+			    controller: function($scope){
+		        	$scope.message = 'La pioche est vide';
+	            }
+	        });	 
+	        $mdDialog.show(piocheCartePopup);
+	        $scope.partie.dispo.pioches.missions --;
+	        $scope.piochesDisponibles = true;   	
+	    }
+	}
+
 	$scope.carteQuestion = function(){
 		var poseur = Math.floor(Math.random() * 3);
 		var poseurNoms = ['Julia','Marie','Romain'];

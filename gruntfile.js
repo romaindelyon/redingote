@@ -1,6 +1,6 @@
 'use strict';
 
-console.log('runnning gruntfile');
+console.log('running gruntfile');
 
 var fs = require('fs');
 
@@ -19,7 +19,9 @@ module.exports = function(grunt) {
 			'public/modules/jeu/*.js', 'public/modules/jeu/**/*.js',
 			'public/modules/joueurs/*.js', 'public/modules/joueurs/**/*.js',
 			'public/modules/partie/*.js', 'public/modules/partie/**/*.js',
-			'public/modules/plateaux/*.js', 'public/modules/plateaux/**/*.js',],
+			'public/modules/plateaux/*.js', 'public/modules/plateaux/**/*.js',
+			'public/modules/questions/*.js', 'public/modules/questions/**/*.js',
+			'public/modules/regles/*.js', 'public/modules/regles/**/*.js'],
 		clientCSS: ['public/modules/**/*.css', 'public/styles/*.css'],
 		jasmine: ['app/tests/**/*.js']
 	};

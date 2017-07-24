@@ -5,14 +5,16 @@
 		<!-- Rangees -->
 		<div ng-repeat="ligne in plateauPaysage" layout="row">
 			<!-- Colonnes -->
-			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(ligne.id,case.id)" layout="column" layout-align="space-between center" class="plateaux-paysage-case">
+			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(case.numero)" ng-mouseover="hoverCase(case.numero)" layout="column" layout-align="space-between center" class="plateaux-paysage-case">
 				<!-- Case Info -->
-				<div layout="column" layout-align="space-between center" ng-class="selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id ? 'plateaux-paysage-case-info-clicked' : 'plateaux-paysage-case-info'" >
+				<div layout="column" layout-align="space-between center" ng-class="{'plateaux-paysage-case-info-clicked' : selectedCase.numero == case.numero, 'plateaux-paysage-case-info-hovered': hoveredCase === case.numero, 'plateaux-paysage-case-info': hoveredCase !== case.numero && selectedCase.numero !== case.numero}" >
 					<div layout="column" layout-align="space-between center" style="position: absolute;	width: 65px;height: 70px;">
 						<div layout="row" layout-align="space-between center" style="width: 100%;">
-							<span>
-								{{case.numero}}
-							</span>
+							<div>
+								<span ng-if="plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero">
+									{{case.numero}}
+								</span>
+							</div>
 							<span ng-if="case.question">
 								?
 							</span>
@@ -23,13 +25,15 @@
 									G
 								</span>
 							</div>
-							<span ng-if="case.action">
-								!
-							</span>
+							<div>
+								<span ng-if="case.action && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero">
+									!
+								</span>
+							</duv>
 						</div>
 					</div>
 					<!-- Pions -->
-					<div ng-if="!(selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id && partie.dispo.plateaux.paysage > 0) && case.joueursNumber > 0" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
+					<div ng-if="!(selectedCase.numero === case.numero && partie.dispo.plateaux.paysage > 0) && case.joueursNumber > 0" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
 						<div ng-if="case.joueursNumber == 1">
 							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[0]+'.png'}}" class="plateaux-paysage-pion">
 						</div>
@@ -45,13 +49,13 @@
 							</div>
 						</div>
 					</div>
-					<div ng-if="selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id && partie.dispo.plateaux.paysage > 0" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
+					<div ng-if="selectedCase.numero === case.numero && partie.dispo.plateaux.paysage > 0 && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
 						<img ng-click="movePion(case.numero)" ng-src="{{'modules/plateaux/img/plateau_pion_move.png'}}" class="plateaux-paysage-pion-move">
 					</div>
 				</div>
 				<!-- Tooltips -->
 				<!-- 1. Zone info -->
-				<div ng-if="selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id" class="plateaux-paysage-case-tooltip-topleft">
+				<div ng-if="selectedCase.numero === case.numero && plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero" class="plateaux-paysage-case-tooltip-topleft">
 					Zones:
 					<span ng-repeat="zone in case.zones">
 						<br>{{zone}}
@@ -59,12 +63,12 @@
 				</div>
 
 				<!-- 2. Action info -->
-				<div ng-if="case.action && selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id" class="plateaux-paysage-case-tooltip-bottomright">
+				<div ng-if="case.action && selectedCase.numero === case.numero && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero"" class="plateaux-paysage-case-tooltip-bottomright">
 					Description de l'action specifique a cette case.
 				</div>
 
 				<!-- 3. Achat info -->
-				<div ng-if="case.achat && selectedCase.ligneId == ligne.id && selectedCase.colonneId == case.id" class="plateaux-paysage-case-tooltip-bottomleft">
+				<div ng-if="case.achat && selectedCase.numero === case.numero && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero"" class="plateaux-paysage-case-tooltip-bottomleft">
 					Description des achats disponibles.
 				</div>
 			</div>

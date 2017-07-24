@@ -19,12 +19,8 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 		// Changement de tour: reinitialiser le de et les dispos (cartes, des)
 		$scope.jeu.de = -1;
 		$scope.resetDispos();
-		console.log('starting action : tourJoueur is '+tourJoueur);
-		console.log(tourAction);
-		console.log($scope.joueurId);
 		// Lancer la nouvelle action:
 		if (tourJoueur == $scope.joueurId){
-			console.log(tourAction);
 			if (tourAction == 1){
 				$scope.partie.dispo.cartes.ouvertures = true;
 				$scope.partie.dispo.cartes.ouvertes_jeter = true;
@@ -35,7 +31,18 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 				$scope.partie.dispo.cartes.main_jeter = true;
 			}
 			else if (tourAction == 3){
-				$scope.partie.dispo.des.paysage = 1;
+				if ($scope.joueurs[$scope.joueurId].pions[0].plateau === 'paysage'){
+					$scope.partie.dispo.des.paysage = 1;
+				}
+				else if ($scope.joueurs[$scope.joueurId].pions[0].plateau === 'labyrinthe'){
+					$scope.partie.dispo.des.labyrinthe = 4;
+				}
+				console.log($scope.joueurs)
+
+
+			}
+			else if (tourAction == 4){
+				$scope.partie.dispo.action_de_case = true;
 			}
 			else if (tourAction == 5){
 				$scope.partie.dispo.duel = true;
@@ -44,6 +51,9 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 			else if (tourAction == 6){
 				$scope.partie.dispo.cartes.utiliser = true;
 				$scope.$emit('confrontations-attaque-duel-cancel', {});
+				if ($scope.jeu.missions.length === 0){
+					$scope.partie.dispo.pioches.missions = 1;
+				}
 			}
 		}
 	}
@@ -54,13 +64,9 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 		Partie.getPartie().success(function(response){
 			// Data is consistent;
 			if ($scope.partie.tour_joueur == response[0].tour_joueur && $scope.partie.tour_action == response[0].tour_action){
-				console.log('donc on y va');
 				var tourJoueur, tourAction, tourSkip;
 				tourSkip = $scope.partie.tour_skip;
-				console.log(tourSkip);
-				console.log($scope.joueurId);
 				tourSkip[$scope.joueurId] += skipTours;
-				console.log(tourSkip);
 				// changement de joueur:
 				if ($scope.partie.tour_action + numberTours > 6){
 					var joueurFound = false;
@@ -82,7 +88,6 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 					tourJoueur = $scope.partie.tour_joueur;
 				}
 				startAction(tourJoueur,tourAction);
-				console.log(tourSkip);
 				Partie.changeTour({
 					tour_joueur: tourJoueur,
 					tour_action: tourAction,
@@ -93,6 +98,9 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 					$scope.partie.tour_joueur = tourJoueur;
 					$scope.partie.tour_action = tourAction;
 					$scope.actionsDisponibles.nextAction = true;
+					if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 5){
+						$scope.$emit('action-case-start', {});
+					}
 					if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 5){
 						$scope.$emit('confrontations-attaque-duel-start', {});
 					}

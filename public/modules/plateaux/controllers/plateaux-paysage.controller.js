@@ -56,10 +56,12 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$h
 	    }).success(function(response){
 	    	$scope.plateauPaysage = response;
 	    	for (var i in $scope.joueurs){
-	    		var coordinates = getCoordinates($scope.joueurs[i].pions[0].case);
-	    		console.log(coordinates);
-	    		console.log($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs);
-	    		addPionToCase(coordinates,i);
+	    		if ($scope.joueurs[i].pions[0].plateau === 'paysage'){
+	    			var coordinates = getCoordinates($scope.joueurs[i].pions[0].case);
+	    			console.log(coordinates);
+	    			console.log($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs);
+	    			addPionToCase(coordinates,i);
+	    		}
 	    	}
 	    });
 
@@ -76,20 +78,23 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$h
 
 		$scope.selectedCase = {
 			clicked: false,
-			ligneId: -1,
-			colonneId: -1
+			numero: -1
 		};
 
-		$scope.selectCase = function(ligneId,colonneId){
-			if ($scope.selectedCase.ligneId == ligneId && $scope.selectedCase.colonneId == colonneId){
+		$scope.hoveredCase = -1;
+
+		$scope.hoverCase = function(numero){
+			$scope.hoveredCase = numero;
+		}
+
+		$scope.selectCase = function(numero){
+			if ($scope.selectedCase.numero == numero){
 				$scope.selectedCase.clicked = false;
-				$scope.selectedCase.ligneId = -1;
-				$scope.selectedCase.colonneId = -1;
+				$scope.selectedCase.numero = -1;
 			}
 			else {
 				$scope.selectedCase.clicked = true;
-				$scope.selectedCase.ligneId = ligneId;
-				$scope.selectedCase.colonneId = colonneId;
+				$scope.selectedCase.numero = numero;
 			}
 		}
 

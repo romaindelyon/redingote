@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('cartes').controller('CartesCreationMissionController', ['$scope','$http','Cartes',
-	function($scope,$http,Cartes) {
+angular.module('cartes').controller('CartesCreationMissionController', ['$scope','Cartes',
+	function($scope,Cartes) {
 
 	$scope.retirerElement = function(type,object){
 		console.log(object[type])
@@ -41,27 +41,12 @@ angular.module('cartes').controller('CartesCreationMissionController', ['$scope'
 		}
 	});
 
-
-	var cases = [];
-	$http({
-        method: 'GET', 
-        url: 'modules/plateaux/json/plateaux-paysage.json'
-    }).success(function(response){
-    	for (var i in response){
-    		for (var j in response[i].colonnes){
-    			if (cases.indexOf(response[i].colonnes[j].numero) < 0){
-    				cases.push(response[i].colonnes[j].numero);
-    			}
-    		}
-    	}
-    });
-
 	var zones = ['Désert','Forêt','Mer','Marécages','Monde onirique','Montagne','Prairie','Royaume des ténèbres','Village','Ville','Zone industrielle'];
 	console.log($scope.cartes);
 	$scope.missions = {
 		'Apporter des cartes': {
 			'Cartes': [1],
-			'Case': cases
+			'Case': $scope.cases
 		},
 		'Réunir des cartes': {
 			'Cartes': [1]
@@ -70,10 +55,10 @@ angular.module('cartes').controller('CartesCreationMissionController', ['$scope'
 			'Joueurs': []
 		},
 		'Visiter des cases': {
-			'Cases': cases
+			'Cases': $scope.cases
 		},
 		'Visiter des zones': {
-			'Zones': zones
+			'Zones': $scope.zones
 		}
 	};
 

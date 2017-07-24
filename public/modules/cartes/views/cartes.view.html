@@ -53,7 +53,7 @@
 		</tbody>
 	</table>
 
-<table ng-if="view == 'table_objets'" layout="column" class="cartes-table red-font">
+	<table ng-if="view == 'table_objets'" layout="column" class="cartes-table red-font">
 		<thead layout="row" flex>
 			<tr layout="row" flex>
 				<td width="30%">
@@ -121,7 +121,7 @@
 				</md-select>
 				<label>Categorie</label>
 			</md-input-container>
-			<md-input-container ng-if="carte.pile == 'Pioche' && carte.categorie != undefined && carte.categorie != 'Objet'" class="cartes-input" style="width: 200px;">
+			<md-input-container ng-if="(carte.pile == 'Pioche' && carte.categorie != undefined && carte.categorie != 'Objet') || carte.pile === 'Hors Pioche' && carte.categorie === 'Objet'" class="cartes-input" style="width: 200px;">
 				<md-select ng-model="carte.utilisation" required aria-label="Utilisation">
 					<md-option ng-repeat="utilisation in piles[carte.pile].categories[carte.categorie].utilisations | orderBy:'utilisation'">{{utilisation}}</md-option>
 				</md-select>
@@ -175,6 +175,10 @@
 				Mission
 			</div>
 			<red-cartes-creation-mission carte="carte"></red-cartes-creation-mission>
+		</div>
+
+		<div layout="column" ng-if="carte.pile === 'Hors Pioche' && carte.categorie === 'Objet'">
+			<red-cartes-creation-hors-pioche></red-cartes-creation-hors-pioche>
 		</div>
 
 		<div ng-if="carte.pile == 'Pioche' && carte.categorie == 'Objet'" layout="column" flex>

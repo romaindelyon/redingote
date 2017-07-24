@@ -51,8 +51,8 @@
 
 .jeu-missions-carte,
 .jeu-missions-carte-completed {
-	width: 160px;
-	height:250px;
+	width: 120px;
+	height:180px;
 }
 .jeu-missions-carte {
 	filter: grayscale(100%);

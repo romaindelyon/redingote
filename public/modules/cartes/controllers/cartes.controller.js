@@ -77,6 +77,14 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			carte.info.action.type = CartesProprietes[carte.info.action.type];
 			carte.info.cible = CartesProprietes[carte.info.cible];
 		}
+		if (carte.pile === 'Missions'){
+			for (var i in carte.info.etapes){
+				carte.info.etapes[i].categorie = CartesProprietes[carte.info.etapes[i].categorie]
+				for (var j in carte.info.etapes[i].cartes){
+					carte.info.etapes[i].cartes[j] = $scope.cartes.toutes[carte.info.etapes[i].cartes[j]].nom;
+				}
+			}
+		}
 		for (var i in carte.types){
 			carte.types[CartesProprietes[i]] = carte.types[i];
 		}
@@ -157,7 +165,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 					$scope.cartes.toutes[response[i].code].statuts.push([response[i].statut]);
 				} 
 			}
-			$scope.cartesTable = $scope.cartes.pioche;
+			$scope.cartesTable = $scope.cartes.toutes;
 			Objets.getObjets().success(function(responseObjets){
 				for (var i in responseObjets){
 					// agreger objets par code:
@@ -211,6 +219,19 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 	// Options de cartes:
 
 	var cases = [];
+	$scope.cases = [];
+	$http({
+        method: 'GET', 
+        url: 'modules/plateaux/json/plateaux-paysage.json'
+    }).success(function(response){
+    	for (var i in response){
+    		for (var j in response[i].colonnes){
+    			if ($scope.cases.indexOf(response[i].colonnes[j].numero) < 0){
+    				$scope.cases.push(response[i].colonnes[j].numero);
+    			}
+    		}
+    	}
+    });
 	var zones = ['Désert','Forêt','Mer','Marécages','Monde onirique','Montagne','Prairie','Royaume des ténèbres','Village','Ville','Zone industrielle'];
 	var typesObjets = ['Animal','Chat','Combustible','Comestible','Electrique','Insecte','Marin','Métallique','Potion bénéfique','Potion malefique','Toxique'];
 	var typesActions = ['Combustible','Faim','Insecte','Nuit','Soif','Toxique'];
@@ -270,7 +291,13 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		},
 		'Hors Pioche': {
 			'categories': {
-				'Objet': {},
+				'Objet': {
+					'utilisations': [
+						'Action',
+						'Réaction',
+						'Ouverture'
+					]
+				},
 				'Grande carte': {}
 			}
 		},
@@ -286,18 +313,6 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			}
 		}
 	};
-
-	// Get cases
-	$http({
-        method: 'GET', 
-        url: 'modules/plateaux/json/plateaux-paysage.json'
-    }).success(function(response){
-    	for (var i in response){
-    		for (var j in response[i]){
-    			cases = response[i][j].numero;
-    		}
-    	}
-    });
 
     function replaceSpecialCharacters(string){
 		string = string.replace(" : ", "_");
@@ -425,6 +440,20 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 						objets[i].types[textToKeyTransformation(j)] = $scope.objets[i].types[j];
 					}
 				}
+			}
+		}
+
+		else if (carte.pile === 'hors_pioche'){
+			if (carte.categorie === 'objet'){
+				carte.info = {
+					case: textToKeyTransformation($scope.carte.info.case),
+					prix: textToKeyTransformation($scope.carte.info.prix),
+					reduction: textToKeyTransformation($scope.carte.info.reduction),
+					consequences: [],
+					contraintes: [],
+					circonstances: []
+				}
+				populateInfo(carte.info,$scope.carte.info);
 			}
 		}
 

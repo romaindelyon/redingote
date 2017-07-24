@@ -26,3 +26,13 @@ angular.module('plateaux').directive('redPlateauxEscalier', [
 		};
 	}
 ]);
+
+
+angular.module('plateaux').directive('redPlateauxActionCase', [
+	function() {
+		return {
+			templateUrl: 'modules/plateaux/views/plateaux-action-case.view.html',
+			restrict: 'E'
+		};
+	}
+]);

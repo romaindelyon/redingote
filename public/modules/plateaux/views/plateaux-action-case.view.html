@@ -1,0 +1,105 @@
+<div ng-controller="PlateauxActionCaseController">
+
+    <div ng-show="actionCase.phase === 0" layout="row" layout-align="space-around center">
+        <div ng-if="actionsCase.question">
+            <img ng-click="startActionCase('question',joueurs[joueurId].pions[0].case)" title="C'est une case question" src="modules/plateaux/img/plateau_action_question.png" class="plateaux-action-case-icone">
+        </div>
+        <div ng-if="!actionsCase.question">
+            <img title="Ce n'est pas une case question" src="modules/plateaux/img/plateau_action_question.png" class="plateaux-action-case-icone-disabled">
+        </div>
+        <div ng-if="actionsCase.action">
+            <img ng-click="startActionCase('action',joueurs[joueurId].pions[0].case)" title="Une action est possible" src="modules/plateaux/img/plateau_action_action.png" class="plateaux-action-case-icone">
+        </div>
+        <div ng-if="!actionsCase.action">
+            <img title="Aucune action possible" src="modules/plateaux/img/plateau_action_action.png" class="plateaux-action-case-icone-disabled">
+        </div>
+        <div ng-if="actionsCase.achat">
+            <img ng-click="startActionCase('achat',joueurs[joueurId].pions[0].case)" title="Consulter les achats disponibles" src="modules/plateaux/img/plateau_action_achat.png" class="plateaux-action-case-icone">
+        </div>
+        <div ng-if="!actionsCase.achat">
+            <img title="Aucun achat possible" src="modules/plateaux/img/plateau_action_achat.png" class="plateaux-action-case-icone-disabled">
+        </div>
+    </div>
+
+    <div ng-show="actionCase.phase > 0" layout="column" class="partie-cartouche-container">
+
+    	<!-- Titre -->
+     	<div layout="row" layout-align="center center" class="confrontations-titre red-font">
+            <span>
+                 Case {{actionCase.numero}}
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="row" class="cartouche-body">
+
+            <!-- Donner passeport -->
+    <!--         <div ng-if="actionCase.numero === 'hub' && actionCase.phase === 1" layout="row" flex layout-align="center center" style="outline: none;width: 140px;height: 180px;padding: 5px;">
+                <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte+'.png'}}" ng-class="carte.completed ? 'jeu-missions-carte-completed' : 'jeu-missions-carte'">
+            </div>  -->
+
+            <!-- Description -->
+            <div ng-if="actionCaseDisplay.description" layout="column" layout-align="center center" class="confrontations-description">
+                <div layout="column">
+                    <span>
+                        {{actionCase.description}}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Valise non-materialisee -->
+            <div layout="column" layout-align="space-around start" ng-if="actionCase.valiseNonMaterialisee !== undefined">
+                <span style="width: 500px;">
+                    {{actionCase.description}}
+                </span>
+                <div layout="row" ng-repeat="objet in actionCase.valiseNonMaterialisee" style="padding: 5px;text-align: start;">
+                    <span ng-if="objet === valiseNonMaterialisee[$index]" style="color: green;width: 250px;font-size: 18px;">
+                        {{$index + 1}}. {{objet}}
+                    </span>
+                    <div ng-if="objet !== valiseNonMaterialisee[$index]" layout="row">
+                        <span style="color: red;width: 250px;font-size: 18px;">
+                            {{$index + 1}}. {{objet}}
+                        </span>
+    <!--                     <span style="color: green;font-size: 16px;">
+                            {{valiseNonMaterialisee[$index]}}
+                        </span> -->
+                    </div>
+                </div>
+                <md-input-container ng-if="valiseNonMaterialiseeIndex < valiseNonMaterialisee.length && (valiseNonMaterialiseeIndex === 0 || actionCase.valiseNonMaterialisee[valiseNonMaterialiseeIndex-1] === valiseNonMaterialisee[valiseNonMaterialiseeIndex-1])" style="width: 400px;font-size: 16px;text-align: start;">
+                    <md-select ng-model="actionCase.valiseNonMaterialisee[valiseNonMaterialiseeIndex]" ng-change="ajouteValise(valiseNonMaterialiseeIndex)" required aria-label="Objet">
+                        <md-option ng-repeat="objet in objets | orderBy:'nom'" ng-if="actionCase.valiseNonMaterialisee.indexOf(objet.nom) < 0">{{objet.nom}}</md-option>
+                    </md-select>
+                    <label>Objet</label>
+                </md-input-container>
+                <div ng-if="actionCase.vnmCorrect">
+                    <span style="width: 500px;font-size: 18px;">
+                        Parfait ! Tu peux ajouter un objet de ton choix dans la valise :
+                    </span>
+                    <md-input-container style="width: 400px;font-size: 16px;text-align: start;">
+                        <md-select ng-model="actionCase.nouvelObjet" required aria-label="Objet">
+                            <md-option ng-repeat="objet in objets | orderBy:'nom'" ng-if="actionCase.valiseNonMaterialisee.indexOf(objet.nom) < 0">{{objet.nom}}</md-option>
+                        </md-select>
+                        <label>Nouvel objet</label>
+                    </md-input-container>
+                </div>
+                <div ng-if="actionCase.vnmCorrect === false" style="width: 100%;">
+                    <span>
+                        Erreur ! Il fallait prendre : {{valiseNonMaterialisee[valiseNonMaterialiseeIndex-1]}}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Boutons -->
+            <div layout="column" layout-align="center center" class="confrontations-buttons">
+                <md-button ng-click="startActionCase('action',actionCase.numero)" ng-disabled="okButtonDisabled" class="confrontations-button red-font md-primary md-raised">
+                    {{bouton1}}
+                </md-button>
+                <md-button ng-if="bouton2 != ''" ng-click="cancelActionCase()" class="confrontations-button red-font md-primary md-raised">
+                    {{bouton2}}
+                </md-button>
+            </div>
+
+        </div>
+
+     </div>
+ </div>

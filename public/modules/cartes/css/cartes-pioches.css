@@ -11,3 +11,17 @@
 	cursor: default;
 	opacity: 0.5;
 }
+
+.cartes-pioches-missions,
+.cartes-pioches-missions-disabled {
+	height: 200px;
+    width: 180px;
+	margin: 10px;
+	background-color: #2fdaf8;
+	outline: none;
+}
+
+.cartes-pioches-missions-disabled {
+	cursor: default;
+	opacity: 0.5;
+}

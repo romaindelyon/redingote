@@ -1,0 +1,43 @@
+<div ng-controller="CartesCreationHorsPiocheController">
+	<div layout="column">
+		<div layout="row">
+			<div ng-repeat="type in piles['Pioche'].categories['Objet'].types | orderBy:'type'" layout="row">
+				<md-input-container ng-if="$index < 5" class="cartes-input">
+					<input type="checkbox" ng-model="carte.types[type]" aria-label="checkbox">
+					<label>{{type}}</label>
+				</md-input-container>
+			</div>
+		</div>
+		<div layout="row">
+			<div ng-repeat="type in piles['Pioche'].categories['Objet'].types | orderBy:'type'" layout="row">
+				<md-input-container ng-if="$index >= 5" class="cartes-input">
+					<input type="checkbox" ng-model="carte.types[type]" aria-label="checkbox">
+					<label>{{type}}</label>
+				</md-input-container>
+			</div>
+		</div>
+		<div layout="row">
+			<md-input-container class="cartes-input" style="width: 200px;">
+				<md-select ng-model="carte.info.case" required aria-label="Case">
+					<md-option ng-repeat="case in cases | orderBy: case">{{case}}</md-option>
+				</md-select>
+				<label>Case</label>
+			</md-input-container>
+			<md-input-container class="cartes-input" style="width: 200px;">
+				<input ng-model="carte.info.prix" type="number" required aria-label="Code">
+				<label>Prix</label>
+			</md-input-container>
+			<md-input-container class="cartes-input" style="width: 200px;">
+				<md-select ng-model="carte.info.reduction" required aria-label="Reduction">
+					<md-option ng-repeat="reduction in reductions">{{reduction}}</md-option>
+				</md-select>
+				<label>Réduction</label>
+			</md-input-container>
+		</div>
+		<div ng-if="carte.utilisation == 'Action' || carte.utilisation == 'Réaction' || carte.utilisation == 'Ouverture'" layout="column">
+			<red-cartes-creation-consequences carte="carte"></red-cartes-creation-consequences>
+			<red-cartes-creation-contraintes carte="carte"></red-cartes-creation-contraintes>
+			<red-cartes-creation-circonstances ng-if="carte.utilisation == 'Réaction'" carte="carte"></red-cartes-creation-circonstances>
+		</div>
+	</div>
+</div>

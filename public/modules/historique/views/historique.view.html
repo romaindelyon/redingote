@@ -1,0 +1,92 @@
+<div ng-controller="HistoriqueController" layout="column" class="red-font" style="min-width: 1024px;">
+	<!-- Toolbar -->
+	<red-core-toolbar></red-core-toolbar>
+
+	<div layout="row" flex layout-align="center center">
+		<span style="font-size: 24px;">
+			Historique
+		</span>
+	</div>
+
+
+	<div ng-repeat="tour in historique" layout="column" flex style="border-bottom: 1px solid gray;padding: 4px;" ng-style="{{tour.style}}">
+		<span style="font-size: 16px;">
+			Tour de {{joueurs[tour.joueur].nom}}
+		</span>
+		<div ng-repeat="event in tour.events" layout="row">
+			<div style="width: 170px;">
+				{{event.stamp | date:'EEEE, MMMM d hh:mm'}}
+			</div>
+			<div style="width: 30px" layout="row" layout-align="center start">
+				<img ng-click="expand($parent.$parent.$index,$index,true)" ng-if="event.expandable && !event.expanded" src="modules/core/img/core_icones_expand.png" style="width: 12px;outline: none;margin-top: 5px;">
+				<img ng-click="expand($parent.$parent.$index,$index,false)" ng-if="event.expandable && event.expanded" src="modules/core/img/core_icones_collapse.png" style="width: 12px;outline: none;opacity: 0.5;margin-top: 5px;">
+			</div>
+			<!-- CARTES -->
+			<div ng-if="event.categorie === 'carte'">
+				<div ng-if="event.type === 'defausse'" layout="column">
+					<span>
+						{{joueurs[tour.joueur].nom}} s'est défaussé de {{event.info.cartes.length}} cartes
+					</span>
+					<div ng-show="event.expanded" layout="row" style="margin-left: 20px;">
+						<div ng-repeat="carte in event.info.cartes">
+							<img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte+'.png'}}" style="width: 120px;height: 185px;margin: 5px;">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- DUELS -->
+			<div ng-if="event.categorie === 'duel'" layout="column">
+				<div ng-if="event.type === 'attaque'">
+					<span>
+						{{joueurs[tour.joueur].nom}}
+					</span>
+					<span>
+						a attaqué
+					</span>
+					<span>
+						{{joueurs[event.info.cible].nom}}
+					</span>
+					<span>
+						en duel
+					</span>
+				</div>
+				<div ng-if="event.type === 'defense' && event.info.result_source > event.info.result_cible">
+					<div>
+						<span>
+							{{joueurs[event.info.source].nom}}
+						</span>
+						<span>
+							a vaincu
+						</span>
+						<span>
+							{{joueurs[tour.joueur].nom}}
+						</span>
+						<span>
+							en duel ({{event.info.result_source}} a {{event.info.result_cible}})
+						</span>
+					</div>
+				</div>
+				<div ng-if="event.type === 'defense'" ng-show="event.expanded" layout="column" style="margin-left: 20px;">
+					<span>
+					Score de {{joueurs[event.info.source].nom}} : {{event.info.results_source[0]}} - {{event.info.results_source[1]}} - {{event.info.results_source[2]}} mod {{event.info.modulo}} : <b>{{event.info.result_source}}</b>
+					</span>
+					<span>
+					Score de {{joueurs[tour.joueur].nom}} : {{event.info.results_cible[0]}} - {{event.info.results_cible[1]}} - {{event.info.results_cible[2]}} mod {{event.info.modulo}} : <b>{{event.info.result_cible}}</b>
+					</span>
+				</div>
+			</div>
+			<!-- DEPLACEMENTS -->
+			<div ng-if="event.categorie === 'deplacement'">
+				<div ng-if="event.type === 'plateau-paysage'">
+					<span>
+						{{joueurs[tour.joueur].nom}}
+					</span>
+					<span>
+						s'est deplacé sur le Plateau-Paysage, de la case {{event.info.depart}} vers la case {{event.info.arrivee}} (lancer de dé : {{event.info.de}}, en mode {{event.info.mode}})
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

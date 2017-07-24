@@ -1,9 +1,32 @@
-<div ng-controller="JeuMissionsController" layout="row">
-	<div layout="column" layout-align="center center" style="width: 160px;height: 250px;">
-		<span>Mission:</span>
-		<span>Trouver une Orque et un Quart de singe</span>
+<div ng-if="jeu.missions.length > 0" ng-controller="JeuMissionsController" layout="row" flex>
+	<div layout="row" layout-align="center center" style="width: 180px;height: 100%;">
+		<img ng-src="{{'modules/cartes/img/missions/cartes_missions_'+mission.code+'.png'}}" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;border: ">
 	</div>
-    <div ng-repeat="carte in jeu.missions[0].info.cartes" layout-align="center center" style="outline: none;width: 160px;height: 260px;padding: 5px;">
-        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" ng-class="carte.completed ? 'jeu-missions-carte-completed' : 'jeu-missions-carte'">
-    </div>
+	<div layout="column" flex>
+		<div layout="row" layout-align="center center" style="height: 25px;font-size: 18px;font-weight: bold;">
+			{{mission.nom}}
+		</div>
+		<div layout="row" layout-align="center center" flex=>
+			<div layout="column" flex layout-align="center end" style="height: 100%;">
+				<img ng-if="etape > 0" ng-click="updateEtape(etape - 1)" src="modules/jeu/img/jeu_icones_previous.png" style="height: 30px;width: 30px;outline: none;">
+			</div>
+			<div layout="column" flex layout-align="space-around center" style="height: 100%;">
+				<div layout="row" layout-align="center center" flex="10">
+					{{etapeTitre}}
+				</div>
+				<div ng-if="mission.info.etapes[etape].cartes !== undefined" layout="row" flex="80">
+					<div ng-repeat="carte in mission.info.etapes[etape].cartes" layout="row" flex layout-align="center center" style="outline: none;width: 140px;height: 180px;padding: 5px;">
+				        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte+'.png'}}" ng-class="carte.completed ? 'jeu-missions-carte-completed' : 'jeu-missions-carte'">
+				    </div> 
+				</div>
+			</div>
+			<div layout="column" flex layout-align="center start" style="height: 100%;">
+				<img ng-if="etape < mission.info.etapes.length - 1" ng-click="updateEtape(etape + 1)" src="modules/jeu/img/jeu_icones_next.png" style="height: 30px;width: 30px;outline: none;">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div ng-if="jeu.missions.length == 0" layout="row" flex layout-align="center center">
+	Pas de missions !
 </div>

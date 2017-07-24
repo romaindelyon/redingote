@@ -39,9 +39,13 @@
 
 	<!-- Plateaux -->
 
-	<red-plateaux-paysage ng-if="plateau == '0'"></red-plateaux-paysage>
-	<red-plateaux-labyrinthe ng-if="plateau == '1'"></red-plateaux-labyrinthe>
-	<red-plateaux-escalier ng-if="plateau == '2'"></red-plateaux-escalier>
+	<red-plateaux-paysage ng-show="plateau == '0'"></red-plateaux-paysage>
+	<red-plateaux-labyrinthe ng-show="plateau == '1'"></red-plateaux-labyrinthe>
+	<red-plateaux-escalier ng-show="plateau == '2'"></red-plateaux-escalier>
+
+	<!-- Actions de case -->
+
+	<red-plateaux-action-case ng-if="partie.dispo.action_de_case" layout="column" flex layout-align="center center"></red-plateaux-action-case>
 
 	<!-- Jeux -->
 
@@ -71,6 +75,12 @@
 			<div ng-click="!piochesDisponibles || partie.dispo.pioches.pioche <= 0 || cartePioche()" layout="row" layout-align="center center" ng-class="!piochesDisponibles || partie.dispo.pioches.pioche <= 0 ? 'cartes-pioches-pioche-disabled' : 'cartes-pioches-pioche'">
 				<span>
 					Pioche
+				</span>
+			</div>
+
+			<div ng-click="!piochesDisponibles || partie.dispo.pioches.missions <= 0 || carteMission()" layout="row" layout-align="center center" ng-class="!piochesDisponibles || partie.dispo.pioches.missions <= 0 ? 'cartes-pioches-missions-disabled' : 'cartes-pioches-missions'">
+				<span>
+					Missions
 				</span>
 			</div>
 

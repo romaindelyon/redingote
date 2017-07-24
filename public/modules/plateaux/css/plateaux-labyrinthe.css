@@ -1,0 +1,67 @@
+.plateaux-labyrinthe-couronne-1-case,
+.plateaux-labyrinthe-couronne-1-case-disponible,
+.plateaux-labyrinthe-couronne-1-case-hovered {
+	width: 120px;
+	height: 120px;
+	outline: none;
+}
+
+.plateaux-labyrinthe-couronne-1-case-hovered {
+	opacity: 0.5;
+}
+
+.plateaux-labyrinthe-couronne-2-case,
+.plateaux-labyrinthe-couronne-2-case-disponible,
+.plateaux-labyrinthe-couronne-2-case-hovered {
+	width: 100px;
+	height: 131px;
+	outline: none;
+}
+.plateaux-labyrinthe-couronne-2-case-hovered {
+	opacity: 0.5;
+}
+
+.plateaux-labyrinthe-couronne-3-case,
+.plateaux-labyrinthe-couronne-3-case-disponible,
+.plateaux-labyrinthe-couronne-3-case-hovered {
+	width: 79px;
+	height: 95px;
+	outline: none;
+}
+.plateaux-labyrinthe-couronne-3-case-hovered {
+	opacity: 0.5;
+}
+
+.plateaux-labyrinthe-couronne-4-case,
+.plateaux-labyrinthe-couronne-4-case-disponible,
+.plateaux-labyrinthe-couronne-4-case-hovered {
+	width: 72px;
+	height: 61px;
+	outline: none;
+}
+.plateaux-labyrinthe-couronne-4-case-hovered {
+	opacity: 0.5;
+}
+
+.plateaux-labyrinthe-fleches,
+.plateaux-labyrinthe-fleches:hover,
+.plateaux-labyrinthe-fleches-disabled {
+	position: absolute;
+	outline: none;
+}
+
+.plateaux-labyrinthe-couronne-1-case-hovered,
+.plateaux-labyrinthe-couronne-2-case-hovered,
+.plateaux-labyrinthe-couronne-3-case-hovered,
+.plateaux-labyrinthe-couronne-4-case-hovered,
+.plateaux-labyrinthe-fleches:hover,
+.plateaux-labyrinthe-fleches-disabled {
+	opacity: 0.5;
+}
+
+.plateaux-labyrinthe-couronne-1-case-disponible:hover,
+.plateaux-labyrinthe-couronne-2-case-disponible:hover,
+.plateaux-labyrinthe-couronne-3-case-disponible:hover,
+.plateaux-labyrinthe-couronne-4-case-disponible:hover {
+	opacity: 0.5;
+}

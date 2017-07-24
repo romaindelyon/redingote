@@ -12,6 +12,8 @@ angular.module('cartes').value('CartesProprietes', {
 	'grande_carte': 'Grande carte',
 	'orc': 'Orc',
 	'personnage': 'Personnage',
+	'normale': 'Normale',
+	'speciale': 'Spéciale',
 	// Utilisations:
 	'action': 'Action',
 	'reaction': 'Réaction',
@@ -20,6 +22,12 @@ angular.module('cartes').value('CartesProprietes', {
 	'immediat': 'Immédiat',
 	'test': 'Test',
 	'piege': 'Piège',
+	// Types de missions:
+	'apporter_des_cartes': 'Apporter des cartes',
+	'reunir_des_cartes': 'Réunir des cartes',
+	'remporter_des_duels': 'Remporter des duels',
+	'visiter_des_cases': 'Visiter des cases',
+	'visiter_des_zones': 'Visiter des zones',
 	// Cibles:
 	'lanceur': 'Lanceur',
 	'adversaire': 'Adversaire',

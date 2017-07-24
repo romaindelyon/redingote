@@ -20,13 +20,16 @@ angular.module('des').controller('DesContainerController', ['$scope',
 		};
 
 		function translateResult(de,result){
-			if (de == 'rhombo'){
+			if (de === 'rhombo'){
 				$scope.partie.dispo.pioches.pioche += result;
 			}
-			else if (de == 'paysage'){
+			else if (de === 'paysage'){
 				$scope.partie.dispo.plateaux.paysage = 1;
 			}
-			else if (de == 'duel'){
+			else if (de === 'labyrinthe'){
+				$scope.$emit('plateaux-labyrinthe-de', {result: result});
+			}
+			else if (de === 'duel'){
 				$scope.$emit('confrontations-duel-de', {result: result});
 			}
 		}

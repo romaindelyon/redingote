@@ -1,6 +1,6 @@
 [{"id":1,
 "tour_joueur":0,
-"tour_action":1,
+"tour_action":2,
 "tour_skip": [0,0,0],
 "tonalite":"sol",
 "temps": 0,
@@ -16,7 +16,7 @@
 		"pioche": 0,
 		"questions": 0,
 		"humeurs": 0,
-		"missions": 0
+		"missions": 2
 	},
 	"cartes": {
 		"ouvertures": true,
@@ -28,6 +28,7 @@
 		"paysage": 0,
 		"labyrinthe": 0
 	},
-	"duel": false
+	"duel": false,
+	"action_de_case": false
 }
 }]
