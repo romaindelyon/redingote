@@ -1,0 +1,7 @@
+Install node
+Install npm
+Restart PC
+
+run "npm install"
+run "npm install -g grunt-cli"
+run "npm start"
