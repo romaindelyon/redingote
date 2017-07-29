@@ -30,7 +30,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},
 		{
 			numero: 59,
-			cle: 'rouge_orange',
+			cle: 'orange',
 			position: 3
 		}],
 		// Couronne 2
@@ -51,12 +51,12 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},
 		{
 			numero: 51,
-			cle: 'vert_deau',
+			cle: 'vert',
 			position: 3
 		},
 		{
 			numero: 52,
-			cle: 'rouge_orange',
+			cle: 'orange',
 			position: 4
 		},
 		{
@@ -66,18 +66,18 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},
 		{
 			numero: 54,
-			cle: 'rouge',
+			cle: 'rose_fonce',
 			position: 6
 		},
 		{
 			numero: 55,
-			cle: 'rose',
+			cle: 'violet',
 			position: 7
 		}],
 		// Couronne 3
 		[{
 			numero: 32,
-			cle: 'violet_pale',
+			cle: 'rose',
 			position: 0
 		},
 		{
@@ -96,18 +96,22 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},
 		{
 			numero: 36,
+			cle: 'marron',
 			position: 4
 		},
 		{
 			numero: 37,
+			cle: 'vert_pale',
 			position: 5
 		},
 		{
 			numero: 38,
+			cle: 'rose_fonce',
 			position: 6
 		},
 		{
 			numero: 39,
+			cle: 'vert',
 			position: 7
 		},
 		{
@@ -116,7 +120,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},
 		{
 			numero: 41,
-			cle: 'bleu_pale',
+			cle: 'gris',
 			position: 9
 		},
 		{
@@ -135,7 +139,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},
 		{
 			numero: 45,
-			cle: 'fuchsia',
+			cle: 'rouge',
 			position: 13
 		},
 		{
@@ -144,7 +148,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},
 		{
 			numero: 47,
-			cle: 'rose',
+			cle: 'violet',
 			position: 15
 		}],
 		// Couronne 4
@@ -154,32 +158,26 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},
 		{
 			numero: 1,
-			cle: 'red',
 			position: 1
 		},
 		{
 			numero: 2,
-			cle: 'pink',
 			position: 2
 		},
 		{
 			numero: 3,
-			cle: 'green',
 			position: 3
 		},
 		{
 			numero: 4,
-			cle: 'green',
 			position: 4
 		},
 		{
 			numero: 5,
-			cle: 'red',
 			position: 5
 		},
 		{
 			numero: 6,
-			cle: 'pink',
 			position: 6
 		},
 		{
@@ -189,122 +187,104 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},
 		{
 			numero: 8,
-			cle: 'green',
+			cle: 'vert_pale',
 			position: 8
 		},
 		{
 			numero: 9,
-			cle: 'red',
 			position: 9
 		},
 		{
 			numero: 10,
-			cle: 'pink',
 			position: 10
 		},
 		{
 			numero: 11,
-			cle: 'green',
 			position: 11
 		},
 		{
 			numero: 12,
-			cle: 'green',
 			position: 12
 		},
 		{
 			numero: 13,
-			cle: 'red',
 			position: 13
 		},
 		{
 			numero: 14,
-			cle: 'pink',
 			position: 14
 		},
 		{
 			numero: 15,
-			cle: 'green',
+			cle: 'rose',
 			position: 15
 		},
 		{
 			numero: 16,
-			cle: 'green',
+			cle: 'rouge',
 			position: 16
 		},
 		{
 			numero: 17,
-			cle: 'red',
 			position: 17
 		},
 		{
 			numero: 18,
-			cle: 'pink',
 			position: 18
 		},
 		{
 			numero: 19,
-			cle: 'green',
 			position: 19
 		},
 		{
 			numero: 20,
-			cle: 'green',
 			position: 20
 		},
 		{
 			numero: 21,
-			cle: 'red',
 			position: 21
 		},
 		{
 			numero: 22,
-			cle: 'pink',
 			position: 22
 		},
 		{
 			numero: 23,
-			cle: 'green',
+			cle: 'gris',
 			position: 23
 		},
 		{
 			numero: 24,
-			cle: 'green',
+			cle: 'marron',
 			position: 24
 		},
 		{
 			numero: 25,
-			cle: 'red',
 			position: 25
 		},
 		{
 			numero: 26,
-			cle: 'pink',
 			position: 26
 		},
 		{
 			numero: 27,
-			cle: 'green',
 			position: 27
 		},
 		{
 			numero: 28,
-			cle: 'green',
 			position: 28
 		},
 		{
 			numero: 29,
-			cle: 'red',
 			position: 29
 		},
 		{
 			numero: 30,
-			cle: 'pink',
 			position: 30
 		},
 		{
 			numero: 31,
-			cle: 'green',
+			cle: 'vert_fonce',
 			position: 31
 		}]
 	];
