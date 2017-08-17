@@ -92,13 +92,15 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			tour_skip: response[0].tour_skip,
 			tonalite: response[0].tonalite,
 			temps: response[0].temps,
-			dispo: response[0].dispo
+			dispo: response[0].dispo,
+			positionCouronnes: response[0].positionCouronnes
 		};
 		if ($scope.partie.tour_joueur !== $scope.joueurId){
 			$scope.resetDispos();
 		}
 		$scope.loaded.partie = true;
 		$scope.initiateConfrontations();
+		$scope.$emit('partie-general-partie-loaded', {});
 	})
 
 	// Jeu:

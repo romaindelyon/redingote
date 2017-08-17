@@ -2,7 +2,7 @@
 
 	<!-- Top row: players and plateaux -->
 
-	<div layout="row" style="width: 100%;height: 400px;">
+	<div layout="row" style="width: 100%;height: 400;">
 
 		<red-joueurs-recap-left style="width: 38%;"></red-joueurs-recap-left>
 
@@ -14,19 +14,15 @@
 			<!-- Plateaux -->
 
 			<div layout="column" style="width: 100%;height: 90%;">
-				<div layout="row" style="height: 40%;width: 100%;">
-					<div ng-click="goToPlateau(1)" layout="row" flex layout-align="center center" style="margin: 20px;background-color:#8cd5d1;outline: none;">
-						<span>
-							Labyrinthe
-						</span>
-					</div>
-					<div ng-click="goToPlateau(2)" layout="row" flex layout-align="center center" style="margin: 20px;background-color:#ffc176;outline: none;">
+				<div layout="row" layout-align="center center" style="height: 50%;width: 100%;">
+					<img ng-click="goToPlateau(1)" src="modules/plateaux/img/plateau_labyrinthe_icone.png" style="height: 150px;width: 150px;outline: none;">
+					<div ng-click="goToPlateau(2)" layout="row" flex layout-align="center center" style="margin: 20px;background-color:#ffc176;outline: none;height: 100px;">
 						<span>
 							Escalier
 						</span>
 					</div>
 				</div>
-				<div layout="row" flex layout-align="center center" style="width: 100%;height: 60%;outline: none;">
+				<div layout="row" flex layout-align="center center" style="width: 100%;height: 50%;outline: none;">
 					<img ng-click="goToPlateau(0)" src="modules/plateaux/img/plateau_paysage.jpeg" style="height: 100%;width: 300px;outline: none;">
 				</div>
 			</div>
@@ -46,24 +42,6 @@
 	<!-- Actions de case -->
 
 	<red-plateaux-action-case ng-if="partie.dispo.action_de_case" layout="column" flex layout-align="center center"></red-plateaux-action-case>
-
-	<!-- Jeux -->
-
-	<red-jeu-container></red-jeu-container>
-
-	<!-- Attaques -->
-
-<!-- 	<red-confrontations-attaque ng-if="attaque.active"></red-confrontations-attaque>
- -->
-	<!-- Defenses -->
-
-<!-- 	<red-confrontations-defense ng-show="defense.active"></red-confrontations-defense>
- -->
-	<!-- Duel -->
-
-<!-- 	<red-confrontations-attaque-duel ng-if="partie.dispo.duel"></red-confrontations-attaque-duel>
- -->
-	<red-confrontations ng-show="confrontation.active || partie.dispo.duel" layout="column" flex layout-align="center center"></red-confrontations>
 
 	<!-- Pioches -->
 
@@ -90,5 +68,23 @@
 		</div>
 
 	</div>
+
+	<!-- Jeux -->
+
+	<red-jeu-container></red-jeu-container>
+
+	<!-- Attaques -->
+
+<!-- 	<red-confrontations-attaque ng-if="attaque.active"></red-confrontations-attaque>
+ -->
+	<!-- Defenses -->
+
+<!-- 	<red-confrontations-defense ng-show="defense.active"></red-confrontations-defense>
+ -->
+	<!-- Duel -->
+
+<!-- 	<red-confrontations-attaque-duel ng-if="partie.dispo.duel"></red-confrontations-attaque-duel>
+ -->
+	<red-confrontations ng-show="confrontation.active || partie.dispo.duel" layout="column" flex layout-align="center center"></red-confrontations>
 
 </div>

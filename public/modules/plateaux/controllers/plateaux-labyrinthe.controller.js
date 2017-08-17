@@ -1,9 +1,7 @@
 'use strict';
 
-angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope','$rootScope','$timeout','$http',
-	function($scope,$rootScope,$timeout,$http) {
-
-	$scope.positionCouronnes = [0,0,0,0,0];
+angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope','$rootScope','$timeout','$http','Partie','Joueurs',
+	function($scope,$rootScope,$timeout,$http,Partie,Joueurs) {
 
 	$scope.plateauLabyrinthe = [
 		// Couronne 0
@@ -292,6 +290,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 	for (var i in $scope.plateauLabyrinthe){
 		for (var j in $scope.plateauLabyrinthe[i]){
 			$scope.plateauLabyrinthe[i][j].joueurs = [];
+			$scope.plateauLabyrinthe[i][j].pionsStyles = [];
 			$scope.plateauLabyrinthe[i][j].joueursNumber = 0;
 		}
 	}
@@ -476,11 +475,15 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		}
 	}
 
-	for (var i in $scope.plateauLabyrinthe){
-		if (i > 0){
-			setPositionCouronne(i);
+	// Initiate couronnes
+	$rootScope.$on('partie-general-partie-loaded', function(event, args) {
+		$scope.positionCouronnes = $scope.partie.positionCouronnes;
+		for (var i in $scope.plateauLabyrinthe){
+			if (i > 0){
+				setPositionCouronne(i);
+			}
 		}
-	}
+	});
 
 	function getCoordinates(numero){
 		var coordinates = {
@@ -515,7 +518,6 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 				},500);
 			},500);
 		},500);
-		console.log('changing')
 	}
 
 	$scope.updatePositionCouronne = function(index,direction){
@@ -523,25 +525,35 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		if (direction == 'down'){
 			var increment = 1;
 		}
-		$scope.positionCouronnes[index] += increment;
-		setPositionCouronne(index);
-		for (var i = Math.max(2,index);i < Math.min(index + 2,4);i ++){
-			var sectionsCouronne = $scope.plateauLabyrinthe[i].length;
-			var sectionsCouronneSuperieure = $scope.plateauLabyrinthe[i-1].length;
-			for (var j in $scope.plateauLabyrinthe[i]){
-				var position = (($scope.plateauLabyrinthe[i][j].position + $scope.positionCouronnes[i]) % sectionsCouronne + sectionsCouronne) % sectionsCouronne;
-				var positionSuperieure = ((Math.floor(position/2) - $scope.positionCouronnes[i-1]) % sectionsCouronneSuperieure + sectionsCouronneSuperieure) % sectionsCouronneSuperieure;
-				if ($scope.plateauLabyrinthe[i][j].cle !== undefined && $scope.plateauLabyrinthe[i][j].cle === $scope.plateauLabyrinthe[i-1][positionSuperieure].cle){
-					highlightCase(i,j);
-					highlightCase(i-1,positionSuperieure);
+		var newPositionCouronnes = $scope.positionCouronnes;
+		newPositionCouronnes[index] += increment;
+		Partie.changeTour({
+			positionCouronnes: newPositionCouronnes
+		}).success(function(){
+			$scope.positionCouronnes = newPositionCouronnes;
+			setPositionCouronne(index);
+			for (var i = Math.max(2,index);i < Math.min(index + 2,4);i ++){
+				var sectionsCouronne = $scope.plateauLabyrinthe[i].length;
+				var sectionsCouronneSuperieure = $scope.plateauLabyrinthe[i-1].length;
+				for (var j in $scope.plateauLabyrinthe[i]){
+					var position = (($scope.plateauLabyrinthe[i][j].position + $scope.positionCouronnes[i]) % sectionsCouronne + sectionsCouronne) % sectionsCouronne;
+					var positionSuperieure = ((Math.floor(position/2) - $scope.positionCouronnes[i-1]) % sectionsCouronneSuperieure + sectionsCouronneSuperieure) % sectionsCouronneSuperieure;
+					if ($scope.plateauLabyrinthe[i][j].cle !== undefined && $scope.plateauLabyrinthe[i][j].cle === $scope.plateauLabyrinthe[i-1][positionSuperieure].cle){
+						highlightCase(i,j);
+						highlightCase(i-1,positionSuperieure);
+					}
 				}
 			}
-		}
 
-		// Update informations de tour de jeu :
-		$scope.plateauLabyrintheTourDeJeu.de --;
-		$scope.plateauLabyrintheTourDeJeu.type = 'couronnes';
-		$scope.plateauLabyrintheTourDeJeu.couronne = index;
+			// Update informations de tour de jeu :
+			$scope.plateauLabyrintheTourDeJeu.de --;
+			$scope.plateauLabyrintheTourDeJeu.type = 'couronnes';
+			$scope.plateauLabyrintheTourDeJeu.couronne = index;
+			$scope.plateauLabyrintheTourDeJeu.casesDisponibles = [];
+		}).error(function(error){
+			console.log('impossible de sauver la nouvelle position des couronnes');
+			console.log(error);
+		});
 	}
 
 	$scope.hoveredCouronne = 0;
@@ -598,21 +610,73 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 
 	// Pions:
 
+	// function to calculate position (and size?) of pions in case
+	function updatePionsStyles(couronne,position){
+		var positionsPions = [
+			// Couronne 0
+			[
+				// 1 pion
+				[{left: 46,top:46}],
+				// 2 pions
+				[{left: 22,top:45},{left: 65,top:24}],
+				// 3 pions
+				[{left: 22,top:45},{left: 65,top:24},{left: 57,top:69}]
+			],
+			// Couronne 1
+			[
+				// 1 pion
+				[{left: 42,top:46}],
+				// 2 pions
+				[{left: 78,top:21},{left: 19,top:80}],
+				// 3 pions
+				[{left: 78,top:21},{left: 19,top:80},{left: 42,top:46}]
+			],
+			// Couronne 2
+			[
+				// 1 pion
+				[{left: 32,top:57}],
+				// 2 pions
+				[{left: 50,top:23},{left: 19,top:80}],
+				// 3 pions
+				[{left: 32,top:57},{left: 50,top:23},{left: 23,top:94}]
+			],	
+			// Couronne 3
+			[
+				// 1 pion
+				[{left: 24,top:38}],
+				// 2 pions
+				[{left: 29,top:18},{left: 19,top:56}],
+				// 3 pions
+				[{left: 32,top:57},{left: 42,top:19},{left: 9,top:32}]
+			],
+			// Couronne 4
+			[
+				// 1 pion
+				[{left: 19,top:18}],
+				// 2 pions
+				[{left: 37,top:11},{left: 5,top:25}],
+				// 3 pions
+				[{left: 13,top:27},{left: 37,top:19},{left: 4,top:4}]
+			]
+		];
+		var nombrePions = $scope.plateauLabyrinthe[couronne][position].joueurs.length;
+		$scope.plateauLabyrinthe[couronne][position].pionsStyles = positionsPions[couronne][nombrePions - 1];
+	}
+
 	function addPionToCase(caseId,joueurId){
-		console.log(joueurId);
 		for (var i = 0;i < $scope.plateauLabyrinthe.length;i ++){
 			for (var j = 0;j < $scope.plateauLabyrinthe[i].length;j ++){
 				if ($scope.plateauLabyrinthe[i][j].numero == caseId){
 					$scope.plateauLabyrinthe[i][j].joueurs.push(joueurId);
 					$scope.plateauLabyrinthe[i][j].joueursNumber ++;
-					console.log($scope.plateauLabyrinthe[i][j])
-					console.log($scope.plateauLabyrinthe[i][j].joueurs[0]);
+					updatePionsStyles(i,j);
 				}
 			}
 		}
 	}
 
 	function removePionFromCase(caseId,joueurId){
+		console.log(caseId)
 		for (var i = 0;i < $scope.plateauLabyrinthe.length;i ++){
 			for (var j = 0;j < $scope.plateauLabyrinthe[i].length;j ++){
 				if ($scope.plateauLabyrinthe[i][j].numero == caseId){
@@ -620,6 +684,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 					if (index >= 0){
 						$scope.plateauLabyrinthe[i][j].joueurs.splice(index,1);
 						$scope.plateauLabyrinthe[i][j].joueursNumber --;
+						updatePionsStyles(i,j);
 					}
 				}
 			}
@@ -647,6 +712,83 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		monteeDisponible: []
 	};
 
+	// Retrouver l'appartenance d'un pion à une zone d'une couronne
+	function findSection(position,couronne){
+		// La couronne 3 est la seule irrégulière
+		if (couronne !== 3){
+			var sectionsCouronne = [0,2,2,3,8];
+			var sectionCouronne = sectionsCouronne[couronne];
+			if (couronne !== 4){
+				position = (position + 1) % $scope.plateauLabyrinthe[couronne].length; 
+			}
+			return(Math.floor(position / sectionCouronne));
+		}
+		else {
+			if (position < 2){
+				return(0);
+			}
+			else if (position < 5){
+				return(1);
+			}
+			else if (position < 7){
+				return(2);
+			}
+			else if (position < 10){
+				return(3);
+			}
+			else if (position < 13){
+				return(4);
+			}
+			else {
+				return(5);
+			}
+		}
+	}
+
+	function rechercheCasesDisponibles(position,couronne){
+		$scope.plateauLabyrintheTourDeJeu.casesDisponibles = [];
+		if (couronne > 0){
+			var currentSection = findSection(position,couronne);
+			// recherche des cases disponibles:
+			// sur la meme couronne:
+			for (var i = position - $scope.plateauLabyrintheTourDeJeu.de;i <= position + $scope.plateauLabyrintheTourDeJeu.de;i ++){
+				var i2 = (i + $scope.plateauLabyrinthe[couronne].length) % $scope.plateauLabyrinthe[couronne].length;
+				if (findSection(i2,couronne) === currentSection){
+					$scope.plateauLabyrintheTourDeJeu.casesDisponibles.push($scope.plateauLabyrinthe[couronne][i2].numero);
+				}
+			}
+		}
+	}
+
+	function rechercheMonteeDisponible(position,couronne){
+		$scope.plateauLabyrintheTourDeJeu.monteeDisponible = [];
+		// recherche une possibilite de montee:
+		var sectionsCouronne = $scope.plateauLabyrinthe[couronne].length;
+		var positionReelle = ((position + $scope.positionCouronnes[couronne]) % sectionsCouronne + sectionsCouronne) % sectionsCouronne;
+		var cle = $scope.plateauLabyrinthe[couronne][position].cle;
+		if (cle !== undefined){
+			if (couronne !== 0) {
+				var sectionsCouronneSuperieure = $scope.plateauLabyrinthe[couronne-1].length;
+				var positionSuperieure = ((Math.floor(positionReelle/2) - $scope.positionCouronnes[couronne-1]) % sectionsCouronneSuperieure + sectionsCouronneSuperieure) % sectionsCouronneSuperieure;
+				if (cle === $scope.plateauLabyrinthe[couronne-1][positionSuperieure].cle){
+					$scope.plateauLabyrintheTourDeJeu.monteeDisponible.push($scope.joueurs[$scope.joueurId].pions[0].case);
+				}
+			}
+			// recherche une possibilite de descente:
+			if (couronne !== 4){	
+				var sectionsCouronneInferieure = $scope.plateauLabyrinthe[couronne+1].length; 
+				var positionInferieure1 = ((positionReelle * 2 - $scope.positionCouronnes[couronne + 1]) % sectionsCouronneInferieure + sectionsCouronneInferieure) % sectionsCouronneInferieure;
+				var positionInferieure2 = (positionInferieure1 + 1) % sectionsCouronneInferieure;
+				if (cle === $scope.plateauLabyrinthe[couronne+1][positionInferieure1].cle){
+					$scope.plateauLabyrintheTourDeJeu.monteeDisponible.push($scope.plateauLabyrinthe[couronne + 1][positionInferieure1].numero);
+				}
+				else if (cle === $scope.plateauLabyrinthe[couronne+1][positionInferieure2].cle){
+					$scope.plateauLabyrintheTourDeJeu.monteeDisponible.push($scope.plateauLabyrinthe[couronne + 1][positionInferieure2].numero);
+				}
+			}
+		}
+	}
+
 	$rootScope.$on('plateaux-labyrinthe-de', function(event, args) {
 		$scope.plateauLabyrintheTourDeJeu = {
 			casesDisponibles: [],
@@ -664,72 +806,80 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 				}
 			}
 		}
-		var sectionsCouronne = [0,2,2,3,8];
-		var sectionCouronne = sectionsCouronne[couronne];
-		var currentSection = Math.floor(position / sectionCouronne);
-		// recherche des cases disponibles:
-		// sur la meme couronne:
-		for (var i = position - deResult;i <= position + deResult;i ++){
-			var i2 = (i + $scope.plateauLabyrinthe[couronne].length) % $scope.plateauLabyrinthe[couronne].length;
-			if (Math.floor(i2 / sectionCouronne) === currentSection){
-				$scope.plateauLabyrintheTourDeJeu.casesDisponibles.push($scope.plateauLabyrinthe[couronne][i2].numero);
-			}
-		}
-		var sectionsCouronne = $scope.plateauLabyrinthe[couronne].length;
-		// recherche une possibilite de montee:
-		if (couronne !== 0) {
-			var sectionsCouronneSuperieure = $scope.plateauLabyrinthe[couronne-1].length;
-			var positionReelle = ((position + $scope.positionCouronnes[couronne]) % sectionsCouronne + sectionsCouronne) % sectionsCouronne;
-			var positionSuperieure = ((Math.floor(positionReelle/2) - $scope.positionCouronnes[couronne-1]) % sectionsCouronneSuperieure + sectionsCouronneSuperieure) % sectionsCouronneSuperieure;
-			console.log($scope.plateauLabyrinthe[couronne][position].cle);
-			console.log($scope.plateauLabyrinthe[couronne-1][positionSuperieure].cle);
-			if ($scope.plateauLabyrinthe[couronne][position].cle !== undefined && $scope.plateauLabyrinthe[couronne][position].cle === $scope.plateauLabyrinthe[couronne-1][positionSuperieure].cle){
-				$scope.plateauLabyrintheTourDeJeu.monteeDisponible.push($scope.joueurs[$scope.joueurId].pions[0].case);
-				console.log($scope.plateauLabyrintheTourDeJeu.monteeDisponible);
-			}
-		}
-		// recherche une possibilite de descente:
-		if (couronne !== 4){
-			var positionInferieure = (positionReelle * 2 - $scope.positionCouronnes[couronne + 1]);
-			
-		}
+		rechercheCasesDisponibles(position,couronne);
+		rechercheMonteeDisponible(position,couronne);
 	});	
 
 	$scope.movePion = function(numero){
 		var previousCoordinates = getCoordinates($scope.joueurs[$scope.joueurId].pions[0].case);
 		var newCoordinates = getCoordinates(numero);
-		removePionFromCase($scope.joueurs[$scope.joueurId].pions[0].case,$scope.joueurId);
-		$scope.joueurs[$scope.joueurId].pions[0].case = numero;
-		addPionToCase(numero,$scope.joueurId);
-		// Update tour de jeu :
-		$scope.plateauLabyrintheTourDeJeu.de -= Math.abs(previousCoordinates.position - newCoordinates.position);
-		$scope.plateauLabyrintheTourDeJeu.type = 'deplacement';
-		if ($scope.plateauLabyrintheTourDeJeu.de === 0){
-			$scope.plateauLabyrintheTourDeJeu = {
-				casesDisponibles: [],
-				monteeDisponible: []
+		var newPions = [];
+		$.each($scope.joueurs[$scope.joueurId].pions,function(i,obj) {
+		    newPions.push($.extend(true,{},obj)); 
+		});
+		newPions[0].case = numero;
+		Joueurs.movePion({
+			pions: newPions,
+			joueurId: $scope.joueurId
+		}).success(function(){
+			removePionFromCase($scope.joueurs[$scope.joueurId].pions[0].case,$scope.joueurId);
+			$scope.joueurs[$scope.joueurId].pions[0].case = numero;
+			addPionToCase(numero,$scope.joueurId);
+			// Update tour de jeu :
+			if (previousCoordinates.couronne === newCoordinates.couronne){
+				// find shortest distance
+				var sectionsCouronne = $scope.plateauLabyrinthe[previousCoordinates.couronne].length;
+				var distance1 = (previousCoordinates.position - newCoordinates.position + sectionsCouronne) % sectionsCouronne;
+				var distance2 = (newCoordinates.position - previousCoordinates.position + sectionsCouronne) % sectionsCouronne;
+				$scope.plateauLabyrintheTourDeJeu.de -= Math.min(distance1,distance2);
 			}
-		}
+			$scope.plateauLabyrintheTourDeJeu.type = 'deplacement';
+			if ($scope.plateauLabyrintheTourDeJeu.de === 0){
+				$scope.plateauLabyrintheTourDeJeu = {
+					casesDisponibles: [],
+					monteeDisponible: []
+				}
+			}
+			rechercheCasesDisponibles(newCoordinates.position,newCoordinates.couronne);
+			rechercheMonteeDisponible(newCoordinates.position,newCoordinates.couronne);
+		}).error(function(error){
+			console.log("napapu sauver pion");
+			console.log(error);
+		});
 	}
 
-	$scope.monteeCouronne = function(numero){
+	$scope.monteeCouronne = function(){
 		var previousCoordinates = getCoordinates($scope.joueurs[$scope.joueurId].pions[0].case);
 		var position = previousCoordinates.position;
 		var couronne = previousCoordinates.couronne;
 		var sectionsCouronne = $scope.plateauLabyrinthe[couronne].length;
-		var sectionsCouronneSuperieure = $scope.plateauLabyrinthe[couronne-1].length;
 		var positionReelle = ((position + $scope.positionCouronnes[couronne]) % sectionsCouronne + sectionsCouronne) % sectionsCouronne;
-		var positionSuperieure = ((Math.floor(positionReelle/2) - $scope.positionCouronnes[couronne-1]) % sectionsCouronneSuperieure + sectionsCouronneSuperieure) % sectionsCouronneSuperieure;
 		var cle = $scope.plateauLabyrinthe[couronne][position].cle;
-		console.log(cle);
-		console.log($scope.plateauLabyrinthe[couronne - 1][positionSuperieure].cle)
-		if (couronne !== 0 && (couronne === 4 || cle === $scope.plateauLabyrinthe[couronne - 1][positionSuperieure].cle)){
-			$scope.movePion($scope.plateauLabyrinthe[couronne - 1][positionSuperieure].numero);
-			console.log($scope.plateauLabyrinthe[couronne - 1][positionSuperieure].numero)
+		// Montée supérieure
+		var monteeSuperieure = false;
+		if (couronne !== 0){
+			var sectionsCouronneSuperieure = $scope.plateauLabyrinthe[couronne-1].length;
+			var positionSuperieure = ((Math.floor(positionReelle/2) - $scope.positionCouronnes[couronne-1]) % sectionsCouronneSuperieure + sectionsCouronneSuperieure) % sectionsCouronneSuperieure;
+			if (couronne === 4 || cle === $scope.plateauLabyrinthe[couronne - 1][positionSuperieure].cle){
+				$scope.movePion($scope.plateauLabyrinthe[couronne - 1][positionSuperieure].numero);
+				rechercheCasesDisponibles(positionSuperieure,couronne - 1);
+				monteeSuperieure = true;
+			}
 		}
-		// else if (couronne !== 0 && couronne === 4 || cle === $scope.plateauLabyrinthe[couronne - 1][positionInferieure].cle){
-		// 	$scope.movePion($scope.plateauLabyrinthe[previousCoordinates.couronne + 1][previousCoordinates.position * 2]);
-		// }
+		// Montée inférieure
+		if (couronne !== 4 && !monteeSuperieure){
+			var sectionsCouronneInferieure = $scope.plateauLabyrinthe[couronne+1].length; 
+			var positionInferieure1 = ((positionReelle * 2 - $scope.positionCouronnes[couronne + 1]) % sectionsCouronneInferieure + sectionsCouronneInferieure) % sectionsCouronneInferieure;
+			var positionInferieure2 = (positionInferieure1 + 1) % sectionsCouronneInferieure;
+			if (cle === $scope.plateauLabyrinthe[couronne + 1][positionInferieure1].cle){
+				$scope.movePion($scope.plateauLabyrinthe[couronne + 1][positionInferieure1].numero);
+				rechercheCasesDisponibles(positionInferieure1,couronne + 1);
+			}
+			else if (cle === $scope.plateauLabyrinthe[couronne + 1][positionInferieure2].cle){
+				$scope.movePion($scope.plateauLabyrinthe[couronne + 1][positionInferieure2].numero);
+				rechercheCasesDisponibles(positionInferieure2,couronne + 1);
+			}
+		}
 	}
 
 }]);

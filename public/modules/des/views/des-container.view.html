@@ -31,10 +31,11 @@
 				Dé duel
 			</span>
 		</div>
-		<div ng-click="partie.dispo.des.labyrinthe <= 0 || lanceDe('labyrinthe')" layout="row" layout-align="center-center" ng-class="partie.dispo.des.labyrinthe <= 0 ? 'des-container-box-disabled' : 'des-container-box'" style="background-color: #fff3e7;">
+		<div ng-click="partie.dispo.des.labyrinthe <= 0 || lanceDe('labyrinthe')" layout="column" layout-align="center-center" ng-class="partie.dispo.des.labyrinthe <= 0 ? 'des-container-box-disabled' : 'des-container-box'" style="background-color: #fff3e7;">
 			<span>
 				Dé plateau-labyrinthe
 			</span>
+			<a ng-click="add100DeLabyrinthe()">+100</a>
 		</div>
 	</div>
 </div>

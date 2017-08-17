@@ -30,5 +30,6 @@
 	},
 	"duel": false,
 	"action_de_case": false
-}
+},
+"positionCouronnes": [0,1,-9,4,16]
 }]

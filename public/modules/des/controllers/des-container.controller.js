@@ -41,4 +41,8 @@ angular.module('des').controller('DesContainerController', ['$scope',
 			translateResult(de,des_options[de][rand]);
 		}
 
+		$scope.add100DeLabyrinthe = function(){
+			$scope.partie.dispo.des.labyrinthe += 100;
+		}
+
 }]);
