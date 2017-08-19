@@ -12,7 +12,7 @@ header("Pragma: no-cache");
     $stmt = $con -> prepare("SELECT * FROM parties WHERE id = 1");
 
     $stmt -> execute();
-    $stmt -> bind_result($id,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo);
+    $stmt -> bind_result($id,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo,$positionCouronnes);
 
     $results = array();
     while($stmt->fetch()) {
@@ -24,6 +24,7 @@ header("Pragma: no-cache");
             $result["temps"] = $temps;
             $result["tonalite"] = $tonalite;
             $result["dispo"] = json_decode($dispo);
+             $result["positionCouronnes"] = json_decode($positionCouronnes);
             array_push($results, $result);
         }
     mysqli_close($con); 

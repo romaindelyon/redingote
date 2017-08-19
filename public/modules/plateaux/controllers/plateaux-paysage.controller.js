@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$http',
-	function($scope,$http) {
+angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$rootScope','$http',
+	function($scope,$rootScope,$http) {
 
 		$scope.plateauPaysage = [];
 
@@ -50,20 +50,23 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$h
 			}
 		}
 
-		$http({
-	        method: 'GET', 
-	        url: 'modules/plateaux/json/plateaux-paysage.json'
-	    }).success(function(response){
-	    	$scope.plateauPaysage = response;
-	    	for (var i in $scope.joueurs){
-	    		if ($scope.joueurs[i].pions[0].plateau === 'paysage'){
-	    			var coordinates = getCoordinates($scope.joueurs[i].pions[0].case);
-	    			console.log(coordinates);
-	    			console.log($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs);
-	    			addPionToCase(coordinates,i);
-	    		}
-	    	}
-	    });
+		$rootScope.$on('partie-general-joueurs-loaded', function(event, args) {
+			$http({
+		        method: 'GET', 
+		        url: 'modules/plateaux/json/plateaux-paysage.json'
+		    }).success(function(response){
+		    	$scope.plateauPaysage = response;
+		    	for (var i in $scope.joueurs){
+		    		console.log($scope.joueurs);
+		    		if ($scope.joueurs[i].pions[0].plateau === 'paysage'){
+		    			var coordinates = getCoordinates($scope.joueurs[i].pions[0].case);
+		    			console.log(coordinates);
+		    			console.log($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs);
+		    			addPionToCase(coordinates,i);
+		    		}
+		    	}
+		    });
+		});
 
 	    $scope.movePion = function(numero){
 	    	var previousCoordinates = getCoordinates($scope.joueurs[$scope.joueurId].pions[0].case);

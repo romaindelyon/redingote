@@ -1,6 +1,6 @@
 [{"id":1,
 "tour_joueur":0,
-"tour_action":2,
+"tour_action":3,
 "tour_skip": [0,0,0],
 "tonalite":"sol",
 "temps": 0,
@@ -31,5 +31,6 @@
 	"duel": false,
 	"action_de_case": false
 },
-"positionCouronnes": [0,1,-9,4,16]
+"positionCouronnes": [0,1,-9,4,16],
+"valiseNonMaterialisee": []
 }]

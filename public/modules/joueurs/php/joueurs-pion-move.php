@@ -13,7 +13,7 @@ header("Cache-Control: no-cache");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("UPDATE joueurs SET pions = ? WHERE id = joueurId");
+    $stmt = $con -> prepare("UPDATE joueurs SET pions = ? WHERE id = ?");
 
     $stmt -> bind_param('si',$pions,$joueurId);
     $stmt -> execute();

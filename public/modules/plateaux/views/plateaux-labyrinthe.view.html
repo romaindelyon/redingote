@@ -9,7 +9,7 @@
 	<div style="position: relative;width: 300px;margin-left: 20px;">
 		<div style="position: absolute;transition: all linear 0.5s;margin-left: -60px;margin-top: -60px;">
 			<img src="modules/plateaux/img/labyrinthe/plateaux_labyrinthe_case_0_0.png" class="plateaux-labyrinthe-couronne-1-case">
-			<div ng-if="plateauLabyrinthe[0][0].joueursNumber > 0">
+			<div ng-show="plateauLabyrinthe[0][0].joueursNumber > 0">
 				<div ng-repeat="style in plateauLabyrinthe[0][0].pionsStyles"
 				style="position: absolute;"
 				ng-style="{
@@ -29,11 +29,15 @@
 				'margin-top':''+ case.y +'px',
 				'opacity':''+ case.opacity +''
 			}">
-				<img ng-if="plateauLabyrintheTourDeJeu.casesDisponibles.indexOf(case.numero) < 0" ng-src="{{'modules/plateaux/img/labyrinthe/plateaux_labyrinthe_case_'+i+'_'+($index)+'.png'}}"
-				ng-class="hoveredCouronne === i ? 'plateaux-labyrinthe-couronne-'+{{i}}+'-case-hovered' : 'plateaux-labyrinthe-couronne-'+{{i}}+'-case'">
-				<img ng-if="plateauLabyrintheTourDeJeu.casesDisponibles.indexOf(case.numero) >= 0" ng-click="movePion(case.numero)" ng-src="{{'modules/plateaux/img/labyrinthe/plateaux_labyrinthe_case_'+i+'_'+($index)+'.png'}}"
-				ng-class="hoveredCouronne === i ? 'plateaux-labyrinthe-couronne-'+{{i}}+'-case-hovered' : 'plateaux-labyrinthe-couronne-'+{{i}}+'-case-disponible'">
-				<div ng-if="case.joueursNumber > 0">
+<!-- 				<img ng-src="{{'modules/plateaux/img/labyrinthe/plateaux_labyrinthe_case_'+i+'_'+($index)+'.png'}}"
+				ng-class="{hoveredCouronne === i ? 'plateaux-labyrinthe-couronne-'+{{i}}+'-case-hovered' : 'plateaux-labyrinthe-couronne-'+{{i}}+'-case'"> -->
+				<img ng-click="plateauLabyrintheTourDeJeu.casesDisponibles.indexOf(case.numero) < 0 || movePion(case.numero)" ng-src="{{'modules/plateaux/img/labyrinthe/plateaux_labyrinthe_case_'+i+'_'+($index)+'.png'}}"
+				ng-class="{
+					'plateaux-labyrinthe-couronne-{{i}}-case-hovered' : hoveredCouronne === i,
+					'plateaux-labyrinthe-couronne-{{i}}-case-disponible' : hoveredCouronne !== i && plateauLabyrintheTourDeJeu.casesDisponibles.indexOf(case.numero) >= 0,
+					'plateaux-labyrinthe-couronne-{{i}}-case' :  hoveredCouronne !== i && plateauLabyrintheTourDeJeu.casesDisponibles.indexOf(case.numero) < 0
+				}">
+				<div ng-show="case.joueursNumber > 0">
 					<div ng-repeat="style in case.pionsStyles"
 					style="position: absolute;"
 					ng-style="{
@@ -43,7 +47,7 @@
 						<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[$index]+'.png'}}" class="plateaux-paysage-pion">
 					</div>
 				</div>
-				<img ng-if="plateauLabyrintheTourDeJeu.monteeDisponible.indexOf(case.numero) >= 0 && plateauLabyrintheTourDeJeu.type != 'couronnes'" src="modules/plateaux/img/plateau_labyrinthe_couronne_up.png" ng-click="monteeCouronne()" style="position: absolute;margin-left: 47px;height: 36px;margin-top: -44px;outline: none;">
+				<img ng-show="plateauLabyrintheTourDeJeu.monteeDisponible.indexOf(case.numero) >= 0 && plateauLabyrintheTourDeJeu.type != 'couronnes'" src="modules/plateaux/img/plateau_labyrinthe_couronne_up.png" ng-click="monteeCouronne()" style="position: absolute;margin-left: 47px;height: 36px;margin-top: -44px;outline: none;">
 			</div>
 		</div>
 
@@ -51,7 +55,7 @@
 	<div style="position: relative;width: 200px;">
 		<div ng-repeat="i in [4,3,2,1]">
 			<div ng-repeat="position in ['up','down']">
-				<img ng-if="plateauLabyrintheTourDeJeu.de > 0 &&
+				<img ng-show="plateauLabyrintheTourDeJeu.de > 0 &&
 					(plateauLabyrintheTourDeJeu.type == undefined ||
 					(plateauLabyrintheTourDeJeu.type === 'couronnes' &&
 					plateauLabyrintheTourDeJeu.couronne === i))"

@@ -93,7 +93,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			tonalite: response[0].tonalite,
 			temps: response[0].temps,
 			dispo: response[0].dispo,
-			positionCouronnes: response[0].positionCouronnes
+			positionCouronnes: response[0].positionCouronnes,
+			valiseNonMaterialisee: response[0].valiseNonMaterialisee
 		};
 		if ($scope.partie.tour_joueur !== $scope.joueurId){
 			$scope.resetDispos();

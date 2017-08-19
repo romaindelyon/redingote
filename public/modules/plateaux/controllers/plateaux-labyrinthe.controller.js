@@ -527,8 +527,8 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		}
 		var newPositionCouronnes = $scope.positionCouronnes;
 		newPositionCouronnes[index] += increment;
-		Partie.changeTour({
-			positionCouronnes: newPositionCouronnes
+		Partie.changeCouronnes({
+			positionCouronnes: JSON.stringify(newPositionCouronnes)
 		}).success(function(){
 			$scope.positionCouronnes = newPositionCouronnes;
 			setPositionCouronne(index);
@@ -819,7 +819,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		});
 		newPions[0].case = numero;
 		Joueurs.movePion({
-			pions: newPions,
+			pions: JSON.stringify(newPions),
 			joueurId: $scope.joueurId
 		}).success(function(){
 			removePionFromCase($scope.joueurs[$scope.joueurId].pions[0].case,$scope.joueurId);
