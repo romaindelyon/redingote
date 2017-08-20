@@ -152,7 +152,8 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		// Couronne 4
 		[{
 			numero: 'Hub',
-			position: 0
+			position: 0,
+			action: 'Hub'
 		},
 		{
 			numero: 1,
@@ -699,10 +700,19 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		}
 	});
 
-	$rootScope.$on('plateaux-labyrinthe-move-pion', function(event, args) {
-		$scope.joueurs[$scope.joueurId].pions[0].plateau = 'labyrinthe';
-		addPionToCase(args.case,$scope.joueurId);
-		$scope.goToPlateau(1);
+	// $rootScope.$on('plateaux-labyrinthe-move-pion', function(event, args) {
+	// 	$scope.joueurs[$scope.joueurId].pions[0].plateau = 'labyrinthe';
+	// 	addPionToCase(args.case,$scope.joueurId);
+	// 	$scope.goToPlateau(1);
+	// });
+
+	$rootScope.$on('plateaux-move-pion-callback', function(event, args) {
+		if (args.plateau === 'labyrinthe'){
+			addPionToCase(args.case,$scope.joueurId);
+		}
+		if (args.previousPlateau === 'labyrinthe'){
+			removePionFromCase(args.previousCase,$scope.joueurId);
+		}		
 	});
 
 	// Tour de Jeu:

@@ -68,3 +68,17 @@ angular.module('cartes').directive('redCarte', [
 		};
 	}
 ]);
+
+angular.module('cartes').directive('redCartesJeter', [
+	function() {
+		return {
+			templateUrl: 'modules/cartes/views/cartes-jeter.view.html',
+			restrict: 'E',
+		    scope: {
+		      quantite: "=",
+		      description: "=",
+		      boutonName: "="
+		    }
+		};
+	}
+]);

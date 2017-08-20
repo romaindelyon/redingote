@@ -35,9 +35,11 @@
 
 	<!-- Plateaux -->
 
-	<red-plateaux-paysage ng-show="plateau == '0'"></red-plateaux-paysage>
-	<red-plateaux-labyrinthe ng-show="plateau == '1'"></red-plateaux-labyrinthe>
-	<red-plateaux-escalier ng-show="plateau == '2'"></red-plateaux-escalier>
+	<div ng-controller="PlateauxGeneralController" layout="row" layout-align="center center">
+		<red-plateaux-paysage ng-show="plateau == '0'"></red-plateaux-paysage>
+		<red-plateaux-labyrinthe ng-show="plateau == '1'"></red-plateaux-labyrinthe>
+		<red-plateaux-escalier ng-show="plateau == '2'"></red-plateaux-escalier>
+	</div>
 
 	<!-- Actions de case -->
 

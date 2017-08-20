@@ -56,7 +56,25 @@ angular.module('partie').factory('Partie', ['$http','configService',
 				        }
 				    });
 				}
-			}
+			},
+			ajouterObjetValise: function(params){
+				if (configService.local){
+					return $http({
+				        method: 'GET', 
+				        url: 'modules/cartes/json/cartes.json'
+				    });
+				}
+				else {
+					return $http({
+				        method: 'POST', 
+				        url: 'modules/partie/php/partie-ajouter-objet-valise.php',
+				        params: params,
+				        headers: {
+				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
+				        }
+				    });
+				}
+			},
 		}
 	}
 ]);

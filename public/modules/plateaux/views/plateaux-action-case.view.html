@@ -47,6 +47,21 @@
                 </div>
             </div>
 
+            <!-- Image -->
+            <div ng-if="actionCaseDisplay.image" layout="column" layout-align="center center" class="confrontations-description" style="width: 390px;">
+                <div layout="column" layout-align="center center">
+                    <span>
+                        {{actionCase.description}}
+                    </span>
+                    <img ng-src="{{actionCase.image}}" style="width: 200px;">
+                </div>
+            </div>
+
+            <!-- Perte de cartes -->
+            <div ng-if="actionCaseDisplay.perteCartes" layout="column" layout-align="center center" class="confrontations-description" style="width: 390px;">
+                <red-cartes-jeter bouton-name="'Défausser'" quantite="2" description="'Tu perds des cartes'"></red-cartes-jeter>
+            </div>
+
             <!-- Valise non-materialisee -->
             <div layout="column" layout-align="space-around start" ng-if="actionCase.valiseNonMaterialisee !== undefined">
                 <span style="width: 500px;">
@@ -73,10 +88,10 @@
                 </md-input-container>
                 <div ng-if="actionCase.vnmCorrect">
                     <span style="width: 500px;font-size: 18px;">
-                        Parfait ! Tu peux ajouter un objet de ton choix dans la valise :
+                        Tu peux ajouter un objet de ton choix dans la valise :
                     </span>
                     <md-input-container style="width: 400px;font-size: 16px;text-align: start;">
-                        <md-select ng-model="actionCase.nouvelObjet" required aria-label="Objet">
+                        <md-select ng-model="actionCase.nouvelObjet" required ng-change="nouvelObjet()" aria-label="Objet">
                             <md-option ng-repeat="objet in objets | orderBy:'nom'" ng-if="actionCase.valiseNonMaterialisee.indexOf(objet.nom) < 0">{{objet.nom}}</md-option>
                         </md-select>
                         <label>Nouvel objet</label>
@@ -90,7 +105,7 @@
             </div>
 
             <!-- Boutons -->
-            <div layout="column" layout-align="center center" class="confrontations-buttons">
+            <div layout="column" layout-align="center center" class="confrontations-buttons" ng-hide="buttonsHidden">
                 <md-button ng-click="startActionCase('action',actionCase.numero)" ng-disabled="okButtonDisabled" class="confrontations-button red-font md-primary md-raised">
                     {{bouton1}}
                 </md-button>

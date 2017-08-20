@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('jeu').controller('JeuMainController', ['$scope','$timeout','Cartes',
-	function($scope,$timeout,Cartes) {
+angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$timeout','Cartes',
+	function($scope,$rootScope,$timeout,Cartes) {
 
 	// Mains:
 
@@ -18,7 +18,6 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$timeout','Cart
 
 	$scope.utiliserCarte = function(index){
 		var carte = $scope.jeu.main[index];
-		console.log(index);
 		if (carte.categorie == 'action'){
 			$scope.$emit('confrontations-attaque-action-start', {carte: carte,carteIndex: index});
 		}
@@ -27,7 +26,6 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$timeout','Cart
 	$scope.ouvrirCarte = function(index){
 		var carte = $scope.jeu.main[index];
 		carte.statut.ouverte = true;
-		console.log(carte);
 		Cartes.changementMain({
     		carteId: $scope.jeu.main[index].id,
     		statut: carte.statut
@@ -60,5 +58,58 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$timeout','Cart
 	$scope.jeterAttaqueCarte = function(index){
 		$scope.$emit('confrontations-defense-jeter-carte', {index: index});
 	}
+
+	$scope.jeterCarteInterface = function(index){
+		$scope.$emit('cartes-jeter-id', {carte: $scope.jeu.main[index]});
+	}
+
+	// Défausse de multiples cartes
+	$rootScope.$on('jeu-main-jeter', function(event, args) {
+		console.log(args.cartes);
+		var carteIds = [];
+		for (var i in args.cartes){
+			carteIds.push(args.cartes[i].id);
+		}
+		console.log(carteIds);
+		Cartes.moveCartes({
+    		carteIds: carteIds,
+    		position: -2
+        }).success(function(){
+        	$scope.$emit('jeu-main-jeter-callback', {success: true});
+        	for (var i in args.cartes){
+        		var id = args.cartes[i].id;
+				var index = -1;
+				var j = 0;
+				while (index < 0 && j < $scope.jeu.main.length){
+					if ($scope.jeu.main[j].id == id){
+						index = j;
+					}
+					j ++;
+				}
+	    		var carte = $scope.jeu.main[index];
+	    		carte.statut = {};
+				$scope.defausses.pioche.push(carte);
+				$scope.jeu.main.splice(index,1);
+        	}
+        	$scope.focusIndex = -2;
+    	}).error(function(){
+    		$scope.$emit('jeu-main-jeter-callback', {success: false});
+    	});
+	});
+
+
+	// Interface de défausse de cartes:
+	$rootScope.$on('cartes-jeter-start', function(event, args) {
+		$scope.jeterDispo = true;
+		$scope.jeterBoutonTitre = args.boutonName;
+		var nombreDeCartes = $scope.jeu.main.length;
+		$scope.$emit('cartes-jeter-start-callback', {nombreDeCartes: nombreDeCartes});
+	});
+	$rootScope.$on('cartes-jeter-notfull', function(event, args) {
+		$scope.jeterDispo = true;
+	});
+	$rootScope.$on('cartes-jeter-full', function(event, args) {
+		$scope.jeterDispo = false;
+	});
 
 }]);

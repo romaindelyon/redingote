@@ -43,7 +43,7 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
     	}
 		
 		function removePionFromCase(coordinates,joueurId){
-			var index = $scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs.indexOf(joueurId);
+			var index = $scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs.indexOf(joueurId.toString());
 			if (index >= 0){
 				$scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs.splice(index,1);
 				$scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueursNumber --;
@@ -57,11 +57,8 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 		    }).success(function(response){
 		    	$scope.plateauPaysage = response;
 		    	for (var i in $scope.joueurs){
-		    		console.log($scope.joueurs);
 		    		if ($scope.joueurs[i].pions[0].plateau === 'paysage'){
 		    			var coordinates = getCoordinates($scope.joueurs[i].pions[0].case);
-		    			console.log(coordinates);
-		    			console.log($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs);
 		    			addPionToCase(coordinates,i);
 		    		}
 		    	}
@@ -72,12 +69,20 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 	    	var previousCoordinates = getCoordinates($scope.joueurs[$scope.joueurId].pions[0].case);
 	    	removePionFromCase(previousCoordinates,$scope.joueurId);
 	    	var coordinates = getCoordinates(numero);
-	    	console.log(coordinates);
 	    	$scope.joueurs[$scope.joueurId].pions[0].case = numero;
 	    	addPionToCase(coordinates,$scope.joueurId);
 	    	$scope.partie.dispo.plateaux.paysage --;
 	    	//Joueurs.movePion({numero: numero})
 	    }
+
+		$rootScope.$on('plateaux-move-pion-callback', function(event, args) {
+			if (args.plateau === 'paysage'){
+				addPionToCase(getCoordinates(args.case),$scope.joueurId);
+			}
+			if (args.previousPlateau === 'paysage'){
+				removePionFromCase(getCoordinates(args.previousCase),$scope.joueurId);
+			}		
+		});
 
 		$scope.selectedCase = {
 			clicked: false,
