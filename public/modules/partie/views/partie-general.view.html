@@ -41,39 +41,22 @@
 		<red-plateaux-escalier ng-show="plateau == '2'"></red-plateaux-escalier>
 	</div>
 
+
+	<!-- Tour de jeu -->
+
+	<red-partie-tour-de-jeu></red-partie-tour-de-jeu>
+
 	<!-- Actions de case -->
 
 	<red-plateaux-action-case ng-if="partie.dispo.action_de_case" layout="column" flex layout-align="center center"></red-plateaux-action-case>
 
 	<!-- Pioches -->
 
-	<div layout="row" style="height: 300px;padding-left: 100px;padding-right: 100px;width: 1300px;">
+<!-- 	<div layout="row" style="height: 300px;padding-left: 100px;padding-right: 100px;width: 1300px;">
 
 		<red-des-container layout="column" style="width: 300px;height: 300px;"></red-des-container>
 
-		<div ng-controller="CartesPiocheController" layout="row" flex layout-align="center center" style="width: 800px;height: 300px;">
-			<div ng-click="!piochesDisponibles || partie.dispo.pioches.pioche <= 0 || cartePioche()" layout="row" layout-align="center center" ng-class="!piochesDisponibles || partie.dispo.pioches.pioche <= 0 ? 'cartes-pioches-pioche-disabled' : 'cartes-pioches-pioche'">
-				<span>
-					Pioche
-				</span>
-			</div>
-
-			<div ng-click="!piochesDisponibles || partie.dispo.pioches.missions <= 0 || carteMission()" layout="row" layout-align="center center" ng-class="!piochesDisponibles || partie.dispo.pioches.missions <= 0 ? 'cartes-pioches-missions-disabled' : 'cartes-pioches-missions'">
-				<span>
-					Missions
-				</span>
-			</div>
-
-			<div layout="row" layout-align="center center" style="height: 100%;outline: none;">
-				<img ng-click="carteQuestion()" src="modules/cartes/img/questions/cartes_questions_rom.png" style="height: 150px;outline: none;">
-			</div>
-		</div>
-
-	</div>
-
-	<!-- Jeux -->
-
-	<red-jeu-container></red-jeu-container>
+	</div> -->
 
 	<!-- Attaques -->
 
@@ -88,5 +71,9 @@
 <!-- 	<red-confrontations-attaque-duel ng-if="partie.dispo.duel"></red-confrontations-attaque-duel>
  -->
 	<red-confrontations ng-show="confrontation.active || partie.dispo.duel" layout="column" flex layout-align="center center"></red-confrontations>
+
+	<!-- Jeux -->
+
+	<red-jeu-container></red-jeu-container>
 
 </div>

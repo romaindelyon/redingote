@@ -1,41 +1,29 @@
-<div ng-controller="DesContainerController" layout="column" flex>
-	<div layout="row" layout-align="center center" class="des-container-line">
-		<div ng-click="partie.dispo.des.rhombo <= 0 || lanceDe('rhombo')" layout="row" layout-align="center-center" ng-class="partie.dispo.des.rhombo <= 0 ? 'des-container-box-disabled' : 'des-container-box'" style="background-color: #e7ffe7;">
-			<span>
-				Dé rhombo
-			</span>
+<div ng-controller="DesContainerController" layout="row" flex class="red-font">
+		<div ng-click="partie.dispo.des.rhombo <= 0 || lanceDe('rhombo')" layout="row" layout-align="center-center" ng-class="partie.dispo.des.rhombo <= 0 ? 'des-container-box-disabled' : 'des-container-box'">
+			<img src="modules/des/img/des-pioche-icone.png">
+			<span ng-if="des_resultats.rhombo !== -1">{{des_resultats.rhombo}}</span>
 		</div>
-	</div>
 
-	<div layout="row" layout-align="center center" class="des-container-line">
-		<div ng-click="partie.dispo.des.paysage <= 0 || lanceDe('paysage')" layout="row" layout-align="center-center" ng-class="partie.dispo.des.paysage <= 0 ? 'des-container-box-disabled' : 'des-container-box'" style="background-color: #e7fbff;">
-			<span>
-				Dé plateau-paysage
-			</span>
+		<div ng-click="partie.dispo.des.paysage <= 0 || lanceDe('paysage')" layout="row" layout-align="center-center" ng-class="partie.dispo.des.paysage <= 0 ? 'des-container-box-disabled' : 'des-container-box'">
+			<img src="modules/des/img/des-paysage-icone.png">
+			<span ng-if="des_resultats.paysage !== -1">{{des_resultats.paysage}}</span>
 		</div>
-		<div layout="row" layout-align="center-center" class="des-container-box">
+<!-- 		<div layout="row" layout-align="center-center" class="des-container-box">
 			<span ng-if="jeu.de != -1">
 				{{jeu.de}}
 			</span>
+		</div> -->
+		<div ng-click="partie.dispo.des.echecs <= 0 || lanceDe('echecs')" layout="row" layout-align="center-center" ng-class="partie.dispo.des.echecs <= 0 ? 'des-container-box-disabled' : 'des-container-box'">
+			<img src="modules/des/img/des-echec-icone.png">
+			<span ng-if="des_resultats.echec !== -1">{{des_resultats.echec}}</span>
 		</div>
-		<div ng-click="partie.dispo.des.echecs <= 0 || lanceDe('echecs')" layout="row" layout-align="center-center" ng-class="partie.dispo.des.echecs <= 0 ? 'des-container-box-disabled' : 'des-container-box'" style="background-color: #ffe7f2;">
-			<span>
-				Dé mode échecs
-			</span>
+		<div ng-click="partie.dispo.des.duel <= 0 || lanceDe('duel')" layout="row" layout-align="center-center" ng-class="partie.dispo.des.duel <= 0 ? 'des-container-box-disabled' : 'des-container-box'">
+			<img src="modules/des/img/des-duel-icone.png">
+			<span ng-if="des_resultats.duel !== -1">{{des_resultats.duel}}</span>
 		</div>
-	</div>
-
-	<div layout="row" layout-align="center-center" class="des-container-line">
-		<div ng-click="partie.dispo.des.duel <= 0 || lanceDe('duel')" layout="row" layout-align="center-center" ng-class="partie.dispo.des.duel <= 0 ? 'des-container-box-disabled' : 'des-container-box'" style="background-color: #fffee7;">
-			<span>
-				Dé duel
-			</span>
+		<div ng-click="partie.dispo.des.labyrinthe <= 0 || lanceDe('labyrinthe')" layout="column" layout-align="center-center" ng-class="partie.dispo.des.labyrinthe <= 0 ? 'des-container-box-disabled' : 'des-container-box'">
+			<img src="modules/des/img/des-labyrinthe-icone.png">
+			<span ng-if="des_resultats.labyrinthe !== -1" style="margin-top: 7px;">{{des_resultats.labyrinthe}}</span>
+			<!-- <a ng-click="add100DeLabyrinthe()">+100</a> -->
 		</div>
-		<div ng-click="partie.dispo.des.labyrinthe <= 0 || lanceDe('labyrinthe')" layout="column" layout-align="center-center" ng-class="partie.dispo.des.labyrinthe <= 0 ? 'des-container-box-disabled' : 'des-container-box'" style="background-color: #fff3e7;">
-			<span>
-				Dé plateau-labyrinthe
-			</span>
-			<a ng-click="add100DeLabyrinthe()">+100</a>
-		</div>
-	</div>
 </div>

@@ -1,26 +1,5 @@
 <div ng-controller="PlateauxActionCaseController">
 
-    <div ng-show="actionCase.phase === 0" layout="row" layout-align="space-around center">
-        <div ng-if="actionsCase.question">
-            <img ng-click="startActionCase('question',joueurs[joueurId].pions[0].case)" title="C'est une case question" src="modules/plateaux/img/plateau_action_question.png" class="plateaux-action-case-icone">
-        </div>
-        <div ng-if="!actionsCase.question">
-            <img title="Ce n'est pas une case question" src="modules/plateaux/img/plateau_action_question.png" class="plateaux-action-case-icone-disabled">
-        </div>
-        <div ng-if="actionsCase.action">
-            <img ng-click="startActionCase('action',joueurs[joueurId].pions[0].case)" title="Une action est possible" src="modules/plateaux/img/plateau_action_action.png" class="plateaux-action-case-icone">
-        </div>
-        <div ng-if="!actionsCase.action">
-            <img title="Aucune action possible" src="modules/plateaux/img/plateau_action_action.png" class="plateaux-action-case-icone-disabled">
-        </div>
-        <div ng-if="actionsCase.achat">
-            <img ng-click="startActionCase('achat',joueurs[joueurId].pions[0].case)" title="Consulter les achats disponibles" src="modules/plateaux/img/plateau_action_achat.png" class="plateaux-action-case-icone">
-        </div>
-        <div ng-if="!actionsCase.achat">
-            <img title="Aucun achat possible" src="modules/plateaux/img/plateau_action_achat.png" class="plateaux-action-case-icone-disabled">
-        </div>
-    </div>
-
     <div ng-show="actionCase.phase > 0" layout="column" class="partie-cartouche-container">
 
     	<!-- Titre -->

@@ -111,6 +111,8 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 					$scope.actionCase.image = "modules/plateaux/img/avion.png";
 					$timeout(function(){
 						$scope.actionCase.phase = 0;
+						$scope.tourDeJeu.actionEnCours = false;
+						$scope.tourDeJeu.action[0] --;
 						$scope.actionsCase.action = false;
 						$scope.$emit('plateaux-move-pion',{plateau: $scope.actionCase.destination,case: 'Hub'});
 						if ($scope.actionCase.destination === 'labyrinthe' && $scope.plateau !== 1){
@@ -161,14 +163,21 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
     		action: cases[$scope.joueurs[$scope.joueurId].pions[0].case].action,
     		question: cases[$scope.joueurs[$scope.joueurId].pions[0].case].question
     	};
-	 //  	if (cases[$scope.joueurs[$scope.joueurId].pions[0].case].action){
-		// 	$scope.actionCase.categorie = 'action';
-		// 	$scope.actionCase.numero = $scope.joueurs[$scope.joueurId].pions[0].case;
-		// 	$scope.startActionCase($scope.actionCase.numero);
-		// }
+
+    	if ($scope.actionsCase.achat > 0){
+    		$scope.tourDeJeu.achat[0] ++;
+    	}
+       	if ($scope.actionsCase.question > 0){
+    		$scope.tourDeJeu.question[0] ++;
+    	}
+       	if ($scope.actionsCase.action > 0){
+    		$scope.tourDeJeu.action[0] ++;
+    	}
+
     });
 
     $scope.cancelActionCase = function(){
+    	$scope.tourDeJeu.actionEnCours = false;
     	$scope.actionCase.phase = 0;
     }
 
@@ -187,5 +196,9 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
     	}
     	$scope.valiseNonMaterialiseeIndex ++;
     }
+
+	$rootScope.$on('plateaux-action-case-start', function(event, args) {
+		$scope.startActionCase(args.action,$scope.joueurs[$scope.joueurId].pions[0].case);
+	});
 
 }]);

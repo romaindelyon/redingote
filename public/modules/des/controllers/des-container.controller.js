@@ -19,6 +19,14 @@ angular.module('des').controller('DesContainerController', ['$scope',
 			labyrinthe: [1,2,3,4]
 		};
 
+		$scope.des_resultats = {
+			rhombo: -1,
+			paysage: -1,
+			echecs: -1,
+			duel: -1,
+			labyrinthe: -1		
+		};
+
 		function translateResult(de,result){
 			if (de === 'rhombo'){
 				$scope.partie.dispo.pioches.pioche += result;
@@ -37,6 +45,8 @@ angular.module('des').controller('DesContainerController', ['$scope',
 		$scope.lanceDe = function(de){
 			var rand = Math.floor((Math.random() * des_size[de]));
 			$scope.jeu.de = des_options[de][rand];
+			$scope.des_resultats[de] = $scope.jeu.de;
+			console.log($scope.des_resultats);
 			$scope.partie.dispo.des[de] --;
 			translateResult(de,des_options[de][rand]);
 		}

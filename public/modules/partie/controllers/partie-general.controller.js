@@ -27,6 +27,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.duel = {};
 
+	$scope.news = [];
+
 	$scope.initiateConfrontations = function(){
 		if ($scope.loaded.partie && $scope.loaded.cartes && $scope.loaded.confrontationsController){
 			console.log('inside');
@@ -38,6 +40,9 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 						}
 						else if (response[i].categorie == 'recompense'){
 							$scope.attaques.recompenses.push(response[i]);
+						}
+						else if (response[i].categorie == 'news'){
+							$scope.news.push(response[i]);
 						}
 					}
 					$scope.loaded.defenses = true;
@@ -84,6 +89,17 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 		}
 	}
 
+	$scope.tourDeJeu = {
+		actionEnCours: false,
+		notification: [0,0],
+		recompense: [0,0],
+		action: [0,0],
+		pouvoir: [0,0],
+		question: [0,0],
+		achat: [0,0],
+		'trois-familles': [0,0],
+		duel: [0,0]
+	}
 	
 	Partie.getPartie().success(function(response){
 		$scope.partie = {

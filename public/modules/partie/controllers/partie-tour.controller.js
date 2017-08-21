@@ -46,6 +46,7 @@ angular.module('partie').controller('PartieTourController', ['$scope','$rootScop
 			}
 			else if (tourAction == 5){
 				$scope.partie.dispo.duel = true;
+				$scope.tourDeJeu.actionEnCours = true;
 				$scope.partie.dispo.des.duel = 3;
 			}
 			else if (tourAction == 6){

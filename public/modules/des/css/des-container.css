@@ -5,14 +5,25 @@
 
 .des-container-box,
 .des-container-box-disabled {
-	width: 80px;
-	height: 80px;
 	margin: 10px;
 	text-align: center;
 	outline: none;
 }
 
+.des-container-box img,
+.des-container-box-disabled img {
+	width: 50px;
+}
+
+.des-container-box span,
+.des-container-box-disabled span {
+	color: white;
+	position: absolute;
+}
+
 .des-container-box-disabled {
 	cursor: default;
+}
+.des-container-box-disabled img {
 	opacity: 0.5;
 }

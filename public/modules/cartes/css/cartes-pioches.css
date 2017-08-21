@@ -1,7 +1,7 @@
 .cartes-pioches-pioche,
 .cartes-pioches-pioche-disabled {
-	height: 200px;
-    width: 180px;
+	height: 100px;
+    width: 100px;
 	margin: 10px;
 	background-color: #f8952f;
 	outline: none;
@@ -14,8 +14,8 @@
 
 .cartes-pioches-missions,
 .cartes-pioches-missions-disabled {
-	height: 200px;
-    width: 180px;
+	height: 100px;
+    width: 100px;
 	margin: 10px;
 	background-color: #2fdaf8;
 	outline: none;
