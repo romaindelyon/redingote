@@ -16,6 +16,7 @@ module.exports = function(grunt) {
 			'public/modules/confrontations/*.js', 'public/modules/confrontations/**/*.js',
 			'public/modules/core/*.js', 'public/modules/core/**/*.js',
 			'public/modules/des/*.js', 'public/modules/des/**/*.js',
+			'public/modules/historique/*.js', 'public/modules/historique/**/*.js',
 			'public/modules/jeu/*.js', 'public/modules/jeu/**/*.js',
 			'public/modules/joueurs/*.js', 'public/modules/joueurs/**/*.js',
 			'public/modules/partie/*.js', 'public/modules/partie/**/*.js',
