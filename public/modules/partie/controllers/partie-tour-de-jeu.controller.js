@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('plateaux').controller('PartieTourDeJeuController', ['$scope','$rootScope','$http',
+angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$rootScope','$http',
 	function($scope,$rootScope,$http) {
 
 	$scope.actions = [''];
