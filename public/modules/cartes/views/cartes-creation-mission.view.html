@@ -32,6 +32,20 @@
 					</div>
 				</div>
 			</div>
+			<div ng-if="missions[carte.info.etapes[$parent.$index].categorie]['Cases'] !== undefined" ng-repeat="index in carte.info.etapes[$index].cases" layout="row">
+				<md-input-container class="cartes-input" style="width: 300px;">
+					<md-select ng-model="carte.info.etapes[$parent.$parent.$index].cases[$index].numero" required aria-label="case">
+						<md-option ng-repeat="case in cases | orderBy: case">{{case}}</md-option>
+					</md-select>
+					<label>Case</label>
+				</md-input-container>
+				<div ng-if="$index === (carte.info.etapes[$parent.$parent.$index].cases.length - 1) && carte.info.etapes[$parent.$parent.$index].cases.length > 1" style="padding-left: 10px;padding-top: 45px;">
+					<a ng-click="retirerCase($parent.$parent.$parent.$index)" style="outline: none;">Retirer une case</a>
+				</div>
+				<div ng-if="$index === (carte.info.etapes[$parent.$parent.$index].cases.length - 1)" style="padding-left: 10px;padding-top: 45px;">
+					<a ng-click="ajouterCase($parent.$parent.$parent.$index)" style="outline: none;">Ajouter une case</a>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div ng-if="carte.info.etapes.length > 1" style="padding-left: 10px;">

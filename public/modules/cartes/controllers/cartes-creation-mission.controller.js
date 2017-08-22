@@ -19,14 +19,22 @@ angular.module('cartes').controller('CartesCreationMissionController', ['$scope'
 	$scope.retirerCarte = function(index){
 		$scope.carte.info.etapes[index].cartes.splice($scope.carte.info.etapes[index].cartes.length-1,1);
 	}
+	$scope.ajouterCase = function(index){
+		console.log(index);
+		$scope.carte.info.etapes[index].cases.push({});
+	}
+	$scope.retirerCase = function(index){
+		$scope.carte.info.etapes[index].cases.splice($scope.carte.info.etapes[index].cases.length-1,1);
+	}
 	$scope.retirerEtape = function(){
 		$scope.carte.info.etapes.splice($scope.carte.info.etapes.length-1,1);
 	}
 	$scope.ajouterEtape = function(){
 		$scope.carte.info.etapes.push({
 			cartes: [1],
-			cases: [1]
+			cases: [{}]
 		});
+		console.log($scope.carte.info)
 	}
 
 	var cartesCodes = [];
@@ -42,7 +50,7 @@ angular.module('cartes').controller('CartesCreationMissionController', ['$scope'
 	});
 
 	var zones = ['Désert','Forêt','Mer','Marécages','Monde onirique','Montagne','Prairie','Royaume des ténèbres','Village','Ville','Zone industrielle'];
-	console.log($scope.cartes);
+	
 	$scope.missions = {
 		'Apporter des cartes': {
 			'Cartes': [1],

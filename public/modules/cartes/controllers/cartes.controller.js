@@ -46,7 +46,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				info: {
 					etapes: [{
 						cartes: [1],
-						cases: [1]
+						cases: [{}]
 					}]
 				}
 			};
@@ -459,8 +459,10 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 
 		else if (carte.pile === 'missions'){
 			carte.info = {
-				etapes: []
+				etapes: [],
+				consequences: []
 			}
+			populateInfo(carte.info,$scope.carte.info);
 			for (var i in $scope.carte.info.etapes){
 				carte.info.etapes.push({
 					categorie: textToKeyTransformation($scope.carte.info.etapes[i].categorie),
