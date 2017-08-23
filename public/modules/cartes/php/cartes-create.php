@@ -12,6 +12,7 @@ header("Content-Type: application/json; charset=UTF-8");
     $types = $_GET["types"];
     $info = $_GET["info"];
     $statut = "{}";
+    $partie = 1;
 
     $con = mysqli_connect("localhost","redingot_romain","redingote778","redingot_database");
     // Check connection
@@ -19,9 +20,9 @@ header("Content-Type: application/json; charset=UTF-8");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("INSERT INTO cartes (nom, code, position, pile, categorie, utilisation, info, types, statut) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $con -> prepare("INSERT INTO cartes (nom, code, position, pile, categorie, utilisation, info, types, statut, partie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt -> bind_param('ssissssss',$nom,$code,$position,$pile,$categorie,$utilisation,$info,$types,$statut);
+    $stmt -> bind_param('ssissssssi',$nom,$code,$position,$pile,$categorie,$utilisation,$info,$types,$statut,$partie);
     $stmt -> execute();
 
     mysqli_close($con); 

@@ -4,7 +4,7 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 	function($http,configService) {
 		return {
 			// Get all the cartes:
-			getCartes: function(){
+			getCartes: function(params){
 				if (configService.local){
 					return $http({
 				        method: 'GET', 
@@ -13,7 +13,8 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 				}
 				else {
 					return $http({
-				        method: 'GET', 
+				        method: 'POST',
+				        params: params,
 				        url: 'modules/cartes/php/cartes.php',
 				        headers: {
 				        	'Cache-Control': 'no-cache'
@@ -82,7 +83,7 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 				    });
 				}
 			},
-			changementMain: function(params){
+			changementStatut: function(params){
 				if (configService.local){
 					return $http({
 				        method: 'GET', 
@@ -92,7 +93,7 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 				else {
 					return $http({
 				        method: 'POST', 
-				        url: 'modules/cartes/php/cartes-changement-main.php',
+				        url: 'modules/cartes/php/cartes-changement-statut.php',
 			        	params: {
 		        			carteId: params.carteId,
 		        			statut: params.statut

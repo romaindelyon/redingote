@@ -5,23 +5,39 @@
 	<div layout="column" flex>
 		<div layout="row" layout-align="center center" style="height: 25px;font-size: 18px;font-weight: bold;">
 			{{mission.nom}}
+			<img ng-if="mission.statut === 'completed'" src="modules/core/img/core_icones_checkmark.png" style="height: 20px;width: 20px;outline: none;margin-left: 10px;margin-bottom: 2px;">
 		</div>
 		<div layout="row" layout-align="center center" flex=>
 			<div layout="column" flex layout-align="center end" style="height: 100%;">
 				<img ng-if="etape > 0" ng-click="updateEtape(etape - 1)" src="modules/jeu/img/jeu_icones_previous.png" style="height: 30px;width: 30px;outline: none;">
 			</div>
-			<div layout="column" flex layout-align="space-around center" style="height: 100%;">
+			<div layout="column" flex layout-align="center center" style="height: 100%;">
+			</div>
+			<div layout="column" flex layout-align="space-around center" style="height: 100%;max-width: 600px;">
 				<div layout="row" layout-align="center center" flex="10">
 					{{etapeTitre}}
 				</div>
-				<div ng-if="mission.info.etapes[etape].cartes !== undefined" layout="row" flex="80">
-					<div ng-repeat="carte in mission.info.etapes[etape].cartes" layout="row" flex layout-align="center center" style="outline: none;width: 140px;height: 180px;padding: 5px;">
-				        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte+'.png'}}" ng-class="carte.completed ? 'jeu-missions-carte-completed' : 'jeu-missions-carte'">
+				<div ng-if="mission.statut.info.etapes[etape].categorie === 'reunir_des_cartes' || mission.statut.info.etapes[etape].categorie === 'apporter_des_cartes'" layout="row" flex="80">
+					<div ng-repeat="carte in mission.statut.info.etapes[etape].cartes" layout="row" flex layout-align="center center" style="outline: none;width: 140px;height: 180px;padding: 5px;">
+				        <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte+'.png'}}" ng-class="carte.completed ? 'jeu-missions-carte-completed' : 'jeu-missions-carte'">
+				    </div> 
+				</div>
+				<div ng-if="mission.statut.info.etapes[etape].categorie === 'visiter_des_cases'" layout="row" flex="80">
+					<div ng-repeat="case in mission.statut.info.etapes[etape].cases" layout="row" flex layout-align="center center" style="outline: none;width: 140px;height: 180px;padding: 5px;">
+						<md-input-container>
+							<md-checkbox ng-checked="case.completed" ng-click="completeMissionCase(etape,$index)" ng-disabled="missionCasesAvailable.indexOf(case.numero) < 0 && !case.completed" aria-label="checkbox">	
+							{{case.numero}}
+							</md-checkbox>
+						</md-input-container>
 				    </div> 
 				</div>
 			</div>
+			<div layout="column" flex layout-align="center center" style="height: 100%;margin-bottom: 14px;">
+				<img ng-if="mission.statut.info.etapes[etape].statut === 'ready'" ng-click="partie.tour_action !== 6 || completeEtape(etape)" title="Tu pourras terminer cette étape lors de la phase d'action de ton tour de jeu." src="modules/core/img/core_icones_checkmark.png" style="height: 30px;width: 30px;outline: none;opacity: 0.5;" ng-class="{'red-default-cursor': partie.tour_action !== 6}">
+				<img ng-if="mission.statut.info.etapes[etape].statut === 'completed'" src="modules/core/img/core_icones_checkmark.png" style="height: 30px;width: 30px;outline: none;">
+			</div>
 			<div layout="column" flex layout-align="center start" style="height: 100%;">
-				<img ng-if="etape < mission.info.etapes.length - 1" ng-click="updateEtape(etape + 1)" src="modules/jeu/img/jeu_icones_next.png" style="height: 30px;width: 30px;outline: none;">
+				<img ng-if="etape < mission.statut.info.etapes.length - 1" ng-click="updateEtape(etape + 1)" src="modules/jeu/img/jeu_icones_next.png" style="height: 30px;width: 30px;outline: none;">
 			</div>
 		</div>
 	</div>

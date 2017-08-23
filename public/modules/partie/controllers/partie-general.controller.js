@@ -16,6 +16,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.joueurId = parseInt($stateParams.joueur);
 
+	$scope.partieId = 1;//parseInt($stateParams.partie);
+
 	// Attaques:
 
 	$scope.attaques = {
@@ -133,7 +135,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	//Cartes 
 
 	function getCartes(){
-		Cartes.getCartes().success(function(response){
+		Cartes.getCartes({partieId: $scope.partieId}).success(function(response){
 	    	$scope.cartes = {};
 	    	for (var i in response){
 	    		var carte = response[i];

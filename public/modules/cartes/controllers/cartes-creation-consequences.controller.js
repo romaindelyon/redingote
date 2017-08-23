@@ -102,6 +102,9 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 			'Création': ['Photo'],
 			'Transformation': []
 		},
+		'Question': {
+			'Répondre': []
+		},
 		'Protection': {
 			'Cartes': [1,2,3,4,5,'Toutes'],
 			'Grandes cartes': [1,2,3,4,5,'Toutes'],

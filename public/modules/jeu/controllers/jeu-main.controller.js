@@ -26,7 +26,7 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
 	$scope.ouvrirCarte = function(index){
 		var carte = $scope.jeu.main[index];
 		carte.statut.ouverte = true;
-		Cartes.changementMain({
+		Cartes.changementStatut({
     		carteId: $scope.jeu.main[index].id,
     		statut: carte.statut
     	}).success(function(){

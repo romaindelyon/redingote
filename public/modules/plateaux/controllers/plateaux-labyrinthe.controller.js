@@ -153,7 +153,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		[{
 			numero: 'Hub',
 			position: 0,
-			action: 'Hub'
+			action: true
 		},
 		{
 			numero: 1,

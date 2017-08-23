@@ -104,6 +104,11 @@ angular.module('cartes').controller('CartesPiocheController',
 	    		carteIds: [$scope.pioches.missions[carteOrder].id],
 	    		position: $scope.joueurId
 	    	}).success(function(){
+	    		// Changer statut to open
+	    		Cartes.changementStatut({
+		    		carteId: $scope.pioches.missions[carteOrder].id,
+		    		statut: {statut: 'open', info: $scope.pioches.missions[carteOrder].info}
+		    	});
 				var carte = $scope.pioches.missions[carteOrder];
 				var piocheCartePopup = $mdDialog.confirm({
 		        	templateUrl: 'modules/cartes/views/cartes-pioche-popup.view.html',
@@ -114,6 +119,10 @@ angular.module('cartes').controller('CartesPiocheController',
 		        });
 		        $mdDialog.show(piocheCartePopup);
 		        // Ajouter la carte a la main
+		        $scope.pioches.missions[carteOrder].statut = {
+		        	statut: 'open',
+		        	info: $scope.pioches.missions[carteOrder].info
+		        }
 		        $scope.jeu.missions.push($scope.pioches.missions[carteOrder]);
 		        // Retirer la carte de la pioche
 				$scope.pioches.missions.splice(carteOrder,1);

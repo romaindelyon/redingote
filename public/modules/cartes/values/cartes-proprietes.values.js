@@ -106,6 +106,7 @@ angular.module('cartes').value('CartesProprietes', {
 	'renvoi': 'Renvoi',
 	'repondue_correctement': 'Répondue correctement',
 	'repondue_faussement': 'Répondue faussement',
+	'repondre': 'Répondre',
 	'reussie': 'Réussie',
 	'specifique': 'Spécifique',
 	'tentative': 'Tentative',
@@ -142,6 +143,7 @@ angular.module('cartes').value('CartesProprietes', {
 	'fi_mineur': 'Fi mineur',
 	'la_majeur': 'La majeur',
 	're_mineur': 'Ré mineur',
+	'glutis': 'Glutis',
 	// Types de cartes
 	'animal': 'Animal',
 	'chat': 'Chat',
@@ -173,5 +175,14 @@ angular.module('cartes').value('CartesProprietes', {
 	'royaume_des_tenebres': 'Royaume des ténèbres',
 	'village': 'Village',
 	'ville': 'Ville',
-	'zone_industrielle': 'Zone industrielle'
+	'zone_industrielle': 'Zone industrielle',
+	// Reductions
+	'aucune': 'Aucune',
+	'lundi': 'Lundi',
+	'mardi': 'Mardi',
+	'mercredi': 'Mercredi',
+	'jeudi': 'Jeudi',
+	'vendredi': 'Vendredi',
+	'samedi': 'Samedi',
+	'dimanche': 'Dimanche'
 });

@@ -81,8 +81,20 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			for (var i in carte.info.etapes){
 				carte.info.etapes[i].categorie = CartesProprietes[carte.info.etapes[i].categorie]
 				for (var j in carte.info.etapes[i].cartes){
-					carte.info.etapes[i].cartes[j] = $scope.cartes.toutes[carte.info.etapes[i].cartes[j]].nom;
+					if (carte.info.etapes[i].cartes[j] != undefined){
+						carte.info.etapes[i].cartes[j] = $scope.cartes.toutes[carte.info.etapes[i].cartes[j]].nom;
+					}
 				}
+			}
+		}
+		console.log(carte);
+		if (carte.pile === 'Hors Pioche' && carte.categorie === 'Objet'){
+			carte.info.paiement = CartesProprietes[carte.info.paiement];
+			if (carte.info.paiement === 'echange'){
+				carte.info.echange = $scope.cartes.toutes[carte.info.echange].nom;
+			}
+			else {
+				carte.info.reduction = CartesProprietes[carte.info.reduction];
 			}
 		}
 		for (var i in carte.types){
@@ -145,7 +157,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 	// Get cartes
 
 	function initializeCartes(){
-		Cartes.getCartes().success(function(response){
+		Cartes.getCartes({partieId: 1}).success(function(response){
 			$scope.cartes = {
 				'toutes': {},
 				'pioche': {},
@@ -181,12 +193,19 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 
 	var cartesCodes = [];
 	$scope.cartesNoms = [];
-	Cartes.getCartes().success(function(response){
+	$scope.objetsHorsPiocheCodes = [];
+	$scope.objetsHorsPiocheNoms = [];
+	Cartes.getCartes({partieId: 1}).success(function(response){
 		for (var i in response){
+			console.log(response);
 			// agreger cartes par code:
 			if (response[i].pile === 'pioche' || response[i].pile === 'hors_pioche' && cartesCodes.indexOf(response[i].code < 0)){
 				cartesCodes.push(response[i].code);
 				$scope.cartesNoms.push(response[i].nom);
+			}
+			if (response[i].pile === 'hors_pioche' && response[i].categorie === 'objet' && $scope.objetsHorsPiocheCodes.indexOf(response[i].code < 0)){
+				$scope.objetsHorsPiocheNoms.push(response[i].nom);
+				$scope.objetsHorsPiocheCodes.push(response[i].code);
 			}
 		}
 	});
@@ -447,11 +466,24 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			if (carte.categorie === 'objet'){
 				carte.info = {
 					case: textToKeyTransformation($scope.carte.info.case),
-					prix: textToKeyTransformation($scope.carte.info.prix),
-					reduction: textToKeyTransformation($scope.carte.info.reduction),
+					paiement: textToKeyTransformation($scope.carte.info.paiement),
 					consequences: [],
 					contraintes: [],
 					circonstances: []
+				}
+				if ($scope.carte.info.paiement === "Echange"){
+					console.log('echange');
+					var carteNom = $scope.carte.info.echange;
+					console.log(carteNom);
+					var carteCode = $scope.objetsHorsPiocheCodes[$scope.objetsHorsPiocheNoms.indexOf(carteNom)];
+					console.log(carteCode);
+					console.log($scope.objetsHorsPiocheCodes);
+					console.log($scope.objetsHorsPiocheNoms);
+					carte.info.echange = carteCode;
+				}
+				else if ($scope.carte.info.paiement === "Glutis"){
+					carte.info.prix = $scope.carte.info.prix;
+					carte.info.reduction = textToKeyTransformation($scope.carte.info.reduction);
 				}
 				populateInfo(carte.info,$scope.carte.info);
 			}
@@ -476,6 +508,12 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 						carte.info.etapes[i].cartes.push(carteCode);
 					}
 				}
+				if ($scope.carte.info.etapes[i].cases !== undefined){
+					carte.info.etapes[i].cases = [];
+					for (var j in $scope.carte.info.etapes[i].cases){
+						carte.info.etapes[i].cases.push($scope.carte.info.etapes[i].cases[j]);
+					}
+				}				
 			}
 		}
 
@@ -497,7 +535,6 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			});
 		}
 		else {
-			console.log('here')
 			carte.id = $scope.carte.id;
 			Cartes.modifierCarte(carte).success(function(){
 				if (carte.pile == 'pioche' && carte.categorie == 'objet'){

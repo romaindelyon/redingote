@@ -21,7 +21,6 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 				$scope.actionCase.description = "Veux-tu prendre l'avion vers le plateau-" + $scope.actionCase.destination + " ?"
 				$scope.bouton1 = "Oui";
 				$scope.bouton2 = "Non";
-				console.log('ici');
 			}
 		}
 		else if ($scope.actionCase.phase === 2){
@@ -53,7 +52,6 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 				// Ajouter nouvel objet :
 				var valiseNonMaterialisee = $scope.partie.valiseNonMaterialisee;
 				valiseNonMaterialisee.push($scope.actionCase.nouvelObjet);
-				console.log(valiseNonMaterialisee);
 				Partie.ajouterObjetValise({valiseNonMaterialisee: JSON.stringify(valiseNonMaterialisee)}).success(function(){
 					$scope.partie.valiseNonMaterialisee = valiseNonMaterialisee;
 					// add News event for other players:
@@ -124,7 +122,6 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 					},2000);
 				}
 				if ($scope.actionCase.cartesDefausse !== undefined && $scope.actionCase.cartesDefausse.length !== 0){
-					console.log($scope.actionCase.cartesDefausse);
 					$scope.$emit('jeu-main-jeter', {cartes: $scope.actionCase.cartesDefausse});
 					$rootScope.$on('jeu-main-jeter-callback', function(event, args) {
 						if (args.success){
@@ -158,19 +155,25 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
     			}
     		}
     	}
+
+    	// Potentielles actions de case
+    	console.log(cases[$scope.joueurs[$scope.joueurId].pions[0].case]);
     	$scope.actionsCase = {
     		achat: cases[$scope.joueurs[$scope.joueurId].pions[0].case].achat,
     		action: cases[$scope.joueurs[$scope.joueurId].pions[0].case].action,
     		question: cases[$scope.joueurs[$scope.joueurId].pions[0].case].question
     	};
-
-    	if ($scope.actionsCase.achat > 0){
+    	// Only case where something happens on labyrinthe:
+    	if ($scope.joueurs[$scope.joueurId].pions[0].case === 'Hub' || $scope.joueurs[$scope.joueurId].pions[0].case === 'Hub interplanétaire'){
+    		$scope.actionsCase.action = true;
+    	}
+    	if ($scope.actionsCase.achat){
     		$scope.tourDeJeu.achat[0] ++;
     	}
-       	if ($scope.actionsCase.question > 0){
+       	if ($scope.actionsCase.question){
     		$scope.tourDeJeu.question[0] ++;
     	}
-       	if ($scope.actionsCase.action > 0){
+       	if ($scope.actionsCase.action){
     		$scope.tourDeJeu.action[0] ++;
     	}
 

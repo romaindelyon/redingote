@@ -24,14 +24,26 @@
 				<label>Case</label>
 			</md-input-container>
 			<md-input-container class="cartes-input" style="width: 200px;">
+				<md-select ng-model="carte.info.paiement" required aria-label="Case">
+					<md-option ng-repeat="option in ['Glutis','Echange']">{{option}}</md-option>
+				</md-select>
+				<label>Paiement</label>
+			</md-input-container>
+			<md-input-container ng-if="carte.info.paiement === 'Glutis'" class="cartes-input" style="width: 200px;">
 				<input ng-model="carte.info.prix" type="number" required aria-label="Code">
 				<label>Prix</label>
 			</md-input-container>
-			<md-input-container class="cartes-input" style="width: 200px;">
+			<md-input-container ng-if="carte.info.paiement === 'Glutis'" class="cartes-input" style="width: 200px;">
 				<md-select ng-model="carte.info.reduction" required aria-label="Reduction">
 					<md-option ng-repeat="reduction in reductions">{{reduction}}</md-option>
 				</md-select>
 				<label>Réduction</label>
+			</md-input-container>
+			<md-input-container ng-if="carte.info.paiement === 'Echange'" class="cartes-input" style="width: 200px;">
+				<md-select ng-model="carte.info.echange" required aria-label="Case">
+					<md-option ng-repeat="carte in objetsHorsPiocheNoms | orderBy: carte">{{carte}}</md-option>
+				</md-select>
+				<label>Objet</label>
 			</md-input-container>
 		</div>
 		<div ng-if="carte.utilisation == 'Action' || carte.utilisation == 'Réaction' || carte.utilisation == 'Ouverture'" layout="column">
