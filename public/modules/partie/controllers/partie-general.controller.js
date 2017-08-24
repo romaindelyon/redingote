@@ -131,6 +131,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	$scope.jeu.main = [];
 	$scope.jeu.ouvertes = [];
 	$scope.jeu.missions = [];
+	$scope.jeu.horsPioche = [];
 
 	//Cartes 
 
@@ -160,16 +161,26 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    				$scope.joueurs[carte.position].ouvertes.push(carte);
 	    			}
 	    		}
+	    		// Cartes mission:
 	    		else if (carte.pile == 'missions'){
 	    			if (carte.position == -1) {
 	    				$scope.pioches.missions.push(carte);
 	    			}
 	    			if (carte.position == $scope.joueurId){
-	    				console.log('and joueur');
 	    				$scope.jeu.missions.push(carte);
 	    			}
 	    		}
+	    		// Objets hors pioche:
+	    		else if (carte.pile == 'hors_pioche'){
+	    			console.log(carte.position);
+	    			$scope.pioches.horsPioche.push(carte);
+	    			if (carte.position == $scope.joueurId){
+	    				$scope.jeu.horsPioche.push(carte);
+	    			}
+	    		}
 	    	}
+	    	console.log($scope.jeu.horsPioche);
+	    	console.log($scope.pioches.horsPioche);
 			$scope.loaded.cartes = true;
 			$scope.initiateConfrontations();
 	    }).error(function(response){
@@ -228,6 +239,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	$scope.pioches = {};
 	$scope.pioches.pioche = [];
 	$scope.pioches.missions = [];
+	$scope.pioches.horsPioche = [];
 	
 	$scope.defausses = {};
 	$scope.defausses.pioche = [];

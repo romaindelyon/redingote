@@ -17,6 +17,10 @@
                 <img ng-click="ecrireNotes()" src="modules/jeu/img/jeu_icones_crayon.png" style="height: 20px;margin-bottom: 4px;outline: none;">
             </div>
             <div flex></div>
+            <div layout="row" style="font-weight: bold;margin: 5px;">
+                <img src="modules/jeu/img/jeu_icones_glutis.png" style="height: 20px;margin-right: 2px;">
+                {{joueurs[joueurId].glutis}} ₲
+            </div>
         </div>
         <div ng-if="view === 'notes'" layout="column" flex style="height: 520px;">
             <md-input-container>

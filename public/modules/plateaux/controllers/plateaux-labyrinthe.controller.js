@@ -830,7 +830,8 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		newPions[0].case = numero;
 		Joueurs.movePion({
 			pions: JSON.stringify(newPions),
-			joueurId: $scope.joueurId
+			joueurId: $scope.joueurId,
+			partieId: $scope.partieId
 		}).success(function(){
 			removePionFromCase($scope.joueurs[$scope.joueurId].pions[0].case,$scope.joueurId);
 			$scope.joueurs[$scope.joueurId].pions[0].case = numero;

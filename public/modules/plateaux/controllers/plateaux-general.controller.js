@@ -14,7 +14,8 @@ angular.module('plateaux').controller('PlateauxGeneralController', ['$scope','$r
 		newPions[0].plateau = plateau;
 		Joueurs.movePion({
 			pions: JSON.stringify(newPions),
-			joueurId: $scope.joueurId
+			joueurId: $scope.joueurId,
+			partieId: $scope.partieId
 		}).success(function(){
 			$scope.joueurs[$scope.joueurId].pions[0].case = numero;
 			$scope.joueurs[$scope.joueurId].pions[0].plateau = plateau;

@@ -1,6 +1,109 @@
 <div ng-controller="PlateauxActionCaseController">
 
-    <div ng-show="actionCase.phase > 0" layout="column" class="partie-cartouche-container">
+    <div ng-show="(actionCase.phase == 1 || actionCase.phase == 1.1) && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="row" layout-align="center center" class="confrontations-titre red-font">
+            <span ng-show="actionCase.phase == 1">
+                Bienvenue en case {{actionCase.numero}} ! Es-tu intéressé par nos articles ?
+            </span>
+            <span ng-show="actionCase.phase == 1.1">
+                Avec ceci ?
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="row" layout-align="space-around center" class="cartouche-body">
+
+            <div ng-repeat="carte in actionsCase.achat">
+                <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-click="achatObjet(carte)" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;border: ">
+            </div>
+
+            <md-button ng-click="cancelActionCase()" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">
+                Non !
+            </md-button>
+
+        </div>
+
+    </div>
+
+    <div ng-show="actionCase.phase == 2 && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="row" layout-align="center center" class="confrontations-titre red-font">
+            <span>
+                {{actionCase.carte.nom}}
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="row" layout-align="space-around center" class="cartouche-body">
+
+            <div>
+                <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+actionCase.carte.code+'.png'}}" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;">
+            </div>
+
+            <div ng-if="actionCase.carte.info.paiement === 'glutis' && actionCase.paiementPossible" style="width: 250px;">
+                Souhaites-tu acheter cet objet pour {{actionCase.carte.info.prix}}₲ ?
+            </div>
+            <div ng-if="actionCase.carte.info.paiement === 'glutis' && !actionCase.paiementPossible" style="width: 250px;">
+                Tu n'as pas assez de glutis pour acheter cet objet : il coûte {{actionCase.carte.info.prix}}₲
+            </div>
+            <div ng-if="actionCase.carte.info.paiement === 'echange' && actionCase.paiementPossible" style="width: 250px;">
+                Souhaites-tu acheter cet objet contre une carte {{actionCase.carteEchangeNom}} ?
+            </div>
+            <div ng-if="actionCase.carte.info.paiement === 'echange' && !actionCase.paiementPossible" layout="column" style="width: 250px;font-size: 20px;">
+                <span>
+                    Nous échangerions volontiers notre carte {{actionCase.carte.nom}} contre cette carte :
+                </span>
+            </div>
+            
+            <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+actionCase.carte.info.echange+'.png'}}" ng-if="actionCase.carte.info.paiement === 'echange' && !actionCase.paiementPossible" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;">
+            
+            <div ng-if="actionCase.paiementPossible" layout="column">
+                <md-button ng-click="acheterObjet()" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">
+                    Payer
+                </md-button>
+                <md-button ng-click="cancelActionCase()" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">
+                    Non merci
+                </md-button>
+            </div>
+
+            <div ng-if="!actionCase.paiementPossible" layout="column">
+                <md-button ng-click="acheterObjet()" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">
+                    Je reviendrai plus tard
+                </md-button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-show="actionCase.phase == 3 && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="row" layout-align="center center" class="confrontations-titre red-font">
+            <span>
+                {{actionCase.carte.nom}}
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="row" layout-align="space-around center" class="cartouche-body">
+
+            <div>
+                <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+actionCase.carte.code+'.png'}}" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;border: ">
+            </div>
+
+            <div style="width: 250px;">
+                Merci pour ton achat !
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-show="actionCase.phase > 0 && actionCase.categorie === 'action'" layout="column" class="partie-cartouche-container">
 
     	<!-- Titre -->
      	<div layout="row" layout-align="center center" class="confrontations-titre red-font">
