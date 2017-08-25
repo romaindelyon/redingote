@@ -1,6 +1,6 @@
-<div ng-controller="PlateauxActionCaseController">
+<div ng-controller="PlateauxActionCaseController" ng-show="actionCase.phase >= 0">
 
-    <div ng-show="(actionCase.phase == 1 || actionCase.phase == 1.1) && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
+    <div ng-if="(actionCase.phase == 1 || actionCase.phase == 1.1) && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
 
         <!-- Titre -->
         <div layout="row" layout-align="center center" class="confrontations-titre red-font">
@@ -27,7 +27,7 @@
 
     </div>
 
-    <div ng-show="actionCase.phase == 2 && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
+    <div ng-if="actionCase.phase == 2 && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
 
         <!-- Titre -->
         <div layout="row" layout-align="center center" class="confrontations-titre red-font">
@@ -79,7 +79,7 @@
 
     </div>
 
-    <div ng-show="actionCase.phase == 3 && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
+    <div ng-if="actionCase.phase == 3 && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
 
         <!-- Titre -->
         <div layout="row" layout-align="center center" class="confrontations-titre red-font">
@@ -92,7 +92,7 @@
         <div layout="row" layout-align="space-around center" class="cartouche-body">
 
             <div>
-                <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+actionCase.carte.code+'.png'}}" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;border: ">
+<!--                 <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+actionCase.carte.code+'.png'}}" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;"> -->
             </div>
 
             <div style="width: 250px;">
@@ -103,7 +103,7 @@
 
     </div>
 
-    <div ng-show="actionCase.phase > 0 && actionCase.categorie === 'action'" layout="column" class="partie-cartouche-container">
+    <div ng-if="actionCase.phase > 0 && actionCase.categorie === 'action'" layout="column" class="partie-cartouche-container">
 
     	<!-- Titre -->
      	<div layout="row" layout-align="center center" class="confrontations-titre red-font">

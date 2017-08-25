@@ -45,7 +45,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				circonstances: [1],
 				info: {
 					etapes: [{
-						cartes: [1],
+						cartes: [{}],
 						cases: [{}]
 					}]
 				}
@@ -82,7 +82,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				carte.info.etapes[i].categorie = CartesProprietes[carte.info.etapes[i].categorie]
 				for (var j in carte.info.etapes[i].cartes){
 					if (carte.info.etapes[i].cartes[j] != undefined){
-						carte.info.etapes[i].cartes[j] = $scope.cartes.toutes[carte.info.etapes[i].cartes[j]].nom;
+						carte.info.etapes[i].cartes[j] = {nom: $scope.cartes.toutes[carte.info.etapes[i].cartes[j]].nom};
 					}
 				}
 			}
@@ -503,9 +503,9 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				});
 				if ($scope.carte.info.etapes[i].cartes !== undefined){
 					for (var j in $scope.carte.info.etapes[i].cartes){
-						var carteNom = $scope.carte.info.etapes[i].cartes[j];
+						var carteNom = $scope.carte.info.etapes[i].cartes[j].nom;
 						var carteCode = cartesCodes[$scope.cartesNoms.indexOf(carteNom)];
-						carte.info.etapes[i].cartes.push(carteCode);
+						carte.info.etapes[i].cartes.push({code: carteCode});
 					}
 				}
 				if ($scope.carte.info.etapes[i].cases !== undefined){

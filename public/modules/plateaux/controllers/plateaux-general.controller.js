@@ -20,6 +20,7 @@ angular.module('plateaux').controller('PlateauxGeneralController', ['$scope','$r
 			$scope.joueurs[$scope.joueurId].pions[0].case = numero;
 			$scope.joueurs[$scope.joueurId].pions[0].plateau = plateau;
 			$scope.$emit('plateaux-move-pion-callback',{plateau: plateau,previousPlateau: previousPlateau,case: numero,previousCase: previousCase});
+			$scope.$emit('plateaux-pion-move',{});
 		}).error(function(error){
 			console.log("napapu sauver pion");
 			console.log(error);

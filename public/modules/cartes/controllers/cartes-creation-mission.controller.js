@@ -14,7 +14,7 @@ angular.module('cartes').controller('CartesCreationMissionController', ['$scope'
 	}
 	$scope.ajouterCarte = function(index){
 		console.log(index);
-		$scope.carte.info.etapes[index].cartes.push($scope.carte.info.etapes[index].cartes.length + 1);
+		$scope.carte.info.etapes[index].cartes.push({});
 	}
 	$scope.retirerCarte = function(index){
 		$scope.carte.info.etapes[index].cartes.splice($scope.carte.info.etapes[index].cartes.length-1,1);
@@ -31,7 +31,7 @@ angular.module('cartes').controller('CartesCreationMissionController', ['$scope'
 	}
 	$scope.ajouterEtape = function(){
 		$scope.carte.info.etapes.push({
-			cartes: [1],
+			cartes: [{}],
 			cases: [{}]
 		});
 		console.log($scope.carte.info)

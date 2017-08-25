@@ -89,6 +89,18 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			duel: false,
 			action_de_case: false
 		}
+		console.log('resetting this too')
+		$scope.tourDeJeu = {
+			actionEnCours: false,
+			notification: [0,0],
+			recompense: [0,0],
+			action: [0,0],
+			pouvoir: [0,0],
+			question: [0,0],
+			achat: [0,0],
+			'trois-familles': [0,0],
+			duel: [0,0]
+		}
 	}
 
 	$scope.tourDeJeu = {
@@ -173,9 +185,11 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    		// Objets hors pioche:
 	    		else if (carte.pile == 'hors_pioche'){
 	    			console.log(carte.position);
-	    			$scope.pioches.horsPioche.push(carte);
 	    			if (carte.position == $scope.joueurId){
 	    				$scope.jeu.horsPioche.push(carte);
+	    			}
+	    			else {
+	    				$scope.pioches.horsPioche.push(carte);
 	    			}
 	    		}
 	    	}
@@ -183,6 +197,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    	console.log($scope.pioches.horsPioche);
 			$scope.loaded.cartes = true;
 			$scope.initiateConfrontations();
+			$scope.$emit('missions-initialize',{});
 	    }).error(function(response){
 	    	console.log("Error while trying to get cartes");
 	    });

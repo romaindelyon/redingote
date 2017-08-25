@@ -7,10 +7,18 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 	$scope.actions_1 = ['notification','recompense','action','pouvoir'];
 	$scope.actions_2 = ['question','achat','duel','trois-familles'];
 
+	$scope.actionsRows = [
+		['notification','recompense','action','pouvoir'],
+		['question','achat','duel','trois-familles']
+	];
+
 	$scope.startAction = function(action){
 		$scope.tourDeJeu.actionEnCours = true;
 		if (action === 'achat' || action === 'action' || action === 'question'){
-			$scope.$emit('plateaux-action-case-start',{action: action});
+			$scope.$emit('plateaux-action-case-lancer',{action: action});
+		}
+		if (action === 'duel'){
+			$scope.$emit('confrontations-attaque-duel-start',{});
 		}
 	}
 
@@ -27,6 +35,7 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 	};
 
 	function startAction(tourJoueur,tourAction){
+		console.log("starting action" + tourAction)
 		// Changement de tour: reinitialiser le de et les dispos (cartes, des)
 		$scope.jeu.de = -1;
 		$scope.resetDispos();
@@ -53,32 +62,38 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 
 			}
 			else if (tourAction == 4){
-				$scope.partie.dispo.action_de_case = true;
+				console.log('emitting event');
+				$scope.$emit('plateaux-action-case-start',{});
     			$scope.$emit('jeu-missions-case-start',{});
 			}
 			else if (tourAction == 5){
 				$scope.partie.dispo.duel = true;
-				$scope.tourDeJeu.actionEnCours = true;
+				$scope.tourDeJeu.duel = [1,0];
+				//$scope.tourDeJeu.actionEnCours = true;
 				$scope.partie.dispo.des.duel = 3;
 				$scope.$emit('jeu-missions-case-end',{});
 			}
 			else if (tourAction == 6){
 				$scope.partie.dispo.cartes.utiliser = true;
 				$scope.$emit('confrontations-attaque-duel-cancel', {});
-				// Possibilité de piocher des missions si aucune mission au statut open ou ready
-				var newMissionPossible = true;
-				for (var i = 0;i < $scope.jeu.missions.length;i ++){
-					console.log($scope.jeu.missions[i]);
-					if ($scope.jeu.missions[i].statut.statut === 'open' || $scope.jeu.missions.statut.statut === 'ready'){
-						newMissionPossible = false;
-					}
-				}
-				if (newMissionPossible){
-					$scope.partie.dispo.pioches.missions = 1;
-				}
+				$scope.$emit('partie-tour-action-start', {});
 			}
 		}
 	}
+
+	// TODO
+	// REMOVE, MERGE and make general
+	$rootScope.$on('partie-general-partie-loaded',function(event, args) {
+		console.log($scope.partie.tour_action);
+		console.log($scope.partie.tour_joueur);
+		if ($scope.joueurId === $scope.partie.tour_joueur && $scope.partie.tour_action === 4){
+			$scope.$emit('plateaux-action-case-start',{});
+			$scope.$emit('jeu-missions-case-start',{});
+		}
+		if ($scope.joueurId === $scope.partie.tour_joueur && $scope.partie.tour_action === 6){
+			$scope.$emit('partie-tour-action-start', {});
+		}
+	});
 
 	function moveTour(numberTours,skipTours){
 		$scope.actionsDisponibles.nextAction = false;
@@ -86,6 +101,7 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 		Partie.getPartie().success(function(response){
 			// Data is consistent;
 			if ($scope.partie.tour_joueur == response[0].tour_joueur && $scope.partie.tour_action == response[0].tour_action){
+				console.log("data is consistent");
 				var tourJoueur, tourAction, tourSkip;
 				tourSkip = $scope.partie.tour_skip;
 				tourSkip[$scope.joueurId] += skipTours;
@@ -123,15 +139,13 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 					if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 5){
 						$scope.$emit('action-case-start', {});
 					}
-					if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 5){
-						$scope.$emit('confrontations-attaque-duel-start', {});
-					}
 				}).error(function(){
 					$scope.actionsDisponibles.nextAction = true;
 				});
 			}
 			// Data is not consistent
 			else {
+				console.log("data is not consistent");
 				$scope.partie = {
 					tour_joueur: response[0].tour_joueur,
 					tour_action: response[0].tour_action,

@@ -4,7 +4,7 @@ angular.module('joueurs').factory('Joueurs', ['$http','configService',
 	function($http,configService) {
 		return {
 			// Get all the joueurs:
-			getJoueurs: function(){
+			getJoueurs: function(params){
 				if (configService.local){
 					return $http({
 				        method: 'GET', 

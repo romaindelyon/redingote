@@ -209,6 +209,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 					}).error(function(){
 						console.log("Echec d'actualisation des glutis");
 					});
+					$scope.$emit('jeu-hors-pioche-change',{});
 				}
 				else if (carte.info.paiement === 'echange'){
 					var carteId = -1;
@@ -232,6 +233,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 								}
 								// Retirer la carte de la main :
 								$scope.jeu.horsPioche.splice(carteEchangeIndex,1);
+								$scope.$emit('jeu-hors-pioche-change',{});
 							}).error(function(){
 								console.log("L'objet d'échange n'a pas pu être transféré");
 							});
@@ -316,54 +318,6 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 		});
 	}
 
-	$scope.actionCase = {
-		phase: 0
-	};
-	var cases = {};
-	$http({
-        method: 'GET', 
-        url: 'modules/plateaux/json/plateaux-paysage.json'
-    }).success(function(response){
-    	for (var i in response){
-    		for (var j in response[i].colonnes){
-    			if (cases[response[i].colonnes[j].numero] === undefined){
-    				cases[response[i].colonnes[j].numero] = response[i].colonnes[j];
-    			}
-    		}
-    	}
-
-    	// Potentielles actions de case
-    	console.log(cases[$scope.joueurs[$scope.joueurId].pions[0].case]);
-    	$scope.actionsCase = {
-    		achat: cases[$scope.joueurs[$scope.joueurId].pions[0].case].achat,
-    		action: cases[$scope.joueurs[$scope.joueurId].pions[0].case].action,
-    		question: cases[$scope.joueurs[$scope.joueurId].pions[0].case].question
-    	};
-    	// Only case where something happens on labyrinthe:
-    	if ($scope.joueurs[$scope.joueurId].pions[0].case === 'Hub' || $scope.joueurs[$scope.joueurId].pions[0].case === 'Hub interplanétaire'){
-    		$scope.actionsCase.action = true;
-    	}
-    	if ($scope.actionsCase.achat){
-    		var achatsDisponibles = [];
-    		for (var i = 0;i < $scope.pioches.horsPioche.length;i ++){
-    			console.log($scope.pioches.horsPioche[i]);
-    			if ($scope.pioches.horsPioche[i].info.case === $scope.joueurs[$scope.joueurId].pions[0].case || $scope.joueurs[$scope.joueurId].pions[1] !== undefined && $scope.pioches.horsPioche[i].case === $scope.joueurs[$scope.joueurId].pions[1].case){
-    				achatsDisponibles.push($scope.pioches.horsPioche[i]);
-    				$scope.tourDeJeu.achat[0] ++;
-    			}
-    		}
-    		$scope.actionsCase.achat = achatsDisponibles;
-    		console.log($scope.actionsCase.achat);
-    	}
-       	if ($scope.actionsCase.question){
-    		$scope.tourDeJeu.question[0] ++;
-    	}
-       	if ($scope.actionsCase.action){
-    		$scope.tourDeJeu.action[0] ++;
-    	}
-
-    });
-
     $scope.cancelActionCase = function(){
     	$scope.tourDeJeu.actionEnCours = false;
     	$scope.actionCase.phase = 0;
@@ -385,7 +339,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
     	$scope.valiseNonMaterialiseeIndex ++;
     }
 
-	$rootScope.$on('plateaux-action-case-start', function(event, args) {
+	$rootScope.$on('plateaux-action-case-lancer', function(event, args) {
 		if (args.action === 'action'){
 			$scope.startActionCase(args.action,$scope.joueurs[$scope.joueurId].pions[0].case);
 		}
@@ -395,6 +349,61 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 		else if (args.action === 'question'){
 			$scope.startQuestion();
 		}
+	});
+
+	function initializeActionCase(){
+		console.log('initialization action case');
+		$scope.actionCase = {
+			phase: 0
+		};
+		var cases = {};
+		$http({
+	        method: 'GET', 
+	        url: 'modules/plateaux/json/plateaux-paysage.json'
+	    }).success(function(response){
+	    	for (var i in response){
+	    		for (var j in response[i].colonnes){
+	    			if (cases[response[i].colonnes[j].numero] === undefined){
+	    				cases[response[i].colonnes[j].numero] = response[i].colonnes[j];
+	    			}
+	    		}
+	    	}
+
+	    	// Potentielles actions de case
+	    	console.log(cases[$scope.joueurs[$scope.joueurId].pions[0].case]);
+	    	$scope.actionsCase = {
+	    		achat: cases[$scope.joueurs[$scope.joueurId].pions[0].case].achat,
+	    		action: cases[$scope.joueurs[$scope.joueurId].pions[0].case].action,
+	    		question: cases[$scope.joueurs[$scope.joueurId].pions[0].case].question
+	    	};
+	    	// Only case where something happens on labyrinthe:
+	    	if ($scope.joueurs[$scope.joueurId].pions[0].case === 'Hub' || $scope.joueurs[$scope.joueurId].pions[0].case === 'Hub interplanétaire'){
+	    		$scope.actionsCase.action = true;
+	    	}
+	    	if ($scope.actionsCase.achat){
+	    		var achatsDisponibles = [];
+	    		for (var i = 0;i < $scope.pioches.horsPioche.length;i ++){
+	    			console.log($scope.pioches.horsPioche[i]);
+	    			if ($scope.pioches.horsPioche[i].info.case.toString() === $scope.joueurs[$scope.joueurId].pions[0].case.toString() || $scope.joueurs[$scope.joueurId].pions[1] !== undefined && $scope.pioches.horsPioche[i].case.toString() === $scope.joueurs[$scope.joueurId].pions[1].case.toString()){
+	    				achatsDisponibles.push($scope.pioches.horsPioche[i]);
+	    				$scope.tourDeJeu.achat[0] ++;
+	    			}
+	    		}
+	    		$scope.actionsCase.achat = achatsDisponibles;
+	    		console.log($scope.actionsCase.achat);
+	    	}
+	       	if ($scope.actionsCase.question){
+	    		$scope.tourDeJeu.question[0] ++;
+	    	}
+	       	if ($scope.actionsCase.action){
+	    		$scope.tourDeJeu.action[0] ++;
+	    	}
+
+	    });		
+	}
+	
+	$rootScope.$on('plateaux-action-case-start', function(event, args) {
+		initializeActionCase();
 	});
 
 }]);

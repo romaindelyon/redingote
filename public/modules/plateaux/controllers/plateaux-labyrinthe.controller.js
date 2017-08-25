@@ -835,6 +835,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		}).success(function(){
 			removePionFromCase($scope.joueurs[$scope.joueurId].pions[0].case,$scope.joueurId);
 			$scope.joueurs[$scope.joueurId].pions[0].case = numero;
+			$scope.$emit('plateaux-pion-move',{});
 			addPionToCase(numero,$scope.joueurId);
 			// Update tour de jeu :
 			if (previousCoordinates.couronne === newCoordinates.couronne){

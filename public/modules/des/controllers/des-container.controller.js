@@ -5,7 +5,7 @@ angular.module('des').controller('DesContainerController', ['$scope',
 
 		var des_size = {
 			rhombo: 6,
-			paysage: 12,
+			paysage: 10,
 			echecs: 6,
 			duel: 20,
 			labyrinthe: 4

@@ -95,53 +95,86 @@ angular.module('cartes').controller('CartesPiocheController',
 	    }
 	}
 
+	function piocheCarteMission(){
+		var carteOrder = Math.floor(Math.random() * $scope.pioches.missions.length);
+		Cartes.moveCartes({
+    		carteIds: [$scope.pioches.missions[carteOrder].id],
+    		position: $scope.joueurId
+    	}).success(function(){
+    		// Changer statut to open
+    		Cartes.changementStatut({
+	    		carteId: $scope.pioches.missions[carteOrder].id,
+	    		statut: {statut: 'open', info: $scope.pioches.missions[carteOrder].info}
+	    	});
+			var carte = $scope.pioches.missions[carteOrder];
+			var piocheCartePopup = $mdDialog.confirm({
+	        	templateUrl: 'modules/cartes/views/cartes-pioche-popup.view.html',
+	        	clickOutsideToClose: true,
+			    controller: function($scope){
+		        	$scope.image = 'modules/cartes/img/missions/cartes_missions_'+carte.code+'.png';
+	            }
+	        });
+	        $mdDialog.show(piocheCartePopup);
+	        // Ajouter la carte a la main
+	        $scope.pioches.missions[carteOrder].statut = {
+	        	statut: 'open',
+	        	info: $scope.pioches.missions[carteOrder].info
+	        }
+	        $scope.jeu.missions.unshift($scope.pioches.missions[carteOrder]);
+	        if ($scope.jeu.missions.length === 1){
+	        	$scope.$emit('missions-initialize',{});
+	        }
+	        // Retirer la carte de la pioche
+			$scope.pioches.missions.splice(carteOrder,1);
+			$scope.piochesDisponibles = true;
+			$scope.partie.dispo.pioches.missions --;
+    	}).error(function(){
+    		$scope.piochesDisponibles = true;
+    	});
+	}
+
 	$scope.carteMission = function(){
 		$scope.piochesDisponibles = false;
 		// Cas ou il reste des cartes quelque part:
 		if ($scope.pioches.missions.length > 0){
-			var carteOrder = Math.floor(Math.random() * $scope.pioches.missions.length);
-			Cartes.moveCartes({
-	    		carteIds: [$scope.pioches.missions[carteOrder].id],
-	    		position: $scope.joueurId
-	    	}).success(function(){
-	    		// Changer statut to open
-	    		Cartes.changementStatut({
-		    		carteId: $scope.pioches.missions[carteOrder].id,
-		    		statut: {statut: 'open', info: $scope.pioches.missions[carteOrder].info}
-		    	});
-				var carte = $scope.pioches.missions[carteOrder];
-				var piocheCartePopup = $mdDialog.confirm({
-		        	templateUrl: 'modules/cartes/views/cartes-pioche-popup.view.html',
-		        	clickOutsideToClose: true,
-				    controller: function($scope){
-			        	$scope.image = 'modules/cartes/img/missions/cartes_missions_'+carte.code+'.png';
-		            }
-		        });
-		        $mdDialog.show(piocheCartePopup);
-		        // Ajouter la carte a la main
-		        $scope.pioches.missions[carteOrder].statut = {
-		        	statut: 'open',
-		        	info: $scope.pioches.missions[carteOrder].info
-		        }
-		        $scope.jeu.missions.push($scope.pioches.missions[carteOrder]);
-		        // Retirer la carte de la pioche
-				$scope.pioches.missions.splice(carteOrder,1);
-				$scope.piochesDisponibles = true;
-				$scope.partie.dispo.pioches.missions --;
-	    	}).error(function(){
-	    		$scope.piochesDisponibles = true;
-	    	})
+			piocheCarteMission();
 	    }
-	    // Cas ou il n'y a pas de cartes disponibles:
+	    // Si les missions sont épuisées, on redistribue toutes les missions normales :
 	    else {
-			var piocheCartePopup = $mdDialog.confirm({
-				templateUrl: 'modules/core/views/core-warning-popup.view.html',
-	        	clickOutsideToClose: true,
-			    controller: function($scope){
-		        	$scope.message = 'La pioche est vide';
-	            }
-	        });	 
-	        $mdDialog.show(piocheCartePopup);
+	    	var missionsNormales = [];
+	    	for (var i in $scope.cartes){
+	    		console.log($scope.cartes[i]);
+	    		if ($scope.cartes[i].pile === 'missions' && $scope.cartes[i].categorie === 'normale'){
+    				var carte = jQuery.extend({}, $scope.cartes[i]);
+    				carte.statut = {};
+	    			missionsNormales.push(carte);
+	    		}
+	    	} 
+	    	for (var i = 0;i < missionsNormales.length;i ++){
+    			var createMission = function(index){
+    				var carte = jQuery.extend({}, missionsNormales[index]);
+    				carte.statut = {};
+    				carte.position = -1;
+    				console.log(carte);
+	    			Cartes.createCarte(carte).success(function(){
+	    				// all missions have been added : on les retélécharge pour avoir les indices
+	    				console.log(index);
+	    				console.log(missionsNormales.length);
+	    				if (index === missionsNormales.length - 1){
+	    					Cartes.getCartes({partieId: $scope.partieId}).success(function(response){
+	    						for (var i = 0;i < response.length;i ++){
+	    							if (response[i].pile === 'missions' && response[i].position === -1){
+	    								$scope.pioches.missions.push(response[i]);
+	    							}
+	    						}
+	    						if ($scope.pioches.missions.length > 0){
+	    							piocheCarteMission();
+	    						}
+	    					});
+	    				}
+	    			});
+    			}(i);
+	    	}
 	        $scope.partie.dispo.pioches.missions --;
 	        $scope.piochesDisponibles = true;   	
 	    }

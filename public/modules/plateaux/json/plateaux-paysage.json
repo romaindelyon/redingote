@@ -99,7 +99,7 @@
 {"id":20,"numero":449,"question":false,"zones":["Foret","Foret"],"action":false,"achat":false},
 {"id":21,"numero":793,"question":false,"zones":["Foret","Royaume des tenebres"],"action":false,"achat":false},
 {"id":22,"numero":645,"question":false,"zones":["Royaume des tenebres","Mer"],"action":false,"achat":false},
-{"id":23,"numero":"Hub","question":false,"zones":["Ville"],"action":false,"achat":false}]},
+{"id":23,"numero":"Hub","question":false,"zones":["Ville"],"action":true,"achat":false}]},
 
 {"id":4,"colonnes":[
 {"id":0,"numero":371,"question":false,"zones":["Mer","Plage","Royaume des tenebres"],"action":false,"achat":false},

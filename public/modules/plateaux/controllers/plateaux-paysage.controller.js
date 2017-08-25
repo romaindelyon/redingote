@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$rootScope','$http',
-	function($scope,$rootScope,$http) {
+angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$rootScope','$http','Joueurs',
+	function($scope,$rootScope,$http,Joueurs) {
 
 		$scope.plateauPaysage = [];
 
@@ -66,13 +66,27 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 		});
 
 	    $scope.movePion = function(numero){
-	    	var previousCoordinates = getCoordinates($scope.joueurs[$scope.joueurId].pions[0].case);
-	    	removePionFromCase(previousCoordinates,$scope.joueurId);
-	    	var coordinates = getCoordinates(numero);
-	    	$scope.joueurs[$scope.joueurId].pions[0].case = numero;
-	    	addPionToCase(coordinates,$scope.joueurId);
 	    	$scope.partie.dispo.plateaux.paysage --;
-	    	//Joueurs.movePion({numero: numero})
+			var newPions = [];
+			$.each($scope.joueurs[$scope.joueurId].pions,function(i,obj) {
+			    newPions.push($.extend(true,{},obj)); 
+			});
+			newPions[0].case = numero;
+			Joueurs.movePion({
+				pions: JSON.stringify(newPions),
+				joueurId: $scope.joueurId,
+				partieId: $scope.partieId
+			}).success(function(){
+	    		var previousCoordinates = getCoordinates($scope.joueurs[$scope.joueurId].pions[0].case);
+	    		var coordinates = getCoordinates(numero);
+				removePionFromCase(previousCoordinates,$scope.joueurId);
+				addPionToCase(coordinates,$scope.joueurId);
+				$scope.joueurs[$scope.joueurId].pions[0].case = numero;
+				$scope.$emit('plateaux-pion-move',{});
+			}).error(function(error){
+				console.log("napapu sauver pion");
+				console.log(error);
+			});
 	    }
 
 		$rootScope.$on('plateaux-move-pion-callback', function(event, args) {

@@ -20,7 +20,6 @@ angular.module('jeu').controller('JeuContainerController', ['$scope',
 	
 	$scope.changeTab = function(index){
 		$scope.focusedTab = index;
-		console.log($scope.tabStyles);
 	}
 
 	$scope.view = 'cartes';
