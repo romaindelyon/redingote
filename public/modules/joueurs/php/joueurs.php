@@ -8,10 +8,12 @@ header("Content-Type: application/json; charset=UTF-8");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("SELECT * FROM joueurs");
+    $partieId = $_GET["partieId"];
 
+    $stmt = $con -> prepare("SELECT * FROM joueurs WHERE partie = ?");
+    $stmt -> bind_param('i',$partieId);
     $stmt -> execute();
-    $stmt -> bind_result($id,$nom,$diable,$belette,$notes_titre,$notes,$backgroundColor,$escalier,$humeurs,$partie);
+    $stmt -> bind_result($id,$nom,$diable,$belette,$notes_titre,$notes,$backgroundColor,$pions,$glutis,$escalier,$humeurs,$maison,$partie);
 
     $results = array();
     while($stmt->fetch()) {

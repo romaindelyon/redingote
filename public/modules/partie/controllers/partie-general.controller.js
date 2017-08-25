@@ -209,7 +209,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	};
 	$scope.joueur = {};
 
-	Joueurs.getJoueurs().success(function(response){
+	Joueurs.getJoueurs({partieId: $scope.partieId}).success(function(response){
 		var joueur = response[$scope.joueurId]
 		$scope.joueur = {
 			id: joueur.id,

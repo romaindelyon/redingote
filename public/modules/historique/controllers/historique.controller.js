@@ -3,8 +3,11 @@
 angular.module('historique').controller('HistoriqueController', ['$scope','Joueurs',
 	function($scope,Joueurs) {
 
+	// TODO: change this
+	$scope.partieId = 1;
+
 	$scope.joueurs = [];
-	Joueurs.getJoueurs().success(function(response){
+	Joueurs.getJoueurs({partieId: $scope.partieId}).success(function(response){
 		$scope.joueurs = response;
 		grouperHistorique();
 	});

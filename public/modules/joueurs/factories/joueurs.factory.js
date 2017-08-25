@@ -13,7 +13,8 @@ angular.module('joueurs').factory('Joueurs', ['$http','configService',
 				}
 				else {
 					return $http({
-				        method: 'GET', 
+				        method: 'POST',
+				        params: params, 
 				        url: 'modules/joueurs/php/joueurs.php',
 				        headers: {
 				        	'Cache-Control': 'no-cache'

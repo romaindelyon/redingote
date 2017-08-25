@@ -3,8 +3,8 @@
         {{description}}
     </span>
     <div layout="row" layout-align="space-around" class="confrontations-defenses-action-cartes-perte-cartes">
-        <div ng-click="removeCarte($index)" ng-repeat="carte in cartes.liste" class="confrontations-defenses-action-cartes-perte-carte">
-            <img ng-if="carte.filled" ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}">
+        <div ng-repeat="carte in cartes.liste" class="confrontations-defenses-action-cartes-perte-carte">
+            <img ng-if="carte.filled" ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" ng-click="removeCarte($index)">
             <img ng-if="!carte.filled" ng-src="{{'modules/cartes/img/pioche/cartes_pioche_blank.png'}}">
         </div>
     </div>
