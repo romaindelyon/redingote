@@ -14,7 +14,7 @@
                     C'est ton tour {{attaques.length}}
                 </span>
             </div>
-            <div layout="column" layout-align="center center" ng-click="tourDeJeu.actionEnCours || !actionsDisponibles.nextAction || attaques.defenses.length > 0 || nextAction()" ng-if="partie.tour_joueur == joueurId" style="outline: none;">
+            <div layout="column" layout-align="center center" ng-show="!tourDeJeu.actionEnCours && actionsDisponibles.nextAction && attaques.defenses.length <= 0" ng-click="nextAction()" ng-if="partie.tour_joueur == joueurId" style="outline: none;">
                 <img src="modules/jeu/img/jeu_icones_next.png" style="height: 20px;">
             </div>
         </div>
@@ -55,14 +55,14 @@
         <div ng-repeat="actions in actionsRows" layout="row" layout-align="space-around center">
             <div ng-repeat="action in actions">
                 <div ng-if="tourDeJeu[action][0] + tourDeJeu[action][1] > 0">
-                    <div ng-if="tourDeJeu[action][0] > 0" style="position: absolute;margin-left: 10px;margin-top: 8px;">
+                    <div ng-if="tourDeJeu[action][0] > 0" style="position: absolute;margin-left: 10px;margin-top: 8px;z-index: 1;">
                         <img src="modules/partie/img/partie-tour-notification-green-icone.png" style="width: 37px;position: absolute;">
                         <span class="red-font" style="color: white;position: absolute;margin-left: 12px;font-size: 20px;margin-top: 5px;">
                             {{tourDeJeu[action][0]}}
                         </span>
                     </div>
                     <img ng-click="startAction(action,joueurs[joueurId].pions[0].case)" ng-src="{{'modules/partie/img/partie-tour-de-jeu-'+action+'-icone.png'}}" class="plateaux-action-case-icone">
-                    <div ng-if="tourDeJeu[action][1] > 0" style="position: absolute;margin-top: -152px;margin-left: 114px;">
+                    <div ng-if="tourDeJeu[action][1] > 0" style="position: absolute;margin-top: -152px;margin-left: 114px;z-index: 1;">
                         <img src="modules/partie/img/partie-tour-notification-red-icone.png" style="width: 37px;position: absolute;">
                         <span class="red-font" style="color: white;position: absolute;margin-left: 12px;font-size: 20px;margin-top: 5px;">
                             {{tourDeJeu[action][1]}}

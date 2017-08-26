@@ -7,7 +7,7 @@
 	<div ng-click="goTo('historique')" class="partie-menu-icone">
 		<img src="modules/core/img/core-icones-historique.png">
 	</div>
-	<div ng-click="goTo('questions')" class="partie-menu-icone">
+	<div ng-click="goToQuestions()" ng-if="joueurId != undefined" class="partie-menu-icone">
 		<img src="modules/core/img/core-icones-questions.png">
 	</div>
 	<div ng-click="goTo('regles')" class="partie-menu-icone">

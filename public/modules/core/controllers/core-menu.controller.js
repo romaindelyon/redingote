@@ -7,4 +7,8 @@ angular.module('core').controller('CoreMenuController', ['$scope','$state',
 		$state.go(state);
 	}
 
+	$scope.goToQuestions = function(){
+		$state.go('questions',{joueur: $scope.joueurId});
+	}
+
 }]);

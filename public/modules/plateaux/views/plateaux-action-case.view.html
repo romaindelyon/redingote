@@ -1,5 +1,99 @@
 <div ng-controller="PlateauxActionCaseController" ng-show="actionCase.phase >= 0">
 
+    <!-- *** QUESTIONS *** -->
+
+    <div ng-if="actionCase.phase == 1 && actionCase.categorie === 'question'" layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="row" layout-align="center center" class="confrontations-titre red-font">
+            <span>
+                Sauras-tu répondre à cette question ?
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="row" layout-align="space-around center" class="cartouche-body">
+
+            <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+actionCase.question.joueur+'.png'}}" style="width: 100px;">
+
+            <div layout="column" style="margin-left: 40px;margin-right: 40px;">
+                <span style="font-size: 22px;"> 
+                    {{actionCase.question.question}}
+                </span>
+                <md-input-container class="cartes-input" style="width: 200px;font-size: 16px;">
+                    <md-select ng-model="actionCase.reponse" required aria-label="Reponse" style="text-align: initial;">
+                        <md-option ng-repeat="option in actionCase.question.options track by $index" style="text-align: initial;">{{option}}</md-option>
+                    </md-select>
+                    <label style="text-align: initial;">Réponse</label>
+                </md-input-container>
+                <a ng-click="montrerIndice()" ng-if="!actionCase.indice" style="font-size: 16px;margin-top: 32px;color: #484848;text-align: left;"> 
+                    Demander un indice (la récompense sera divisée par 2)
+                </a>
+                <span ng-if="actionCase.indice" style="font-size: 16px;margin-top: 32px;color: #484848;text-align: left;">
+                    Indice: {{actionCase.question.indice}}
+                </span>
+            </div>
+
+            <div layout="column">
+                <md-button ng-click="repondreQuestion()" ng-disabled="actionCase.reponse == undefined" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">
+                    C'est mon dernier mot
+                </md-button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div ng-if="actionCase.phase == 2 && actionCase.categorie === 'question'" layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="row" layout-align="center center" class="confrontations-titre red-font">
+            <span ng-if="actionCase.succes === 'succes'">
+                Bonne réponse !
+            </span>
+            <span ng-if="actionCase.succes !== 'succes'">
+                Mauvaise réponse...
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="row" layout-align="space-around center" class="cartouche-body">
+
+            <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+actionCase.question.joueur+'.png'}}" style="width: 100px;">
+
+            <div layout="column" style="margin-left: 40px;margin-right: 40px;">
+                <span ng-if="actionCase.succes === 'echec'" style="font-size: 22px;"> 
+                    {{actionCase.question.question}}
+                </span>
+                <div ng-if="actionCase.succes !== 'echec'" layout="column" style="font-size: 22px;">
+                    <span>
+                        Tu gagnes {{actionCase.recompenseCartes}}
+                        <ng-pluralize count="actionCase.recompenseCartes" when="{'0':'carte','1':'carte','other':'cartes'}"></ng-pluralize>
+                         et {{actionCase.recompenseGlutis}}₲.
+                    </span>
+                </div>
+                <div ng-if="actionCase.succes === 'echec'" layout="column" layout-align="center start" style="font-size: 18px;">
+                    <span style="color: red;"> 
+                        Ta réponse : {{actionCase.reponse}}
+                    </span>
+                    <span style="color: green;"> 
+                        Bonne réponse : {{actionCase.question.reponse}}
+                    </span>
+                </div>
+            </div>
+
+            <div layout="column">
+                <md-button ng-click="cancelActionCase()" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">
+                    OK
+                </md-button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- *** ACHATS *** -->
+
     <div ng-if="(actionCase.phase == 1 || actionCase.phase == 1.1) && actionCase.categorie === 'achat'" layout="column" class="partie-cartouche-container">
 
         <!-- Titre -->
@@ -102,6 +196,11 @@
         </div>
 
     </div>
+
+
+
+
+    <!-- *** ACTIONS *** -->
 
     <div ng-if="actionCase.phase > 0 && actionCase.categorie === 'action'" layout="column" class="partie-cartouche-container">
 

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope','$rootScope','$http','$timeout','Partie','Joueurs','Cartes','Objets','Confrontations',
-	function($scope,$rootScope,$http,$timeout,Partie,Joueurs,Cartes,Objets,Confrontations) {
+angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope','$rootScope','$http','$timeout','Partie','Joueurs','Cartes','Objets','Confrontations','Questions',
+	function($scope,$rootScope,$http,$timeout,Partie,Joueurs,Cartes,Objets,Confrontations,Questions) {
 
 	$scope.startActionCase = function(categorie,numero){
 		$scope.actionCase.categorie = categorie;
@@ -265,11 +265,12 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 	}
 
 	$scope.startQuestion = function(){
-		Questions.get({joueurId : $scope.joueurId}).success(function (response){
+		Questions.getQuestionsAutresJoueurs({joueurId : $scope.joueurId}).success(function (response){
 			var questions = response;
-			var questionIndex = Math.floor(Math.rand(questions.length));
+			var questionIndex = Math.floor(Math.random(questions.length));
 			$scope.actionCase.question = questions[questionIndex];
 			$scope.actionCase.phase = 1;
+			$scope.actionCase.categorie = 'question';
 		}).error(function(){
 			console.log("Problème lors de l'obtention des questions");
 		});
@@ -281,6 +282,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 
 	$scope.repondreQuestion = function(){
 		$scope.actionCase.phase = 2;
+		$scope.tourDeJeu.question[0] --;
 		if ($scope.actionCase.reponse === $scope.actionCase.question.reponse){
 			// Succès
 			$scope.actionCase.succes = "succes";
@@ -292,7 +294,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 				$scope.actionCase.recompenseCartes = 1;
 				$scope.actionCase.recompenseGlutis *= 0.5;
 			}
-			$scope.dispo.pioches.pioche += $scope.actionCase.recompenseCartes;
+			$scope.partie.dispo.pioches.pioche += $scope.actionCase.recompenseCartes;
 			var nouvelleFortune = $scope.joueurs[$scope.joueurId].glutis + $scope.actionCase.recompenseGlutis;
 			Joueurs.updateGlutis({joueurId: $scope.joueurId, glutis: nouvelleFortune,partieId: $scope.partieId}).success(function(){
 				$scope.joueurs[$scope.joueurId].glutis = nouvelleFortune;
@@ -306,7 +308,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 		// Updater la question
 		Questions.repondreQuestion({
 			questionId: $scope.actionCase.question.id,
-			joueur: $scope.joueurId,
+			repondant: $scope.joueurs[$scope.joueurId].nom,
 			succes: $scope.actionCase.succes,
 			reponseDonnee: $scope.actionCase.reponse,
 			reponsePartie: $scope.partieId,

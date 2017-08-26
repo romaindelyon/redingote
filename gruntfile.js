@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 			'public/modules/joueurs/*.js', 'public/modules/joueurs/**/*.js',
 			'public/modules/partie/*.js', 'public/modules/partie/**/*.js',
 			'public/modules/plateaux/*.js', 'public/modules/plateaux/**/*.js',
-			'public/modules/questions/*.js', 'public/modules/questions/**/*.js',
+			'public/modules/question/*.js', 'public/modules/question/**/*.js',
 			'public/modules/regles/*.js', 'public/modules/regles/**/*.js'],
 		clientCSS: ['public/modules/**/*.css', 'public/styles/*.css'],
 		jasmine: ['app/tests/**/*.js']
