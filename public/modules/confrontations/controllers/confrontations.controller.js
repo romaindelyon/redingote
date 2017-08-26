@@ -28,7 +28,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	// Start function
 
 	function startConfrontation(categorie,type,info,carteIndex,source,cible,id) {
-		$scope.tourDeJeu.actionEnCours = true;
+		$scope.partie.dispo.tourDeJeu.actionEnCours = true;
 		// build confrontation object:
 		$scope.confrontation.active = true;
 		$scope.confrontation.id = id;
@@ -286,7 +286,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 		$scope.confrontation.cible = -1;
 		$scope.confrontation.info = -1;
 		$scope.confrontation.display = {};
-		$scope.tourDeJeu.actionEnCours = false;
+		$scope.partie.dispo.tourDeJeu.actionEnCours = false;
 	}
 	$rootScope.$on('confrontations-attaque-duel-cancel', function(event, args) {
 		$scope.cancelConfrontation();

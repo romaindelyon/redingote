@@ -13,7 +13,7 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 	];
 
 	$scope.startAction = function(action){
-		$scope.tourDeJeu.actionEnCours = true;
+		$scope.partie.dispo.tourDeJeu.actionEnCours = true;
 		if (action === 'achat' || action === 'action' || action === 'question'){
 			$scope.$emit('plateaux-action-case-lancer',{action: action});
 		}
@@ -68,8 +68,8 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 			}
 			else if (tourAction == 5){
 				$scope.partie.dispo.duel = true;
-				$scope.tourDeJeu.duel = [1,0];
-				//$scope.tourDeJeu.actionEnCours = true;
+				$scope.partie.dispo.tourDeJeu.duel = [1,0];
+				//$scope.partie.dispo.tourDeJeu.actionEnCours = true;
 				$scope.partie.dispo.des.duel = 3;
 				$scope.$emit('jeu-missions-case-end',{});
 			}

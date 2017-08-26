@@ -87,32 +87,20 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 				layrinthe: 0
 			},
 			duel: false,
-			action_de_case: false
+			action_de_case: false,
+			tourDeJeu: {
+				actionEnCours: false,
+				notification: [0,0],
+				recompense: [0,0],
+				action: [0,0],
+				pouvoir: [0,0],
+				question: [0,0],
+				achat: [0,0],
+				'trois-familles': [0,0],
+				duel: [0,0]
+			}
 		}
-		console.log('resetting this too')
-		$scope.tourDeJeu = {
-			actionEnCours: false,
-			notification: [0,0],
-			recompense: [0,0],
-			action: [0,0],
-			pouvoir: [0,0],
-			question: [0,0],
-			achat: [0,0],
-			'trois-familles': [0,0],
-			duel: [0,0]
-		}
-	}
-
-	$scope.tourDeJeu = {
-		actionEnCours: false,
-		notification: [0,0],
-		recompense: [0,0],
-		action: [0,0],
-		pouvoir: [0,0],
-		question: [0,0],
-		achat: [0,0],
-		'trois-familles': [0,0],
-		duel: [0,0]
+		console.log('resetting this too');
 	}
 	
 	Partie.getPartie().success(function(response){

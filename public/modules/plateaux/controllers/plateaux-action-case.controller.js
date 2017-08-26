@@ -109,8 +109,8 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 					$scope.actionCase.image = "modules/plateaux/img/avion.png";
 					$timeout(function(){
 						$scope.actionCase.phase = 0;
-						$scope.tourDeJeu.actionEnCours = false;
-						$scope.tourDeJeu.action[0] --;
+						$scope.partie.dispo.tourDeJeu.actionEnCours = false;
+						$scope.partie.dispo.tourDeJeu.action[0] --;
 						$scope.actionsCase.action = false;
 						$scope.$emit('plateaux-move-pion',{plateau: $scope.actionCase.destination,case: 'Hub'});
 						if ($scope.actionCase.destination === 'labyrinthe' && $scope.plateau !== 1){
@@ -190,8 +190,8 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 						$scope.actionsCase.achat.splice(i,1);
 					}
 				}				
-				$scope.tourDeJeu.achat[0] --;
-				console.log($scope.tourDeJeu.achat);
+				$scope.partie.dispo.tourDeJeu.achat[0] --;
+				console.log($scope.partie.dispo.tourDeJeu.achat);
 				console.log($scope.actionsCase.achat);
 				// Retirer la carte de la pioche d'objets hors pioche :
 				console.log( $scope.pioches.horsPioche);
@@ -228,7 +228,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 								for (var j = 0;j < $scope.joueurs[$scope.joueurId].pions.length;j ++){
 									if (carte.info.case === $scope.joueurs[$scope.joueurId].pions[j]){
 										$scope.actionsCase.achat.push(carte);
-										$scope.tourDeJeu.achat[0] ++;
+										$scope.partie.dispo.tourDeJeu.achat[0] ++;
 									}
 								}
 								// Retirer la carte de la main :
@@ -282,7 +282,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 
 	$scope.repondreQuestion = function(){
 		$scope.actionCase.phase = 2;
-		$scope.tourDeJeu.question[0] --;
+		$scope.partie.dispo.tourDeJeu.question[0] --;
 		if ($scope.actionCase.reponse === $scope.actionCase.question.reponse){
 			// Succès
 			$scope.actionCase.succes = "succes";
@@ -321,7 +321,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 	}
 
     $scope.cancelActionCase = function(){
-    	$scope.tourDeJeu.actionEnCours = false;
+    	$scope.partie.dispo.tourDeJeu.actionEnCours = false;
     	$scope.actionCase.phase = 0;
     }
 
@@ -388,17 +388,17 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 	    			console.log($scope.pioches.horsPioche[i]);
 	    			if ($scope.pioches.horsPioche[i].info.case.toString() === $scope.joueurs[$scope.joueurId].pions[0].case.toString() || $scope.joueurs[$scope.joueurId].pions[1] !== undefined && $scope.pioches.horsPioche[i].case.toString() === $scope.joueurs[$scope.joueurId].pions[1].case.toString()){
 	    				achatsDisponibles.push($scope.pioches.horsPioche[i]);
-	    				$scope.tourDeJeu.achat[0] ++;
+	    				$scope.partie.dispo.tourDeJeu.achat[0] ++;
 	    			}
 	    		}
 	    		$scope.actionsCase.achat = achatsDisponibles;
 	    		console.log($scope.actionsCase.achat);
 	    	}
 	       	if ($scope.actionsCase.question){
-	    		$scope.tourDeJeu.question[0] ++;
+	    		$scope.partie.dispo.tourDeJeu.question[0] ++;
 	    	}
 	       	if ($scope.actionsCase.action){
-	    		$scope.tourDeJeu.action[0] ++;
+	    		$scope.partie.dispo.tourDeJeu.action[0] ++;
 	    	}
 
 	    });		
