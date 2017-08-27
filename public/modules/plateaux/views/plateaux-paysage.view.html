@@ -5,7 +5,7 @@
 		<!-- Rangees -->
 		<div ng-repeat="ligne in plateauPaysage" layout="row">
 			<!-- Colonnes -->
-			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(case.numero)" ng-mouseover="hoverCase(case.numero)" layout="column" layout-align="space-between center" class="plateaux-paysage-case">
+			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(case.numero)" ng-mouseover="hoverCase(case.numero)" layout="column" layout-align="space-between center" class="plateaux-paysage-case red-font">
 				<!-- Case Info -->
 				<div layout="column" layout-align="space-between center" ng-class="{'plateaux-paysage-case-info-clicked' : selectedCase.numero == case.numero, 'plateaux-paysage-case-info-hovered': hoveredCase === case.numero, 'plateaux-paysage-case-info': hoveredCase !== case.numero && selectedCase.numero !== case.numero}" >
 					<div layout="column" layout-align="space-between center" style="position: absolute;	width: 65px;height: 70px;">

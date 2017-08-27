@@ -28,6 +28,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	// Start function
 
 	function startConfrontation(categorie,type,info,carteIndex,source,cible,id) {
+		console.log($scope.partie);
 		$scope.partie.dispo.tourDeJeu.actionEnCours = true;
 		// build confrontation object:
 		$scope.confrontation.active = true;
@@ -82,6 +83,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 			titre = "Lancer un duel";
 			$scope.confrontation.display.joueur_selection = true;
 			$scope.confrontation.display.duel_results = true;
+			$scope.partie.dispo.des.duel = 3;
 		}
 
 		else if (categorie === 'defense'){
@@ -287,6 +289,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 		$scope.confrontation.info = -1;
 		$scope.confrontation.display = {};
 		$scope.partie.dispo.tourDeJeu.actionEnCours = false;
+		$scope.partie.dispo.des.duel = 0;
 	}
 	$rootScope.$on('confrontations-attaque-duel-cancel', function(event, args) {
 		$scope.cancelConfrontation();
@@ -361,6 +364,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	    		source: $scope.joueurId
 	    	}).success(function(){
 	    		$scope.partie.dispo.duel = false;
+	    		$scope.partie.dispo.tourDeJeu.duel[0] --;
 	    		$scope.cancelConfrontation();
 	    	}).error(function(){
 	    		console.log('Sending duel did not work');
@@ -409,7 +413,6 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 				}
 				else {
 					if (confrontation.info.result_cible > confrontation.info.result_source){
-						console.log('ici !');
 						$scope.confrontation.display.description = true;
 						$scope.confrontation.display.description_type = 'text_only';
 						$scope.confrontation.description = "Tu as gagné ! " + $scope.joueurs[confrontation.source].nom + " te donnera 2 cartes";
@@ -433,6 +436,8 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 				// On la vire:
 				Confrontations.delete({id: $scope.confrontation.id});
 				$scope.confrontation.active = false;
+				$scope.partie.dispo.tourDeJeu.actionEnCours = false;
+				console.log("on pass là");
 				// On enchaine avec les eventuelles defenses suivantes:
 				if ($scope.attaques.defenses.length > 0){
 					startDefense();

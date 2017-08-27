@@ -112,7 +112,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			temps: response[0].temps,
 			dispo: response[0].dispo,
 			positionCouronnes: response[0].positionCouronnes,
-			valiseNonMaterialisee: response[0].valiseNonMaterialisee
+			valiseNonMaterialisee: response[0].valiseNonMaterialisee,
+			tourDeJeu: response[0].tourDeJeu
 		};
 		if ($scope.partie.tour_joueur !== $scope.joueurId){
 			$scope.resetDispos();

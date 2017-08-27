@@ -69,8 +69,6 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 			else if (tourAction == 5){
 				$scope.partie.dispo.duel = true;
 				$scope.partie.dispo.tourDeJeu.duel = [1,0];
-				//$scope.partie.dispo.tourDeJeu.actionEnCours = true;
-				$scope.partie.dispo.des.duel = 3;
 				$scope.$emit('jeu-missions-case-end',{});
 			}
 			else if (tourAction == 6){
