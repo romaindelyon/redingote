@@ -58,3 +58,13 @@
 	filter: grayscale(100%);
     opacity: 0.8;
 }
+
+.jeu-grandes-cartes,
+.jeu-grandes-cartes-completed {
+	width: 120px;
+	height:180px;
+}
+.jeu-grandes-cartes {
+	filter: grayscale(100%);
+    opacity: 0.4;
+}

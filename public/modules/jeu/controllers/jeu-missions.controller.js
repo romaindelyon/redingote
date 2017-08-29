@@ -130,7 +130,7 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 
 	function updateMissionCases(){
 		for (var etape = 0;etape < $scope.mission.statut.info.etapes.length;etape ++){
-			if ($scope.mission.statut.info.etapes[etape].statut !== 'completed'){
+			if ($scope.mission.statut.info.etapes[etape].statut !== 'completed' && $scope.mission.statut.info.etapes[etape].categorie === 'apporter_des_cartes'){
 				var etapeReady = false;
 				for (var i in $scope.joueurs[$scope.joueurId].pions){
 					console.log($scope.mission.statut.info.etapes[etape]);
@@ -158,7 +158,6 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
     	}).success(function(){
     		console.log(newStatut);
     		$scope.mission.statut = newStatut;
-    		console.log($scope.mission.statut);
 			// Vérifier si la mission est finie :
 			var missionReady = true;
 			for (var i in $scope.mission.statut.info.etapes){
@@ -169,6 +168,8 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 			if (missionReady){
 				newStatut = $.extend({}, $scope.mission.statut);
 				newStatut.statut = 'completed';
+				console.log($scope.mission.info.consequences);
+				$scope.$emit('consequence-start',{consequences: $scope.mission.info.consequences,type: 'recompense'});
 				newStatut.completionDate = new Date();
 				updateStatutMission(newStatut);
 				console.log('completed !!!');
@@ -206,7 +207,6 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 		$scope.mission = $scope.jeu.missions[$scope.missionIndex];
 		console.log($scope.mission);
 		$scope.missionCasesAvailable = [];
-		var newStatut = {};
 		updateMissionObjets();
 		updateMissionCases();
 
@@ -216,6 +216,7 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 	}
 
 	// Initialization :
+	var newStatut = {};
 	if ($scope.jeu.missions.length > 0){
 		initializeMissions();
 	}

@@ -11,7 +11,10 @@ angular.module('question').controller('QuestionsController', ['$scope','$statePa
 	};
 
 	$scope.createQuestion = function(){
-		Questions.createQuestion($scope.newQuestion).success(function(){
+		var newQuestion = jQuery.extend({},$scope.newQuestion);
+		newQuestion.options = $scope.newQuestion.options;
+		newQuestion.options = JSON.stringify(newQuestion.options);
+		Questions.createQuestion(newQuestion).success(function(){
 			$scope.questions.push($scope.newQuestion);
 			$scope.NouvelleQuestion.$setUntouched();
 			$scope.newQuestion = {

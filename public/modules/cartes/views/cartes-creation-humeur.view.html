@@ -1,0 +1,40 @@
+<div>
+	<div layout="column">
+		<div layout="row">
+			<md-input-container class="cartes-input" style="width: 300px;">
+				<md-select ng-model="carte.info.maison" required aria-label="Condition">
+					<md-option ng-repeat="case in cases | orderBy: case">{{case}}</md-option>
+				</md-select>
+				<label>Maison</label>
+			</md-input-container>
+			<md-input-container class="cartes-input" style="width: 300px;">
+				<input ng-model="carte.info.nomSims" required aria-label="Nom">
+				<label>Nom du Sims</label>
+			</md-input-container>
+			<md-input-container class="cartes-input" style="width: 300px;">
+				<input ng-model="carte.info.ami" required aria-label="Nom">
+				<label>Ami (code de la carte humeur)</label>
+			</md-input-container>
+			<md-input-container class="cartes-input" style="width: 300px;">
+				<input ng-model="carte.info.ennemi" required aria-label="Nom">
+				<label>Ennemi (code de la carte humeur)</label>
+			</md-input-container>
+		</div>
+	</div>
+	<div layout="row">
+		<div ng-repeat="type in typesHumeurs | orderBy:'type'" layout="row">
+			<md-input-container class="cartes-input">
+				<input type="checkbox" ng-model="carte.types[type]" aria-label="checkbox">
+				<label>{{type}}</label>
+			</md-input-container>
+		</div>
+	</div>
+	<div layout="column">
+		<div class="cartes-nouvelle-titre red-font">
+			Pouvoir
+		</div>
+		<red-cartes-creation-consequences carte="carte"></red-cartes-creation-consequences>
+		<red-cartes-creation-contraintes carte="carte"></red-cartes-creation-contraintes>
+		<red-cartes-creation-circonstances carte="carte"></red-cartes-creation-circonstances>
+	</div>
+</div>

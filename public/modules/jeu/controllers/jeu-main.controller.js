@@ -31,7 +31,12 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
     		statut: carte.statut
     	}).success(function(){
 			$timeout(function(){
-				$scope.jeu.ouvertes.push(carte);
+				if (carte.categorie !== "grande_carte"){
+					$scope.jeu.ouvertes.push(carte);
+				}
+				else {
+					$scope.$emit('grandes-cartes-added',{});
+				}
 			},250);
 			$scope.jeu.main.splice(index,1);
 			$scope.focusIndex = -2;

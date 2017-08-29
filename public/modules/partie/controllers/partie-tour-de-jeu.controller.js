@@ -14,7 +14,8 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 
 	$scope.startAction = function(action){
 		$scope.partie.dispo.tourDeJeu.actionEnCours = true;
-		if (action === 'achat' || action === 'action' || action === 'question'){
+		console.log(action);
+		if (action === 'achat' || action === 'action' || action === 'question' || action === 'recompense'){
 			$scope.$emit('plateaux-action-case-lancer',{action: action});
 		}
 		if (action === 'duel'){
@@ -90,6 +91,18 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 		}
 		if ($scope.joueurId === $scope.partie.tour_joueur && $scope.partie.tour_action === 6){
 			$scope.$emit('partie-tour-action-start', {});
+		}
+	});
+	console.log('intializaing this')
+	$rootScope.$on('consequence-start',function(event,args){
+		var consequences = args.consequences;
+		if (args.type === 'recompense'){
+			$scope.partie.dispo.tourDeJeu.recompenses = $scope.partie.dispo.tourDeJeu.recompenses.concat(consequences);
+			console.log($scope.partie.dispo.tourDeJeu.recompenses);
+			$scope.partie.dispo.tourDeJeu.recompense[1] = $scope.partie.dispo.tourDeJeu.recompenses.length;
+			// if (!$scope.partie.dispo.tourDeJeu.actionEnCours){
+			// 	$scope.startAction('question');
+			// }
 		}
 	});
 

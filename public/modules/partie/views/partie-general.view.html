@@ -4,7 +4,7 @@
 
 	<div layout="row" style="width: 100%;height: 400;">
 
-		<red-joueurs-recap-left style="width: 38%;"></red-joueurs-recap-left>
+		<red-joueurs-recap style="width: 38%;" joueur="{{joueurLeft}}"></red-joueurs-recap>
 
 		<div layout="column" style="width: 24%;height: 100%;">
 
@@ -29,7 +29,7 @@
 
 		</div>
 
-		<red-joueurs-recap-right style="width: 38%;"></red-joueurs-recap-right>
+		<red-joueurs-recap style="width: 38%;" joueur="{{joueurRight}}"></red-joueurs-recap>
 
 	</div>
 
@@ -71,6 +71,8 @@
 <!-- 	<red-confrontations-attaque-duel ng-if="partie.dispo.duel"></red-confrontations-attaque-duel>
  -->
 	<red-confrontations ng-show="confrontation.active" layout="column" flex layout-align="center center"></red-confrontations>
+
+	<red-consequences ng-show="consequenceActive" layout="column" flex layout-align="center center"></red-consequences>
 
 	<!-- Jeux -->
 

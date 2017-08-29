@@ -53,3 +53,12 @@ angular.module('jeu').directive('redJeuHorsPioche', [
 		};
 	}
 ]);
+
+angular.module('jeu').directive('redJeuHumeurs', [
+	function() {
+		return {
+			templateUrl: 'modules/jeu/views/jeu-humeurs.view.html',
+			restrict: 'E'
+		};
+	}
+]);

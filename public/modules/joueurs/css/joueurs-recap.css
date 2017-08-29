@@ -1,0 +1,9 @@
+/*Joueurs recap divs*/
+
+.joueurs-recap {
+	margin: 10px;
+	padding: 10px;
+	height: 98%;
+	border-radius: 6px;
+	border: 2px solid;
+}

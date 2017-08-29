@@ -3,7 +3,6 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-    $id = $_GET["id"];
     $nom = utf8_decode($_GET["nom"]);
     $code = $_GET["code"];
     $position = -1;
@@ -21,9 +20,9 @@ header("Content-Type: application/json; charset=UTF-8");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("UPDATE cartes SET nom = ?, code = ?, position = ?, pile = ?, categorie = ?, utilisation = ?, info = ?, types = ?, statut = ? WHERE id = ? AND partie = ?");
+    $stmt = $con -> prepare("UPDATE cartes SET nom = ?, position = ?, pile = ?, categorie = ?, utilisation = ?, info = ?, types = ?, statut = ? WHERE code = ? AND partie = ?");
 
-    $stmt -> bind_param('ssissssssii',$nom,$code,$position,$pile,$categorie,$utilisation,$info,$types,$statut,$id,$partie);
+    $stmt -> bind_param('sisssssssi',$nom,$position,$pile,$categorie,$utilisation,$info,$types,$statut,$code,$partie);
     $stmt -> execute();
 
     mysqli_close($con); 

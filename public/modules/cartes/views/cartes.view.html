@@ -99,7 +99,7 @@
 				</div>
 			</md-input-container>
 			<md-input-container class="cartes-input" style="width: 200px;">
-				<input ng-model="carte.code" required aria-label="Code">
+				<input ng-model="carte.code" required ng-readonly="view == 'modifier_carte'" aria-label="Code">
 				<label>Code</label>
 				<div ng-messages>
 					<div style="color: #bdbdbd;">
@@ -107,10 +107,14 @@
 					</div>
 				</div>
 			</md-input-container>
+			<md-input-container class="cartes-input" style="width: 100px;">
+				<input ng-model="carte.nombreDeCartes" required aria-label="nombre de cartes">
+				<label>Quantité</label>
+			</md-input-container>
 		</div>
 		<div layout="row">
 			<md-input-container class="cartes-input" style="width: 200px;">
-				<md-select ng-model="carte.pile" required aria-label="Pile">
+				<md-select ng-model="carte.pile" ng-change="changingPile(carte.pile)" required aria-label="Pile">
 					<md-option ng-repeat="(pile_nom,pile) in piles | orderBy:'pile'">{{pile_nom}}</md-option>
 				</md-select>
 				<label>Pile</label>
@@ -175,6 +179,13 @@
 				Mission
 			</div>
 			<red-cartes-creation-mission carte="carte"></red-cartes-creation-mission>
+		</div>
+
+		<div layout="column" ng-if="carte.pile == 'Humeurs'">
+			<div class="cartes-nouvelle-titre red-font">
+				Humeur
+			</div>
+			<red-cartes-creation-humeur carte="carte"></red-cartes-creation-humeur>
 		</div>
 
 		<div layout="column" ng-if="carte.pile === 'Hors Pioche' && carte.categorie === 'Objet'">
@@ -258,9 +269,6 @@
 			<div class="red-font" style="width: 400px;text-align: center;color: #35bc35;font-weight: bold;">
 				Carte créée ! Envoie l'image de la carte à Romain ({{carteImageFileName}})
 			</div>
-            <md-button type="button" ng-click="carteSupplementaire()" class="confrontations-button red-font md-primary md-raised">
-                Créer une carte supplémentaire
-            </md-button>
 		</div>
 	</form>
 

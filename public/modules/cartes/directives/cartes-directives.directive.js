@@ -45,6 +45,15 @@ angular.module('cartes').directive('redCartesCreationMission', [
 	}
 ]);
 
+angular.module('cartes').directive('redCartesCreationHumeur', [
+	function() {
+		return {
+			templateUrl: 'modules/cartes/views/cartes-creation-humeur.view.html',
+			restrict: 'E'
+		};
+	}
+]);
+
 angular.module('cartes').directive('redCartesCreationHorsPioche', [
 	function() {
 		return {

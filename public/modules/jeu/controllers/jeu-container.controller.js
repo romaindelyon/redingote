@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('jeu').controller('JeuContainerController', ['$scope',
-	function($scope) {
+angular.module('jeu').controller('JeuContainerController', ['$scope','Joueurs',
+	function($scope,Joueurs) {
 
 	$scope.actionsDisponibles = {
 		action: true,
@@ -28,12 +28,26 @@ angular.module('jeu').controller('JeuContainerController', ['$scope',
 		$scope.view = index;
 	}
 
+	function sauverNotes(){
+		Joueurs.sauverNotes({
+			notes: $scope.notes,
+			notes_titre: $scope.notes_titre,
+			joueurId: $scope.joueurId,
+			partieId: $scope.partieId
+		}).success(function(){
+			console.log("les notes sont sauvées");
+		}).error(function(){
+			console.log("erreur de sauvage de notes");
+		});
+	}
+
 	$scope.ecrireNotes = function(){
 		if ($scope.view !== 'notes'){
 			$scope.view = 'notes';
 		}
 		else {
 			// ajouter truc pour sauver les notes
+			sauverNotes();
 			$scope.view = 'cartes';
 		}
 	}

@@ -264,11 +264,33 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 		// }
 	}
 
+	function shuffle(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
+
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+	}
+
 	$scope.startQuestion = function(){
 		Questions.getQuestionsAutresJoueurs({joueurId : $scope.joueurId}).success(function (response){
 			var questions = response;
 			var questionIndex = Math.floor(Math.random(questions.length));
 			$scope.actionCase.question = questions[questionIndex];
+			console.log($scope.actionCase.question);
+			$scope.actionCase.question.options.push($scope.actionCase.question.reponse);
+			$scope.actionCase.question.options = shuffle($scope.actionCase.question.options);
 			$scope.actionCase.phase = 1;
 			$scope.actionCase.categorie = 'question';
 		}).error(function(){
@@ -341,7 +363,69 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
     	$scope.valiseNonMaterialiseeIndex ++;
     }
 
+    $scope.startRecompense = function(){
+    	console.log("starting this");
+    	$scope.actionCase = {};
+		$scope.actionCase.phase = 1;
+		$scope.actionCase.categorie = 'recompense';
+		$scope.actionCase.recompense = $scope.partie.dispo.tourDeJeu.recompenses[0];  
+		console.log($scope.actionCase.recompense);
+		$scope.actionCase.grandesCartes = [
+			{code: 'grande_carte_marion_souris',piocheCode: 'grande_carte_pioche_marion_souris'},
+			{code: 'grande_carte_piano',piocheCode: 'grande_carte_pioche_piano'},
+			{code: 'grande_carte_gateaux',piocheCode: 'grande_carte_pioche_gateaux'},
+			{code: 'grande_carte_freres',piocheCode: 'grande_carte_pioche_freres'},
+			{code: 'grande_carte_patinage',piocheCode: 'grande_carte_pioche_patinage'},
+			{code: 'grande_carte_katie',piocheCode: 'grande_carte_pioche_katie'}
+		];
+
+		for (var i = 0;i < $scope.actionCase.grandesCartes.length;i ++){
+			$scope.actionCase.grandesCartes[i].quantity = 0;
+			for (var j = 0;j < $scope.jeu.grandesCartes.length;j ++){
+				if ($scope.jeu.grandesCartes[j].code === $scope.actionCase.grandesCartes[i].code || $scope.jeu.grandesCartes[j].code === $scope.actionCase.grandesCartes[i].piocheCode){
+					$scope.actionCase.grandesCartes[i].completed = true;
+				}
+			}
+			for (var j = 0;j < $scope.pioches.horsPioche.length;j ++){
+				if ($scope.pioches.horsPioche[j].code === $scope.actionCase.grandesCartes[i].code && $scope.pioches.horsPioche[j].position == -1){
+					$scope.actionCase.grandesCartes[i].quantity ++;
+					$scope.actionCase.grandesCartes[i].id = $scope.pioches.horsPioche[j].id;
+				}
+			}
+		}  	
+		console.log($scope.actionCase.grandesCartes);
+    }
+
+    $scope.getGrandeCarte = function(carteId,carteIndex){
+    	console.log(carteId);
+    	if ($scope.actionCase.recompense.valeur > 0){
+			$scope.actionCase.grandesCartes[carteIndex].completed = true;
+	    	Cartes.moveCartes({
+	    		carteIds: [carteId],
+	    		position: -1
+	    	}).success(function(){
+	    		for (var j = 0;j < $scope.pioches.horsPioche.length;j ++){
+	    			if ($scope.pioches.horsPioche[j].id === carteId){
+	    				$scope.jeu.grandesCartes.push($scope.pioches.horsPioche[j]);
+	    				$scope.pioches.horsPioche.splice(j,1);
+	    			}
+	    		}
+	    		$scope.actionCase.recompense.valeur --;
+	    		$scope.$emit('grandes-cartes-added',{});
+	    		if ($scope.actionCase.recompense.valeur === 0){
+	    			$timeout(function(){
+	    				$scope.cancelActionCase();
+	    				$scope.partie.dispo.tourDeJeu.recompense[1] --;
+	    			},500);
+	    		}
+	    	}).error(function(){
+	    		console.log("error de transfert de grande carte");
+	    	});
+    	}
+    };
+
 	$rootScope.$on('plateaux-action-case-lancer', function(event, args) {
+		console.log("starting this");
 		if (args.action === 'action'){
 			$scope.startActionCase(args.action,$scope.joueurs[$scope.joueurId].pions[0].case);
 		}
@@ -350,6 +434,9 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 		}
 		else if (args.action === 'question'){
 			$scope.startQuestion();
+		}
+		else if (args.action === 'recompense'){
+			$scope.startRecompense();
 		}
 	});
 
@@ -386,7 +473,7 @@ angular.module('plateaux').controller('PlateauxActionCaseController', ['$scope',
 	    		var achatsDisponibles = [];
 	    		for (var i = 0;i < $scope.pioches.horsPioche.length;i ++){
 	    			console.log($scope.pioches.horsPioche[i]);
-	    			if ($scope.pioches.horsPioche[i].info.case.toString() === $scope.joueurs[$scope.joueurId].pions[0].case.toString() || $scope.joueurs[$scope.joueurId].pions[1] !== undefined && $scope.pioches.horsPioche[i].case.toString() === $scope.joueurs[$scope.joueurId].pions[1].case.toString()){
+	    			if ($scope.pioches.horsPioche[i].categorie === 'objet' && ($scope.pioches.horsPioche[i].info.case.toString() === $scope.joueurs[$scope.joueurId].pions[0].case.toString() || $scope.joueurs[$scope.joueurId].pions[1] !== undefined && $scope.pioches.horsPioche[i].case.toString() === $scope.joueurs[$scope.joueurId].pions[1].case.toString())){
 	    				achatsDisponibles.push($scope.pioches.horsPioche[i]);
 	    				$scope.partie.dispo.tourDeJeu.achat[0] ++;
 	    			}

@@ -13,7 +13,7 @@ header("Content-Type: application/json; charset=UTF-8");
     $stmt = $con -> prepare("SELECT * FROM joueurs WHERE partie = ?");
     $stmt -> bind_param('i',$partieId);
     $stmt -> execute();
-    $stmt -> bind_result($id,$nom,$diable,$belette,$notes_titre,$notes,$backgroundColor,$pions,$glutis,$escalier,$humeurs,$maison,$partie);
+    $stmt -> bind_result($id,$nom,$diable,$belette,$notes_titre,$notes,$backgroundColor,$borderColor,$pions,$glutis,$escalier,$humeurs,$maison,$partie);
 
     $results = array();
     while($stmt->fetch()) {
@@ -25,6 +25,7 @@ header("Content-Type: application/json; charset=UTF-8");
             $result["notes_titre"] = $notes_titre;
             $result["notes"] = $notes;
             $result["backgroundColor"] = $backgroundColor;
+            $result["borderColor"] = $borderColor;
             $result["pions"] = json_decode($pions);
             $result["glutis"] = $glutis;
             $result["escalier"] = $escalier;

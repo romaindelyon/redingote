@@ -5,13 +5,16 @@
 		<!-- Rangees -->
 		<div ng-repeat="ligne in plateauPaysage" layout="row">
 			<!-- Colonnes -->
-			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(case.numero)" ng-mouseover="hoverCase(case.numero)" layout="column" layout-align="space-between center" class="plateaux-paysage-case red-font">
+			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(case.numero)" ng-mouseover="hoverCase(case.numero)" layout="column" layout-align="space-between center" class="plateaux-paysage-case">
 				<!-- Case Info -->
 				<div layout="column" layout-align="space-between center" ng-class="{'plateaux-paysage-case-info-clicked' : selectedCase.numero == case.numero, 'plateaux-paysage-case-info-hovered': hoveredCase === case.numero, 'plateaux-paysage-case-info': hoveredCase !== case.numero && selectedCase.numero !== case.numero}" >
 					<div layout="column" layout-align="space-between center" style="position: absolute;	width: 65px;height: 70px;">
 						<div layout="row" layout-align="space-between center" style="width: 100%;">
 							<div>
-								<span ng-if="plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero">
+								<span ng-if="plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero && hoveredCase === case.numero">
+									{{case.numero}}
+								</span>
+								<span ng-if="plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero && hoveredCase !== case.numero" class="red-font" style="font-size: 9px;position: absolute;margin-left: 2px;color: #7d7d7d;">
 									{{case.numero}}
 								</span>
 							</div>
@@ -73,6 +76,15 @@
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<div style="position: absolute;margin-top: -633px;margin-left: 673px;">
+		<img src="modules/plateaux/img/plateau_paysage_rose_des_vents.png" ng-click="roseDesVents()" style="width: 216px;outline: none;">
+		<img src="modules/plateaux/img/plateau_paysage_rose_aiguille.png" style="width: 118px;margin-left: -127px;margin-top: 2px;height: 26px;" ng-style="{
+				'transform': 'rotate(' + roseAiguille.angle + 'deg)',
+				'margin-left':'' + roseAiguille.x + 'px',
+				'margin-top':''+ roseAiguille.y +'px'
+			}">
 	</div>
 
 </div>	

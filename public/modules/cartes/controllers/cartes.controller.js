@@ -50,6 +50,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 					}]
 				}
 			};
+			$scope.carte.nombreDeCartes = 1;
 			$scope.objets = [
 				{types:[],
 				consequences: [1],
@@ -68,7 +69,9 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		if (type === 'carte'){
 			carte.pile = CartesProprietes[carte.pile];
 			carte.categorie = CartesProprietes[carte.categorie];
-			carte.utilisation = CartesProprietes[carte.utilisation[0]];
+			if (carte.utilisation != undefined){
+				carte.utilisation = CartesProprietes[carte.utilisation[0]];
+			}
 		}
 		else if (type === 'objet'){
 			carte.utilisation = CartesProprietes[carte.utilisation];
@@ -82,7 +85,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				carte.info.etapes[i].categorie = CartesProprietes[carte.info.etapes[i].categorie]
 				for (var j in carte.info.etapes[i].cartes){
 					if (carte.info.etapes[i].cartes[j] != undefined){
-						carte.info.etapes[i].cartes[j] = {nom: $scope.cartes.toutes[carte.info.etapes[i].cartes[j]].nom};
+						carte.info.etapes[i].cartes[j] = {nom: $scope.cartes.toutes[carte.info.etapes[i].cartes[j].code].nom};
 					}
 				}
 			}
@@ -90,7 +93,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		console.log(carte);
 		if (carte.pile === 'Hors Pioche' && carte.categorie === 'Objet'){
 			carte.info.paiement = CartesProprietes[carte.info.paiement];
-			if (carte.info.paiement === 'echange'){
+			if (carte.info.paiement === 'Echange'){
 				carte.info.echange = $scope.cartes.toutes[carte.info.echange].nom;
 			}
 			else {
@@ -148,10 +151,20 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			$scope.objets[1] = $scope.cartes.objets[$scope.carte.info[1]];
 			keyToTextTransformation($scope.objets[1],'objet');
 		}
+		$scope.carte.nombreDeCartes = $scope.carte.statuts.length;
 		console.log($scope.carte);
 		keyToTextTransformation($scope.carte,'carte');
 		$scope.view = 'modifier_carte';
 		$scope.focusedTab = 6;
+	}
+
+	$scope.changePile = function(pile){
+		if (pile === 'humeurs'){
+			$scope.carte.circonstances = [];
+		}
+		else {
+			$scope.carte.circonstances = [1];
+		}
 	}
 
 	// Get cartes
@@ -197,7 +210,6 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 	$scope.objetsHorsPiocheNoms = [];
 	Cartes.getCartes({partieId: 1}).success(function(response){
 		for (var i in response){
-			console.log(response);
 			// agreger cartes par code:
 			if (response[i].pile === 'pioche' || response[i].pile === 'hors_pioche' && cartesCodes.indexOf(response[i].code < 0)){
 				cartesCodes.push(response[i].code);
@@ -251,10 +263,11 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
     		}
     	}
     });
+    console.log($scope.cases);
 	var zones = ['Désert','Forêt','Mer','Marécages','Monde onirique','Montagne','Prairie','Royaume des ténèbres','Village','Ville','Zone industrielle'];
 	var typesObjets = ['Animal','Chat','Combustible','Comestible','Electrique','Insecte','Marin','Métallique','Potion bénéfique','Potion malefique','Toxique'];
 	var typesActions = ['Combustible','Faim','Insecte','Nuit','Soif','Toxique'];
-	var typesHumeurs = ['Négative','Russe','Triste'];
+	$scope.typesHumeurs = ['Négative','Russe','Triste'];
 	var deplacement_avantages = ["Crapauduc","Respiration sous l'eau","Vitesse doublée"];
 
 	$scope.piles = {
@@ -393,6 +406,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
     }
 
 	$scope.submitForm = function(){
+		console.log($scope.carte.nombreDeCartes);
 		console.log($scope.carte);
 		$scope.submitButtonDisabled = true;
 		// Transfer objet info:
@@ -462,6 +476,19 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			}
 		}
 
+		else if (carte.pile == 'humeurs'){
+			carte.info = {
+				maison: $scope.carte.info.maison,
+				nomSims: $scope.carte.info.nomSims,
+				ami: $scope.carte.info.ami,
+				ennemi: $scope.carte.info.ennemi,
+				consequences: [],
+				contraintes: [],
+				circonstances: []
+			}
+			populateInfo(carte.info,$scope.carte.info);
+		}
+
 		else if (carte.pile === 'hors_pioche'){
 			if (carte.categorie === 'objet'){
 				carte.info = {
@@ -503,7 +530,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				});
 				if ($scope.carte.info.etapes[i].cartes !== undefined){
 					for (var j in $scope.carte.info.etapes[i].cartes){
-						var carteNom = $scope.carte.info.etapes[i].cartes[j].nom;
+						var carteNom = $scope.carte.info.etapes[i].cartes[j];
 						var carteCode = cartesCodes[$scope.cartesNoms.indexOf(carteNom)];
 						carte.info.etapes[i].cartes.push({code: carteCode});
 					}
@@ -529,6 +556,13 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 					Objets.createObjet(objets[1]);
 					console.log(objets);
 				}
+				for (var i = 1;i < $scope.carte.nombreDeCartes;i ++){
+					Cartes.createCarte(carte).success(function(){
+						console.log("Encore une carte créée");
+					}).error(function(){
+						console.log("échec de création de cartes supplémentaires");
+					})
+				}
 			}).error(function(){
 				console.log('error');
 				$scope.submitButtonDisabled = false;
@@ -545,6 +579,16 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 					Objets.modifierObjet(objets[1]);
 					console.log(objets);
 				}
+				console.log($scope.carte.statuts.length);
+				console.log($scope.carte.nombreDeCartes);
+				for (var i = $scope.carte.statuts.length;i < $scope.carte.nombreDeCartes;i ++){
+					console.log(i)
+					Cartes.createCarte(carte).success(function(){
+						console.log("Encore une carte créée");
+					}).error(function(){
+						console.log("échec de création de cartes supplémentaires");
+					})
+				}
 				$scope.changeTab(0);
 				$scope.submitButtonDisabled = false;
 			}).error(function(){
@@ -553,15 +597,4 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			});			
 		}
 	}
-
-	$scope.carteSupplementaire = function(){
-		$scope.carte = {};
-
-		$scope.objets = [
-			{types:[]},
-			{types:[]}
-		];
-		$scope.carteSubmitted = false;
-	}
-
 }]);

@@ -21,8 +21,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	// Attaques:
 
 	$scope.attaques = {
-		defenses: [],
-		recompenses: []
+		defenses: []
 	};
 
 	$scope.defense = {};
@@ -41,7 +40,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 							$scope.attaques.defenses.push(response[i]);
 						}
 						else if (response[i].categorie == 'recompense'){
-							$scope.attaques.recompenses.push(response[i]);
+							$scope.partie.dispo.tourDeJeu.recompenses.push(response[i]);
 						}
 						else if (response[i].categorie == 'news'){
 							$scope.news.push(response[i]);
@@ -92,6 +91,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 				actionEnCours: false,
 				notification: [0,0],
 				recompense: [0,0],
+				recompenses: [],
 				action: [0,0],
 				pouvoir: [0,0],
 				question: [0,0],
@@ -133,6 +133,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	$scope.jeu.ouvertes = [];
 	$scope.jeu.missions = [];
 	$scope.jeu.horsPioche = [];
+	$scope.jeu.grandesCartes = [];
+	$scope.jeu.humeurs = [];
 
 	//Cartes 
 
@@ -151,7 +153,10 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    				$scope.pioches.pioche.push(carte);
 	    			}
 	    			else if (carte.position == $scope.joueurId){
-	    				if (carte.statut.ouverte){
+	    				if (carte.statut.ouverte && carte.categorie === 'grande_carte'){
+	    					$scope.jeu.grandesCartes.push(carte);
+	    				}
+	    				else if (carte.statut.ouverte && carte.categorie !== 'grande_carte'){
 	    					$scope.jeu.ouvertes.push(carte);
 	    				}
 	    				else {
@@ -159,7 +164,16 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    				}
 	    			}
 	    			else if (carte.statut.ouverte){
-	    				$scope.joueurs[carte.position].ouvertes.push(carte);
+	    				if (carte.categorie === 'grande_carte'){
+	    					for (var j = 0;j < $scope.joueurs[carte.position].grandesCartes.length;j ++){
+	    						if (carte.code === $scope.joueurs[carte.position].grandesCartes[j].code || carte.code === $scope.joueurs[carte.position].grandesCartes[j].piocheCode){
+	    							$scope.joueurs[carte.position].grandesCartes[j].completed = true;
+	    						}
+	    					}
+	    				}
+	    				else {
+	    					$scope.joueurs[carte.position].ouvertes.push(carte);
+	    				}
 	    			}
 	    		}
 	    		// Cartes mission:
@@ -171,19 +185,39 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    				$scope.jeu.missions.push(carte);
 	    			}
 	    		}
-	    		// Objets hors pioche:
-	    		else if (carte.pile == 'hors_pioche'){
-	    			console.log(carte.position);
-	    			if (carte.position == $scope.joueurId){
-	    				$scope.jeu.horsPioche.push(carte);
+	    		// Humeurs
+	    		else if (carte.pile == 'humeurs'){
+	    			if (carte.position == -1) {
+	    				$scope.pioches.humeurs.push(carte);
+	    			}
+	    			else if (carte.position == $scope.joueurId){
+	    				$scope.jeu.humeurs.push(carte);
 	    			}
 	    			else {
-	    				$scope.pioches.horsPioche.push(carte);
+	    				$scope.joueurs[carte.position].humeurs.push(carte);
+	    			}
+	    		}
+	    		// Objets hors pioche:
+	    		else if (carte.pile == 'hors_pioche'){
+	    			if (carte.position == $scope.joueurId){
+	    				$scope.jeu.horsPioche.push(carte);
+	    				if (carte.categorie === 'grande_carte'){
+	    					console.log(carte.code);
+	    					$scope.jeu.grandesCartes.push(carte);
+	    				}
+	    			}
+	    			else {
+	    				$scope.pioches.horsPioche.push(carte);	    
+	    				if (carte.position !== -1 && carte.categorie === 'grande_carte'){
+	    					for (var j = 0;j < $scope.joueurs[carte.position].grandesCartes.length;j ++){
+	    						if (carte.code === $scope.joueurs[carte.position].grandesCartes[j].code || carte.code === $scope.joueurs[carte.position].grandesCartes[j].piocheCode){
+	    							$scope.joueurs[carte.position].grandesCartes[j].completed = true;
+	    						}
+	    					}
+	    				}
 	    			}
 	    		}
 	    	}
-	    	console.log($scope.jeu.horsPioche);
-	    	console.log($scope.pioches.horsPioche);
 			$scope.loaded.cartes = true;
 			$scope.initiateConfrontations();
 			$scope.$emit('missions-initialize',{});
@@ -214,6 +248,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	$scope.joueur = {};
 
 	Joueurs.getJoueurs({partieId: $scope.partieId}).success(function(response){
+		console.log(response);
 		var joueur = response[$scope.joueurId]
 		$scope.joueur = {
 			id: joueur.id,
@@ -221,13 +256,25 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			diable: joueur.diable,
 			belette: joueur.belette,
 			notes_titre: joueur.notes_titre,
-			notes: joueur.notes
+			notes: joueur.notes,
+			backgroundColor: joueur.backgroundColor,
+			humeurs: joueur.humeurs
 		}
 		$scope.joueurs[0] = response[0];
 		$scope.joueurs[1] = response[1];
 		$scope.joueurs[2] = response[2];
+		console.log($scope.joueurs);
 		for (var i in $scope.joueurs){
 			$scope.joueurs[i].ouvertes = [];
+			$scope.joueurs[i].humeurs = [];
+			$scope.joueurs[i].grandesCartes = [
+				{code: 'grande_carte_marion_souris',piocheCode: 'grande_carte_pioche_marion_souris'},
+				{code: 'grande_carte_piano',piocheCode: 'grande_carte_pioche_piano'},
+				{code: 'grande_carte_gateaux',piocheCode: 'grande_carte_pioche_gateaux'},
+				{code: 'grande_carte_freres',piocheCode: 'grande_carte_pioche_freres'},
+				{code: 'grande_carte_patinage',piocheCode: 'grande_carte_pioche_patinage'},
+				{code: 'grande_carte_katie',piocheCode: 'grande_carte_pioche_katie'}
+			];
 		}
 		getCartes();
 		$scope.$emit('partie-general-joueurs-loaded');

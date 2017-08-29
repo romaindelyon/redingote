@@ -1,19 +1,14 @@
 'use strict';
 
-angular.module('joueurs').directive('redJoueursRecapLeft', [
-	function() {
+angular.module('joueurs').directive('redJoueursRecap', ['$parse',
+	function($parse) {
 		return {
-			templateUrl: 'modules/joueurs/views/joueurs-recap-left.view.html',
-			restrict: 'E'
-		};
-	}
-]);
-
-angular.module('joueurs').directive('redJoueursRecapRight', [
-	function() {
-		return {
-			templateUrl: 'modules/joueurs/views/joueurs-recap-right.view.html',
-			restrict: 'E'
+			templateUrl: 'modules/joueurs/views/joueurs-recap.view.html',
+			restrict: 'E',
+		    scope: true,
+		    link: function(scope, element, attrs) {
+		       scope.joueurJeuIndex = attrs.joueur;
+		    }
 		};
 	}
 ]);
