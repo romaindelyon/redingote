@@ -8,9 +8,15 @@ angular.module('cartes').controller('CartesPiocheController',
 
 	function carteSelection(){
 		var carteOrder = Math.floor(Math.random() * $scope.pioches.pioche.length);
+		// La carte va dans la main du joueur si elle n'est pas à effet immédiat :
+		var newPosition = $scope.joueurId;
+		// La carte va dans la défausse si elle est à effet immédiat ;
+		if ($scope.pioches.pioche[carteOrder].categorie === 'effet_immediat'){
+			newPosition = -2;
+		}
 		Cartes.moveCartes({
     		carteIds: [$scope.pioches.pioche[carteOrder].id],
-    		position: $scope.joueurId
+    		position: newPosition
     	}).success(function(){
 			var carte = $scope.pioches.pioche[carteOrder];
 			var piocheCartePopup = $mdDialog.confirm({
@@ -34,8 +40,17 @@ angular.module('cartes').controller('CartesPiocheController',
 	            }
 	        });
 	        $mdDialog.show(piocheCartePopup);
-	        // Ajouter la carte a la main
-	        $scope.jeu.main.push($scope.pioches.pioche[carteOrder]);
+	        // Déclencher l'effet si la carte est à effet immédiat :
+	        if ($scope.pioches.pioche[carteOrder].categorie !== 'effet_immediat'){
+	        	startEffetImmediat($scope.pioches.pioche[carteOrder].);
+	        }
+	        // Ajouter la carte a la main ou à la défausse :
+	        if ($scope.pioches.pioche[carteOrder].categorie !== 'effet_immediat'){
+	        	$scope.jeu.main.push($scope.pioches.pioche[carteOrder]);
+	        }
+	        else {
+	        	$scope.defausses.pioche.push($scope.pioches.pioche[carteOrder]);
+	        }
 	        // Retirer la carte de la pioche
 			$scope.pioches.pioche.splice(carteOrder,1);
 			if ($scope.pioches.pioche.length <= 0 && $scope.defausses.pioche.length > 0){

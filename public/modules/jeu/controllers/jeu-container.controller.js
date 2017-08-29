@@ -30,8 +30,8 @@ angular.module('jeu').controller('JeuContainerController', ['$scope','Joueurs',
 
 	function sauverNotes(){
 		Joueurs.sauverNotes({
-			notes: $scope.notes,
-			notes_titre: $scope.notes_titre,
+			notes: $scope.joueur.notes,
+			notes_titre: $scope.joueur.notes_titre,
 			joueurId: $scope.joueurId,
 			partieId: $scope.partieId
 		}).success(function(){

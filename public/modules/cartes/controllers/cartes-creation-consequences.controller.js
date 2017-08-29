@@ -30,18 +30,44 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 
 
 	// Options de cartes:
-
-	var cases = [];
+	$scope.cases = [];
+	$http({
+        method: 'GET', 
+        url: 'modules/plateaux/json/plateaux-paysage.json'
+    }).success(function(response){
+    	for (var i in response){
+    		for (var j in response[i].colonnes){
+    			if ($scope.cases.indexOf(response[i].colonnes[j].numero) < 0){
+    				$scope.cases.push(response[i].colonnes[j].numero);
+    			}
+    		}
+    	}
+    });
 	var zones = ['Désert','Forêt','Mer','Marécages','Monde onirique','Montagne','Prairie','Royaume des ténèbres','Village','Ville','Zone industrielle'];
 	var typesObjets = ['Animal','Chat','Combustible','Electrique','Insecte','Marin','Métallique','Potion bénéfique','Potion malefique','Toxique'];
 	var typesActions = ['Combustible','Faim','Feu','Insecte','Nuit','Soif','Toxique'];
 	var typesHumeurs = ['Négative','Russe','Triste'];
-	var deplacement_avantages = ["Crapauduc","Respiration sous l'eau","Vitesse doublée"];
+	var deplacement_avantages = ["Crapauduc","Respiration sous l'eau","Vitesse doublée","Nage","Survoler","Hubs sans documents","Couleurs de couronnes",'Traverser murs',"Choisir direction","Ubiquité"];
+
+	var cartesHorsPiocheCodes = [];
+	var cartesHorsPiocheNoms = [];
+	Cartes.getCartes({partieId: 1}).success(function(response){
+		for (var i in response){
+			// agreger cartes par code:
+			if (response[i].pile === 'hors_pioche' && response[i].categorie === 'objet' && cartesHorsPiocheCodes.indexOf(response[i].code < 0)){
+				cartesHorsPiocheCodes.push(response[i].code);
+				cartesHorsPiocheNoms.push(response[i].nom);
+			}
+		}
+	});
 
 	$scope.consequences = {
 		'Action : contrer': {
 			'Annulation': [],
 			'Renvoi': ['Contre le lanceur',"Contre n'importe qui"]
+		},
+		'Animaux ouverts': {
+			'Utiliser autres joueurs': []
 		},
 		'Belette': {
 			"Brouiller l'ordre": [],
@@ -52,7 +78,7 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 			'Don': [1,2,3,4,5,'Moitié','Toutes'],
 			'Pioche': [1,2,3,4,5,6,7],
 			'Récuperation': [1,2,3],
-			'Vol': [1,2,3,4,5,'Moitié','Toutes']
+			'Vol': [1,2,3,4,5,'Moitié','Toutes'],
 		},
 		'Carte ouverte': {
 			'Défausse': [1,2,3,4,5,'Toutes'],
@@ -60,6 +86,7 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 			'Vol': [1,2,3,4,5,'Toutes']
 		},
 		'Combat': {
+			'Prédire victoire voler récompense': [],
 			'Remporter': [],
 			'Voler récompense': []
 		},
@@ -69,7 +96,8 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 		},
 		'Déplacement': {
 			'Avantage': deplacement_avantages,
-			'Case': cases,
+			'Case': $scope.cases,
+			'Téléportation': ['Vers un joueur','Cases 62'],
 			'Nombre de cases': [1,2,3,4,5,6,7,8,9,10],
 			'Zone': zones
 		},
@@ -85,11 +113,15 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 		'Grande carte': {
 			'Pioche': [1,2,3]
 		},
+		'Joueur': {
+			'Pas de préjudice': []
+		},
 		'Lecture': {
 			'Princesse de Clèves': []
 		},
 		'Mission': {
 			'Pioche': [1],
+			'Plusieurs missions': [2,3],
 			'Remplacer objet requis': [1,2,3]
 		},
 		'Modulation': {
@@ -102,6 +134,9 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 			'Création': ['Photo'],
 			'Transformation': []
 		},
+		'Objet Hors Pioche': {
+			'Pioche': typesObjets
+		},
 		'Question': {
 			'Répondre': []
 		},
@@ -113,10 +148,16 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 		'Tour': {
 			'Inverser': [],
 			'Passer': [1,2,3],
-			'Rejouer': [1,2,3]
+			'Rejouer': [1,2,3],
+			'Doubler étape': []
 		},
 		'Trois familles': {
 			'Remplacer membre requis': [1,2,3,4,5]
+		}
+		'Vision': {
+			'Messages': [],
+			'Main': [],
+			'Cartes piochées': []
 		}
 	};
 
