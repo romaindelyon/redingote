@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('cartes').controller('CartesCreationConsequencesController', ['$scope',
-	function($scope) {
+angular.module('cartes').controller('CartesCreationConsequencesController', ['$scope','$http','Cartes',
+	function($scope,$http,Cartes) {
 
 	$scope.retirerElement = function(type,object){
 		console.log(object[type])
@@ -14,6 +14,7 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 		else if (object[type].length == 3){
 			object[type] = [1,2];
 		}
+		object.info[type].splice(object[type].length-1,1);
 	}
 	$scope.ajouterElement = function(type,object){
 		console.log('ajouter');
@@ -153,7 +154,7 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 		},
 		'Trois familles': {
 			'Remplacer membre requis': [1,2,3,4,5]
-		}
+		},
 		'Vision': {
 			'Messages': [],
 			'Main': [],

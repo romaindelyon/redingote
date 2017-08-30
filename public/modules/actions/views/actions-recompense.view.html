@@ -1,0 +1,29 @@
+<div ng-show="action.phase >= 0" ng-controller="ActionsRecompenseController">
+
+    <!-- *** RECOMPENSES *** -->
+
+    <div ng-if="action.phase == 1 && action.recompense.categorie === 'grande_carte' && action.recompense.type === 'pioche'" layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="row" layout-align="center center" class="confrontations-titre red-font">
+            <span>
+                Tu gagnes {{action.recompense.valeur}}
+                <ng-pluralize count="action.recompense.valeur" when="{'0':'grande carte','1':'grande carte','other':'grandes cartes'}"></ng-pluralize>
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="row" layout-align="space-around center" class="cartouche-body">
+            <div ng-repeat="carte in action.grandesCartes" layout-align="center center" style="outline: none;width: 140px;height: 220px;margin: 5px;">
+                <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-click="getGrandeCarte(carte.id,$index)" ng-if="!carte.completed && carte.quantity > 0" style="width: 140px;height: 220px;" class="jeu-grandes-cartes-completed">
+                <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-if="carte.completed || carte.quantity === 0" style="width: 140px;height: 220px;" class="jeu-grandes-cartes">
+                <img src="modules/core/img/core_icones_checkmark_whitebackground.png" ng-if="carte.completed" style="position: absolute;width: 80px;height: 80px;margin-top: -142px;margin-left: -37px;opacity: 0.5;">
+                <div ng-if="!carte.completed" style="position: absolute;font-size: 150px;margin-top: -209px;margin-left: 32px;opacity: 0.3;pointer-events: none;color:; white;">
+                    {{carte.quantity}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+ </div>

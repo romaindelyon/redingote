@@ -3,7 +3,6 @@
 angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$rootScope','Partie',
 	function($scope,$rootScope,Partie) {
 
-	$scope.actions = [''];
 	$scope.actions_1 = ['notification','recompense','action','pouvoir'];
 	$scope.actions_2 = ['question','achat','duel','trois-familles'];
 
@@ -15,10 +14,10 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 	$scope.startAction = function(action){
 		$scope.partie.dispo.tourDeJeu.actionEnCours = true;
 		console.log(action);
-		if (action === 'achat' || action === 'action' || action === 'question' || action === 'recompense'){
-			$scope.$emit('plateaux-action-case-lancer',{action: action});
+		if (action !== 'duel'){
+			$scope.$emit('actions-lancer',{action: action});
 		}
-		if (action === 'duel'){
+		else {
 			$scope.$emit('confrontations-attaque-duel-start',{});
 		}
 	}
@@ -97,9 +96,9 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 	$rootScope.$on('consequence-start',function(event,args){
 		var consequences = args.consequences;
 		if (args.type === 'recompense'){
-			$scope.partie.dispo.tourDeJeu.recompenses = $scope.partie.dispo.tourDeJeu.recompenses.concat(consequences);
-			console.log($scope.partie.dispo.tourDeJeu.recompenses);
-			$scope.partie.dispo.tourDeJeu.recompense[1] = $scope.partie.dispo.tourDeJeu.recompenses.length;
+			console.log($scope.actions);
+			$scope.actions.recompense = $scope.actions.recompense.concat(consequences);
+			$scope.partie.dispo.tourDeJeu.recompense[1] = $scope.actions.recompense.length;
 			// if (!$scope.partie.dispo.tourDeJeu.actionEnCours){
 			// 	$scope.startAction('question');
 			// }

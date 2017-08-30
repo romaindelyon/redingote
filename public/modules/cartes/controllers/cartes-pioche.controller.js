@@ -1,10 +1,21 @@
 'use strict';
 
 angular.module('cartes').controller('CartesPiocheController',
-	['$scope','$mdDialog','Cartes',
-	function($scope,$mdDialog,Cartes) {
+	['$scope','$mdDialog','Cartes','Actions',
+	function($scope,$mdDialog,Cartes,Actions) {
 
 	$scope.piochesDisponibles = true;
+
+	function startEffetImmediat(carte){
+		console.log("emitting actions-add");
+		// Ajouter l'action effet immédiat pour le joueur en cours :
+		$scope.$emit('actions-add',{
+			categorie: 'notification',
+			type: 'effet_immediat',
+			cible: $scope.joueurId,
+			info: carte
+		});
+	}
 
 	function carteSelection(){
 		var carteOrder = Math.floor(Math.random() * $scope.pioches.pioche.length);
@@ -41,15 +52,13 @@ angular.module('cartes').controller('CartesPiocheController',
 	        });
 	        $mdDialog.show(piocheCartePopup);
 	        // Déclencher l'effet si la carte est à effet immédiat :
-	        if ($scope.pioches.pioche[carteOrder].categorie !== 'effet_immediat'){
-	        	startEffetImmediat($scope.pioches.pioche[carteOrder].);
-	        }
-	        // Ajouter la carte a la main ou à la défausse :
-	        if ($scope.pioches.pioche[carteOrder].categorie !== 'effet_immediat'){
-	        	$scope.jeu.main.push($scope.pioches.pioche[carteOrder]);
-	        }
-	        else {
+	        if ($scope.pioches.pioche[carteOrder].categorie === 'effet_immediat'){
+	        	startEffetImmediat($scope.pioches.pioche[carteOrder]);
 	        	$scope.defausses.pioche.push($scope.pioches.pioche[carteOrder]);
+	        }
+	        // Ajouter la carte a la main
+	        else {
+	        	$scope.jeu.main.push($scope.pioches.pioche[carteOrder]);
 	        }
 	        // Retirer la carte de la pioche
 			$scope.pioches.pioche.splice(carteOrder,1);
@@ -193,30 +202,6 @@ angular.module('cartes').controller('CartesPiocheController',
 	        $scope.partie.dispo.pioches.missions --;
 	        $scope.piochesDisponibles = true;   	
 	    }
-	}
-
-	$scope.carteQuestion = function(){
-		var poseur = Math.floor(Math.random() * 3);
-		var poseurNoms = ['Julia','Marie','Romain'];
-		var poseurTextes = [
-			"J'espère que tu connais les lois américaines stupides !",
-			"Easy !",
-			"J'espère que tu es très cultivé !"
-		];
-		var piocheQuestionPopup = $mdDialog.confirm({
-        	templateUrl: 'modules/cartes/views/cartes-questions-pioche-popup.view.html',
-        	clickOutsideToClose: true,
-		    controller: function($scope,$mdDialog){
-	        	$scope.poseur = poseurNoms[poseur];
-	        	$scope.texte = poseurTextes[poseur];
-	            $scope.popupConfirm = function(){
-	            	$mdDialog.hide();
-	            }
-            }
-        });
-		$mdDialog.show(piocheQuestionPopup).then(function(){
-
-		});
 	}
 
 }]);

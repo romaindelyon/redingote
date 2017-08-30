@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','Cartes','Objets','Partie','Joueurs','Confrontations',
-	function($scope,$state,$stateParams,Cartes,Objets,Partie,Joueurs,Confrontations) {
+angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','Cartes','Objets','Partie','Joueurs','Actions',
+	function($scope,$state,$stateParams,Cartes,Objets,Partie,Joueurs,Actions) {
 
 	// Tracking if all information has been well retrieved:
 	$scope.loaded = {
@@ -18,6 +18,19 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.partieId = 1;//parseInt($stateParams.partie);
 
+	// Actions : tout devra être unifié sous cette bannière
+
+	$scope.actions = {
+		action: [],
+		achat: [],
+		duel: [],
+		notification: [],
+		pouvoir: [],
+		question: [],
+		recompense: [],
+		troisFamilles: []
+	};
+
 	// Attaques:
 
 	$scope.attaques = {
@@ -28,31 +41,25 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.duel = {};
 
-	$scope.news = [];
-
 	$scope.initiateConfrontations = function(){
 		if ($scope.loaded.partie && $scope.loaded.cartes && $scope.loaded.confrontationsController){
 			console.log('inside');
-			if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 0){
-				Confrontations.get({joueurId: $scope.joueurId}).success(function(response){
+			if ($scope.partie.tour_joueur == $scope.joueurId){
+				Actions.get({joueurId: $scope.joueurId,partie: $scope.partieId}).success(function(response){
 					for (var i in response){
 						if (response[i].categorie == 'attaque'){
 							$scope.attaques.defenses.push(response[i]);
 						}
-						else if (response[i].categorie == 'recompense'){
-							$scope.partie.dispo.tourDeJeu.recompenses.push(response[i]);
+						else {
+							console.log(response[i].categorie);
+							$scope.actions[response[i].categorie].push(response[i]);
 						}
-						else if (response[i].categorie == 'news'){
-							$scope.news.push(response[i]);
-						}
+						
 					}
 					$scope.loaded.defenses = true;
 					$scope.$emit('confrontations-defense-start', {});
+					$scope.partie.dispo.tourDeJeu.notification[1] = $scope.actions.notification.length;
 				});
-			}
-			else if ($scope.partie.tour_joueur == $scope.joueurId && $scope.partie.tour_action == 5){
-				console.log('emitting');
-				$scope.$emit('confrontations-attaque-duel-start', {});
 			}
 			$scope.loaded.defenses = true;
 		}
@@ -89,9 +96,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			action_de_case: false,
 			tourDeJeu: {
 				actionEnCours: false,
-				notification: [0,0],
+				notification: [0,$scope.actions.notification.length],
 				recompense: [0,0],
-				recompenses: [],
 				action: [0,0],
 				pouvoir: [0,0],
 				question: [0,0],
@@ -190,6 +196,9 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    			if (carte.position == -1) {
 	    				$scope.pioches.humeurs.push(carte);
 	    			}
+	    			else if (carte.position == -2) {
+	    				$scope.defausses.humeurs.push(carte);
+	    			}
 	    			else if (carte.position == $scope.joueurId){
 	    				$scope.jeu.humeurs.push(carte);
 	    			}
@@ -200,10 +209,12 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    		// Objets hors pioche:
 	    		else if (carte.pile == 'hors_pioche'){
 	    			if (carte.position == $scope.joueurId){
-	    				$scope.jeu.horsPioche.push(carte);
 	    				if (carte.categorie === 'grande_carte'){
 	    					console.log(carte.code);
 	    					$scope.jeu.grandesCartes.push(carte);
+	    				}
+	    				else {
+	    					$scope.jeu.horsPioche.push(carte);
 	    				}
 	    			}
 	    			else {
@@ -287,13 +298,17 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	// Pioches et defausses :
 
-	$scope.pioches = {};
-	$scope.pioches.pioche = [];
-	$scope.pioches.missions = [];
-	$scope.pioches.horsPioche = [];
+	$scope.pioches = {
+		pioche: [],
+		missions: [],
+		horsPioche: [],
+		humeurs: []
+	};
 	
-	$scope.defausses = {};
-	$scope.defausses.pioche = [];
+	$scope.defausses = {
+		pioche: [],
+		humeurs: []
+	};
 
 	// Plateaux
 

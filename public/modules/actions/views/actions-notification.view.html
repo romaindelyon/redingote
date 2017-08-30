@@ -1,0 +1,51 @@
+<div ng-show="action.phase >= 0" ng-controller="ActionsNotificationController">
+
+    <!-- CARTES A EFFET IMMEDIAT -->
+
+    <div ng-if="action.notification.type === 'effet_immediat'" layout="column" class="partie-cartouche-container">
+
+        <!-- Body -->
+        <div layout="row" layout-align="space-around center" class="cartouche-body" style="width: 810px;padding: 10px 40px">
+             <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+action.notification.info.code+'.png'}}" style="width: 140px;height: 220px;" class="jeu-grandes-cartes-completed">
+            <div ng-show="action.phase === 1" layout="row" layout-align="center center">
+                <span>
+                    Changement d'humeur en cours...
+                </span>
+            </div>
+            <div ng-repeat="joueur in joueurs" ng-show="action.phase === 2 && $index === action.tab" layout="row" layout-align="center center" style="width: 540px;">
+                <div style="width: 40px;height: 20px;">
+                    <img src="modules/core/img/core-icones-previous.png" ng-click="actionSwitchTab(-1)" ng-if="$index > 0" style="width: 20px;">
+                </div>
+                <div layout="column">
+                    <span style="margin-bottom: 10px;font-weight: bold;font-size: 20px;">{{joueur.nom}}</span>
+                    <div layout="row">
+                        <div layout="column" style="margin-right: 30px;">
+                            <ng-pluralize count="action.notification.info.joueurs[$index].humeursPerdues.length" when="{'1':'Ancienne humeur','other':'Anciennes humeurs'}" style="color: #e3a700;"></ng-pluralize>
+                            <div layout="row" layout-align="space-around center" style="padding: 10px 0;margin: 5px;border: 2px solid #e3a700;border-radius: 6px;">
+                                <div ng-repeat="humeur in action.notification.info.joueurs[$index].humeursPerdues" style="margin: 0 10px;">
+                                    <img ng-src="{{'modules/cartes/img/humeurs/cartes_humeurs_'+humeur.code+'.png'}}" style="width: 90px;height: 150px;" class="jeu-grandes-cartes-completed">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span style="color: green;">
+                               Nouvelle humeur
+                            </span>
+                            <div style="padding: 10px;margin: 5px;border: 2px solid green;border-radius: 6px;">
+                                <img ng-src="{{'modules/cartes/img/humeurs/cartes_humeurs_'+action.notification.info.joueurs[$index].humeurGagnee.code+'.png'}}" style="width: 90px;height: 150px;" class="jeu-grandes-cartes-completed">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 50px;">
+                    <img src="modules/core/img/core-icones-next.png" ng-click="actionSwitchTab(1)" ng-if="$index < 2" style="width: 20px;">
+                    <md-button ng-click="cancelAction()" ng-if="$index === 2" class="confrontations-button red-font md-primary md-raised" style="height: 20px;margin-top: 212px;">
+                        OK
+                    </md-button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+ </div>

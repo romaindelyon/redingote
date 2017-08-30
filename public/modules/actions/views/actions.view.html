@@ -1,0 +1,11 @@
+<div ng-controller="ActionsController">
+
+    <red-actions-achat layout="column" flex layout-align="center center"></red-actions-achat>
+    <red-actions-action layout="column" flex layout-align="center center"></red-actions-action>
+    <red-actions-question layout="column" flex layout-align="center center"></red-actions-question>
+    <red-actions-recompense ng-if="action.categorie === 'recompense'" layout="column" flex layout-align="center center"></red-actions-recompense>
+    <red-actions-notification ng-if="action.categorie === 'notification'" layout="column" flex layout-align="center center"></red-actions-notification>
+
+    <red-actions-confrontations ng-show="confrontation.active" layout="column" flex layout-align="center center"></red-actions-confrontations>
+
+</div>

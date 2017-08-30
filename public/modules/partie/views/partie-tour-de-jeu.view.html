@@ -39,21 +39,21 @@
         <div ng-repeat="actions in actionsRows" layout="row" layout-align="space-around center">
             <div ng-repeat="action in actions">
                 <div ng-if="partie.dispo.tourDeJeu[action][0] + partie.dispo.tourDeJeu[action][1] > 0">
-                    <div ng-if="partie.dispo.tourDeJeu[action][0] > 0" style="position: absolute;margin-left: 10px;margin-top: 8px;z-index: 1;">
+                    <div ng-show="partie.dispo.tourDeJeu[action][0] > 0" style="position: absolute;margin-left: 10px;margin-top: 8px;z-index: 1;">
                         <img src="modules/partie/img/partie-tour-notification-green-icone.png" style="width: 37px;position: absolute;">
                         <span class="red-font" style="color: white;position: absolute;margin-left: 12px;font-size: 20px;margin-top: 5px;">
                             {{partie.dispo.tourDeJeu[action][0]}}
                         </span>
                     </div>
                     <img ng-click="startAction(action,joueurs[joueurId].pions[0].case)" ng-src="{{'modules/partie/img/partie-tour-de-jeu-'+action+'-icone.png'}}" class="plateaux-action-case-icone">
-                    <div ng-if="partie.dispo.tourDeJeu[action][1] > 0" style="position: absolute;margin-top: -152px;margin-left: 114px;z-index: 1;">
+                    <div ng-show="partie.dispo.tourDeJeu[action][1] > 0" style="position: absolute;margin-top: -152px;margin-left: 114px;z-index: 1;">
                         <img src="modules/partie/img/partie-tour-notification-red-icone.png" style="width: 37px;position: absolute;">
                         <span class="red-font" style="color: white;position: absolute;margin-left: 12px;font-size: 20px;margin-top: 5px;">
                             {{partie.dispo.tourDeJeu[action][1]}}
                         </span>
                     </div>
                 </div>
-                <div ng-if="partie.dispo.tourDeJeu[action][0] + partie.dispo.tourDeJeu[action][1] <= 0">
+                <div ng-show="partie.dispo.tourDeJeu[action][0] + partie.dispo.tourDeJeu[action][1] <= 0">
                     <img ng-src="{{'modules/partie/img/partie-tour-de-jeu-'+action+'-icone.png'}}" class="plateaux-action-case-icone-disabled">
                 </div>
             </div>

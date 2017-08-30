@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('confrontations').controller('ConfrontationsController', ['$scope','$rootScope','Cartes','Confrontations',
-	function($scope,$rootScope,Cartes,Confrontations) {
+angular.module('actions').controller('ActionsConfrontationsController', ['$scope','$rootScope','Cartes','Actions',
+	function($scope,$rootScope,Cartes,Actions) {
 
 	console.log('running confrontations controller');
 
@@ -340,12 +340,13 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	        }).success(function(){
 	        	console.log($scope.confrontation);
 	        	// send attaque !
-	        	Confrontations.add({
+	        	Actions.add({
 	        		categorie: confrontation.categorie,
 	        		type: confrontation.type,
 	        		info: confrontation.info,
 	        		cible: confrontation.cible,
-	        		source: confrontation.source
+	        		source: confrontation.source,
+	        		partie: $scope.partieId
 	        	});
 	    		$scope.defausses.pioche.push($scope.cartes[confrontation.info]);
 	    		$scope.cancelConfrontation();
@@ -356,12 +357,13 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 	    	})
 		}
 		else if (confrontation.categorie == 'attaque' && confrontation.type == 'duel'){
-	    	Confrontations.add({
+	    	Actions.add({
 	    		categorie: 'attaque',
 	    		type: 'duel',
 	    		info: $scope.confrontation.info,
 	    		cible: $scope.confrontation.cible,
-	    		source: $scope.joueurId
+	    		source: $scope.joueurId,
+	    		partie: $scope.partieId
 	    	}).success(function(){
 	    		$scope.partie.dispo.duel = false;
 	    		$scope.partie.dispo.tourDeJeu.duel[0] --;
@@ -434,7 +436,7 @@ angular.module('confrontations').controller('ConfrontationsController', ['$scope
 			// Si la defense en question est bien finie:
 			if (defenseFinished){
 				// On la vire:
-				Confrontations.delete({id: $scope.confrontation.id});
+				Actions.delete({id: $scope.confrontation.id});
 				$scope.confrontation.active = false;
 				$scope.partie.dispo.tourDeJeu.actionEnCours = false;
 				console.log("on pass là");

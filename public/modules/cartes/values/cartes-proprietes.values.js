@@ -48,6 +48,7 @@ angular.module('cartes').value('CartesProprietes', {
 	'mission': 'Mission',
 	'modulation': 'Modulation',
 	'objet': 'Objet',
+	'objet_hors_pioche': 'Objet hors pioche',
 	'protection': 'Protection',
 	'tour': 'Tour',
 	'trois_familles': 'Trois familles',

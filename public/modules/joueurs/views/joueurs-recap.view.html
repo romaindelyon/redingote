@@ -2,8 +2,11 @@
 	<div layout="row" style="width: 100%;height: 40px;">
 		<div layout="column">
 			<div layout="row">
+				<img ng-src="{{'modules/cartes/img/humeurs/cartes_humeurs_'+joueurs[joueurJeuIndex].humeurs[humeurIndex].code+'.png'}}" ng-show="humeurMontree" style="position:absolute; width: 160px;height: 250px;margin-left: 108px;margin-top: 24px;z-index: 2">
 				<span style="font-weight: bold;font-size: 18px;">
-					Jeu de {{joueurs[joueurJeuIndex].nom}} ({{joueurs[joueurJeuIndex].humeurs[0]}})
+					Jeu de {{joueurs[joueurJeuIndex].nom}} -
+					<a ng-mouseover="montrerHumeur()" ng-mouseout="cacherHumeur()" class="joueurs-recap-humeur">{{joueurs[joueurJeuIndex].humeurs[humeurIndex].nom}}</a>
+					<img src="modules/core/img/core_icones_arrow_right.png" ng-show="joueurs[joueurJeuIndex].humeurs.length > 1" ng-click="updateHumeurIndex()" style="width: 18px;outline: none;">
 				</span>
 				&nbsp;&nbsp;
 				<img ng-repeat="escalier in createArrayFromNumber(joueurs[joueurJeuIndex].escalier) track by $index" src="modules/joueurs/img/joueurs-escalier-icone.png" style="height: 20px;width: 20px;margin: 1px;">

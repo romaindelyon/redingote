@@ -12,4 +12,17 @@ angular.module('joueurs').controller('JoueursRecapController', ['$scope','$rootS
     	}
 	}
 
+	$scope.humeurMontree = false;
+	$scope.humeurIndex = 0;
+
+	$scope.montrerHumeur = function(){
+		$scope.humeurMontree = true;
+	}
+	$scope.cacherHumeur = function(){
+		$scope.humeurMontree = false;
+	}
+	$scope.updateHumeurIndex = function(){
+		$scope.humeurIndex = ($scope.humeurIndex + 1)%$scope.joueurs[$scope.joueurJeuIndex].humeurs.length;
+	}
+
 }]);

@@ -14,6 +14,8 @@ angular.module('cartes').controller('CartesCreationCirconstancesController', ['$
 		else if (object[type].length == 3){
 			object[type] = [1,2];
 		}
+		object.info[type].splice(object[type].length-1,1);
+		console.log(object);
 	}
 	$scope.ajouterElement = function(type,object){
 		console.log('ajouter');
@@ -46,6 +48,7 @@ angular.module('cartes').controller('CartesCreationCirconstancesController', ['$
 		},
 		"Changement d'humeur": [],
 		'Défausse': [],
+		'Début de tour': [],
 		'Déplacement': [],
 		'Duel': {
 			'Attaque': [],

@@ -7,3 +7,10 @@
 	border-radius: 6px;
 	border: 2px solid;
 }
+
+.joueurs-recap-humeur {
+	color: #84b15c;
+}
+.joueurs-recap-humeur:hover {
+	color: #84b15c;
+}

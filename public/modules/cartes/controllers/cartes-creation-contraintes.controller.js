@@ -27,6 +27,7 @@ angular.module('cartes').controller('CartesCreationContraintesController', ['$sc
 		else if (object[type].length == 3){
 			object[type] = [1,2];
 		}
+		object.info[type].splice(object[type].length-1,1);
 	}
 	$scope.ajouterElement = function(type,object){
 		console.log('ajouter');

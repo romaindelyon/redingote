@@ -1,7 +1,7 @@
 <div layout="row" flex layout-align="center center">
 
-    <div ng-repeat="humeur in joueur.humeurs" layout-align="center center" style="outline: none;width: 160px;height: 260px;padding: 5px;" ng-class="{'jeu-ouvertes-carte-focused': focusIndex == $index,'jeu-ouvertes-carte': focusIndex != $index}">
-        <img ng-src="{{'modules/cartes/img/humeurs/cartes_humeurs_'+humeur+'.png'}}" style="width: 160px;height: 250px;">
+    <div ng-repeat="humeur in jeu.humeurs" layout-align="center center" style="outline: none;width: 160px;height: 260px;padding: 5px;" ng-class="{'jeu-ouvertes-carte-focused': focusIndex == $index,'jeu-ouvertes-carte': focusIndex != $index}">
+        <img ng-src="{{'modules/cartes/img/humeurs/cartes_humeurs_'+humeur.code+'.png'}}" style="width: 160px;height: 250px;">
     </div>
 
 </div>
