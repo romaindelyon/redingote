@@ -1,4 +1,4 @@
-<div ng-show="actionCase.phase >= 0">
+<div ng-show="action.phase >= 0" ng-controller="ActionsActionController">
 
     <!-- *** ACTIONS *** -->
 
@@ -41,6 +41,43 @@
             <!-- Perte de cartes -->
             <div ng-if="actionCaseDisplay.perteCartes" layout="column" layout-align="center center" class="confrontations-description" style="width: 390px;">
                 <red-cartes-jeter bouton-name="'Défausser'" quantite="2" description="'Tu perds des cartes'"></red-cartes-jeter>
+            </div>
+
+            <!-- Carte -->
+            <div ng-if="actionCaseDisplay.utiliserCarte" layout="row" layout-align="center center">
+                <div layout="column" layout-align="center center">
+                    <span style="width: 500px;">
+                        {{actionCase.description}}
+                    </span>
+                    <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+actionCase.carte+'.png'}}" ng-if="!actionCase.carteUtilisee" style="width: 140px;height: 220px;filter: grayscale(100%);">
+                    <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+actionCase.carte+'.png'}}" ng-if="actionCase.carteUtilisee" style="width: 140px;height: 220px;">
+                </div>
+                <div layout="column" layout-align="center center" class="confrontations-buttons">
+                    <md-button ng-click="startActionCase('action',actionCase.numero)" ng-if="actionCase.carteUtilisee" class="confrontations-button red-font md-primary md-raised">
+                        OK
+                    </md-button>
+                    <md-button ng-if="bouton2 != ''" ng-click="cancelAction()" class="confrontations-button red-font md-primary md-raised">
+                        Annuler
+                    </md-button>
+                </div>
+            </div>
+
+           <!--  Selection de grandes cartes -->
+            <div ng-if="actionCaseDisplay.selectionGrandesCartes" layout="column" layout-align="center center">
+                <span style="width: 500px;">
+                    {{actionCase.description}}
+                </span>
+                <div layout="row">
+                    <div ng-repeat="carte in actionCase.grandesCartes" layout-align="center center" style="outline: none;width: 140px;height: 220px;margin: 5px;">
+                        <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-click="selectionGrandesCartes($index)" ng-if="actionCase.grandesCartesNeeded === 0 && carte.completed && !carte.selected" style="width: 140px;height: 220px;" class="jeu-grandes-cartes-completed">
+                        <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-if="carte.selected" style="width: 140px;height: 220px;" class="jeu-grandes-cartes-completed">
+                        <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-if="actionCase.grandesCartesNeeded !== 0 && carte.completed" style="width: 140px;height: 220px;" class="jeu-grandes-cartes-completed">
+                        <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-if="!carte.completed" style="width: 140px;height: 220px;" class="jeu-grandes-cartes">
+                        <div ng-if="carte.selected" style="position: absolute;font-size: 150px;margin-top: -209px;margin-left: 32px;pointer-events: none;color: green;">
+                            {{carte.selected}}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Valise non-materialisee -->
@@ -98,4 +135,105 @@
         </div>
 
      </div>
- </div>
+
+
+    <!-- MONTEE DE MARCHE -->
+    <div ng-if="action.action.type === 'montee_de_marche'" layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="row" layout-align="center center" class="confrontations-titre red-font">
+            <span>
+                Montée de marche
+            </span>
+        </div>
+
+        <!-- Body -->
+        
+        <div layout="column" layout-align="center center" class="cartouche-body" style="font-size: 20px;">
+
+            <!-- Description -->
+            <div layout="column" layout-align="center center">
+                <div layout="column">
+                    <span ng-if="action.phase === 1">
+                        Choisis tes jeux :
+                    </span>
+                </div>
+            </div>
+
+            <div layout="row">
+
+                <div layout="column">
+                    <div layout="row" layout-align="start end" style="width: 550px;height: 120px;">
+                        <span style="padding-bottom: 10px;font-weight: bold;width: 70px;">
+                            Jeu 1
+                        </span>
+                        <md-input-container ng-if="!action.info.jeux[0].selected" class="cartes-input" style="width: 200px;">
+                            <md-select ng-model="action.info.jeux[0].jeu" required aria-label="Jeu 1">
+                                <md-option ng-repeat="jeu in action.jeuxDisponibles">{{jeu}}</md-option>
+                            </md-select>
+                            <label>Jeu 1</label>
+                        </md-input-container>
+
+                        <span ng-if="action.info.jeux[0].selected" style="padding: 10px;width: 200px;">
+                            {{action.info.jeux[0].jeu}}
+                        </span>
+                        <md-button ng-click="action.info.jeux[0].selected = true" ng-if="!action.info.jeux[0].selected" class="confrontations-button red-font md-primary md-raised">
+                            OK
+                        </md-button>
+                        <md-input-container ng-if="action.info.jeux[1].selected && !action.info.jeux[0].vainqueurSelected" class="cartes-input" style="width: 200px;">
+                            <md-select ng-model="action.info.jeux[0].vainqueur" required aria-label="Jeu 1">
+                                <md-option ng-repeat="joueur in joueurs">{{joueur.nom}}</md-option>
+                            </md-select>
+                            <label>Vainqueur</label>
+                        </md-input-container>
+                        <md-button ng-click="action.info.jeux[0].vainqueurSelected = true" ng-if="action.info.jeux[1].selected && !action.info.jeux[0].vainqueurSelected" class="confrontations-button red-font md-primary md-raised">
+                            OK
+                        </md-button>
+                        <span ng-if="action.info.jeux[0].vainqueurSelected" style="padding: 10px;width: 200px;">
+                            {{action.info.jeux[0].vainqueur}}
+                        </span>
+                    </div>
+                    <div layout="row" layout-align="start end" style="width: 550px;height: 120px;">
+                        <span style="padding-bottom: 10px;font-weight: bold;width: 70px;">
+                            Jeu 2
+                        </span>
+                        <md-input-container ng-if="!action.info.jeux[1].selected" class="cartes-input" style="width: 200px;">
+                            <md-select ng-model="action.info.jeux[1].jeu" required aria-label="Jeu 1">
+                                <md-option ng-repeat="jeu in action.jeuxDisponibles">{{jeu}}</md-option>
+                            </md-select>
+                            <label>Jeu 1</label>
+                        </md-input-container>
+
+                        <span ng-if="action.info.jeux[1].selected" style="padding: 10px;width: 200px;">
+                            {{action.info.jeux[1].jeu}}
+                        </span>
+                        <md-button ng-click="action.info.jeux[1].selected = true" ng-if="action.info.jeux[0].selected && !action.info.jeux[1].selected" class="confrontations-button red-font md-primary md-raised">
+                            OK
+                        </md-button>
+                        <md-input-container ng-if="action.info.jeux[0].vainqueurSelected && !action.info.jeux[1].vainqueurSelected" class="cartes-input" style="width: 200px;">
+                            <md-select ng-model="action.info.jeux[1].vainqueur" required aria-label="Jeu 1">
+                                <md-option ng-repeat="joueur in joueurs">{{joueur.nom}}</md-option>
+                            </md-select>
+                            <label>Vainqueur</label>
+                        </md-input-container>
+                        <md-button ng-click="action.info.jeux[1].vainqueurSelected = true" ng-if="action.info.jeux[0].vainqueurSelected && !action.info.jeux[1].vainqueurSelected" class="confrontations-button red-font md-primary md-raised">
+                            OK
+                        </md-button>
+                        <span ng-if="action.info.jeux[1].vainqueurSelected" style="padding: 10px;width: 200px;">
+                            {{action.info.jeux[1].vainqueur}}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Boutons -->
+                <div layout="column" layout-align="center center" class="confrontations-buttons" >
+                    <md-button ng-if="action.info.jeux[1].vainqueurSelected || action.info.jeux[0].vainqueurSelected === joueurs[joueurId].nom" ng-click="finirMonteeDeMarche()" class="confrontations-button red-font md-primary md-raised">
+                        OK
+                    </md-button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -25,6 +25,14 @@ angular.module('actions').directive('redActionsAchat', [
 		};
 	}
 ]);
+angular.module('actions').directive('redActionsDeplacement', [
+	function() {
+		return {
+			templateUrl: 'modules/actions/views/actions-deplacement.view.html',
+			restrict: 'E'
+		};
+	}
+]);
 angular.module('actions').directive('redActionsQuestion', [
 	function() {
 		return {

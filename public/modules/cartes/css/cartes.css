@@ -39,11 +39,19 @@
 	text-transform: capitalize;
 }
 
-.cartes-table tbody tr:nth-child(odd) {
+.cartes-table-blue tbody tr:nth-child(odd) {
 	background-color: #e8fbff;
 }
 .cartes-table tbody tr:nth-child(even) {
 	background-color: white;
+}
+
+.cartes-table-green tbody tr:nth-child(odd) {
+	background-color: #e8ffee;
+}
+
+.cartes-table-orange tbody tr:nth-child(odd) {
+	background-color: #fff4e8;
 }
 
 .cartes-input{

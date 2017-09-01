@@ -1,0 +1,55 @@
+<div ng-show="action.phase >= 0" ng-controller="ActionsDeplacementController">
+
+    <div ng-if="action.deplacement.type === 'paysage'" layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="column" layout-align="center center" class="red-font" style="font-size: 20px;">
+            <span ng-show="action.phase == 1" class="confrontations-titre">
+                Déplacement
+            </span>
+            <span ng-show="!action.deplacement.info.deResult">
+                Lance le dé
+            </span>
+            <span ng-show="action.deplacement.info.deResult && !action.deplacement.info.direction">
+                Choisis une direction
+            </span>
+            <span ng-show="action.deplacement.info.deResult && action.deplacement.info.direction">
+                Choisis ton déplacement
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="row" layout-align="space-around center" class="cartouche-body">
+
+            <div style="width: 100px;height:100px;">
+
+            </div>
+
+            <div layout="column" layout-align="center start">
+                <span>
+                    Départ : {{action.deplacement.info.depart}}
+                </span>
+                <div layout="row">
+                    <div layout="row" layout-align="center-center" ng-class="!action.deplacement.info.deResult ? 'des-container-box-disabled' : 'des-container-box'">
+                        <img src="modules/des/img/des-paysage-icone.png">
+                        <span ng-if="action.deplacement.info.deResult">{{action.deplacement.info.deResult}}</span>
+                    </div>
+                    <div ng-if="action.deplacement.info.direction != undefined" layout="row" layout-align="center-center" class="
+                    des-container-box">
+                        <img ng-src="{{'modules/plateaux/img/plateau_paysage_direction_'+action.deplacement.info.direction+'.png'}}">
+                    </div>
+                </div>
+                <span>
+                    Arrivée : {{action.deplacement.info.arrivee}}
+                </span>
+            </div>            
+
+            <div style="width: 100px;height:100px;">
+
+            </div>
+
+        </div>
+
+    </div>
+    
+ </div>

@@ -3,11 +3,11 @@
 angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$rootScope','Partie',
 	function($scope,$rootScope,Partie) {
 
-	$scope.actions_1 = ['notification','recompense','action','pouvoir'];
+	$scope.actions_1 = ['notification','recompense','action','deplacement'];
 	$scope.actions_2 = ['question','achat','duel','trois-familles'];
 
 	$scope.actionsRows = [
-		['notification','recompense','action','pouvoir'],
+		['notification','recompense','action','deplacement'],
 		['question','achat','duel','trois-familles']
 	];
 
@@ -51,15 +51,14 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 				$scope.partie.dispo.cartes.main_jeter = true;
 			}
 			else if (tourAction == 3){
-				if ($scope.joueurs[$scope.joueurId].pions[0].plateau === 'paysage'){
-					$scope.partie.dispo.des.paysage = 1;
-				}
-				else if ($scope.joueurs[$scope.joueurId].pions[0].plateau === 'labyrinthe'){
-					$scope.partie.dispo.des.labyrinthe = 4;
-				}
-				console.log($scope.joueurs)
-
-
+				// Ajouter une action déplacement
+				$scope.$emit('actions-add',{
+					categorie: 'deplacement',
+					type: $scope.joueurs[$scope.joueurId].pions[0].plateau,
+					cible: $scope.joueurId,
+					info: {},
+					priority: 1
+				});
 			}
 			else if (tourAction == 4){
 				console.log('emitting event');

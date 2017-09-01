@@ -6,9 +6,10 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 	$scope.plateauLabyrinthe = [
 		// Couronne 0
 		[{
-			numero: 'Hub interplanetaire',
+			numero: 'Hub interplanétaire',
 			cle: 'jaune',
-			position: 0
+			position: 0,
+			action: true
 		}],
 		// Couronne 1
 		[{

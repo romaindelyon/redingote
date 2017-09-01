@@ -11,10 +11,10 @@
 					<div layout="column" layout-align="space-between center" style="position: absolute;	width: 65px;height: 70px;">
 						<div layout="row" layout-align="space-between center" style="width: 100%;">
 							<div>
-								<span ng-if="plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero && hoveredCase === case.numero">
+								<span ng-if="plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero && (hoveredCase === case.numero || selectedCase.numero === case.numero)">
 									{{case.numero}}
 								</span>
-								<span ng-if="plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero && hoveredCase !== case.numero" class="red-font" style="font-size: 9px;position: absolute;margin-left: 2px;color: #7d7d7d;">
+								<span ng-if="plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero && hoveredCase !== case.numero && selectedCase.numero !== case.numero" class="red-font" style="font-size: 9px;position: absolute;margin-left: 2px;color: #7d7d7d;">
 									{{case.numero}}
 								</span>
 							</div>
@@ -32,7 +32,7 @@
 								<span ng-if="case.action && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero">
 									!
 								</span>
-							</duv>
+							</div>
 						</div>
 					</div>
 					<!-- Pions -->
@@ -52,17 +52,19 @@
 							</div>
 						</div>
 					</div>
-					<div ng-if="selectedCase.numero === case.numero && partie.dispo.plateaux.paysage > 0 && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
-						<img ng-click="movePion(case.numero)" ng-src="{{'modules/plateaux/img/plateau_pion_move.png'}}" class="plateaux-paysage-pion-move">
+					<div ng-if="selectedCase.numero === case.numero && deplacementPossible > 0 && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
+						<img ng-repeat="index in [0,1,2,3,4,5,6,7,8,9,10,11]" ng-click="deplacePion(case.numero)" ng-src="{{'modules/plateaux/img/plateau_pion_move.png'}}" class="plateaux-paysage-pion-move" style="width: 10px;" ng-style="{
+						'margin-left':'' + pionDeplacementImage[0].marginLeft + 'px',
+						'margin-top':''+ pionDeplacementImage[0].marginTop +'px'
+					}">
 					</div>
 				</div>
 				<!-- Tooltips -->
 				<!-- 1. Zone info -->
-				<div ng-if="selectedCase.numero === case.numero && plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero" class="plateaux-paysage-case-tooltip-topleft">
-					Zones:
-					<span ng-repeat="zone in case.zones">
-						<br>{{zone}}
-					</span>
+				<div ng-if="selectedCase.numero === case.numero && plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero">
+					<img ng-src="{{'modules/plateaux/img/plateaux_zones_'+case.zoneKey[0]+'.png'}}" style="width: 47px;margin-left: -79px;margin-top: -49px;z-index: 1;">
+					<img ng-src="{{'modules/plateaux/img/plateaux_zones_'+case.zoneKey[1]+'.png'}}" ng-if="case.zoneKey[1] != undefined" style="width: 47px;margin-left: -72px;margin-top: -145px;z-index: 1;">
+					<img ng-src="{{'modules/plateaux/img/plateaux_zones_'+case.zoneKey[2]+'.png'}}" ng-if="case.zoneKey[2] != undefined" style="width: 47px;margin-left: -56px;margin-top: -249px;z-index: 1;">
 				</div>
 
 				<!-- 2. Action info -->
@@ -76,15 +78,20 @@
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div style="position: absolute;margin-top: -633px;margin-left: 673px;">
-		<img src="modules/plateaux/img/plateau_paysage_rose_des_vents.png" ng-click="roseDesVents()" style="width: 216px;outline: none;">
-		<img src="modules/plateaux/img/plateau_paysage_rose_aiguille.png" style="width: 118px;margin-left: -127px;margin-top: 2px;height: 26px;" ng-style="{
-				'transform': 'rotate(' + roseAiguille.angle + 'deg)',
-				'margin-left':'' + roseAiguille.x + 'px',
-				'margin-top':''+ roseAiguille.y +'px'
-			}">
-	</div>
+		<div style="position: absolute;margin-top: -633px;margin-left: 673px;">
+				<img src="modules/plateaux/img/plateau_paysage_rose_des_vents.png" ng-click="startRoseDesVents()" style="width: 216px;outline: none;">
+				<img ng-src="{{'modules/plateaux/img/plateau_paysage_quadrant_directionnel_'+roseDesVents.position+'.png'}}" ng-if="roseDesVents.position !== undefined" style="position: absolute;height: 88px;margin-left: -72px;margin-top: 109px;" ng-style="{
+						'height':'' + roseDesVents.height + 'px',
+						'margin-left':'' +roseDesVents.marginLeft + 'px',
+						'margin-top':''+ roseDesVents.marginTop +'px'
+					}">
+				<img src="modules/plateaux/img/plateau_paysage_rose_aiguille.png" style="width: 118px;margin-left: -127px;margin-top: 2px;height: 26px;" ng-style="{
+						'transform': 'rotate(' + roseAiguille.angle + 'deg)',
+						'margin-left':'' + roseAiguille.x + 'px',
+						'margin-top':''+ roseAiguille.y +'px'
+					}">
+			</div>
+		</div>
 
 </div>	

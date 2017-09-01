@@ -1,4 +1,4 @@
-<div ng-show="actionCase.phase >= 0">
+<div ng-show="actionCase.phase >= 0" ng-controller="ActionsAchatController">
 
     <!-- *** ACHATS *** -->
 
@@ -18,7 +18,11 @@
         <div layout="row" layout-align="space-around center" class="cartouche-body">
 
             <div ng-repeat="carte in actionsCase.achat">
-                <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-click="achatObjet(carte)" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;border: ">
+                <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-click="achatObjet(carte)" ng-if="!carte.statut.missionLocked" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;">
+                <div ng-if="carte.statut.missionLocked" style="position: absolute;font-size: 150px;margin-left: 21px;opacity: 0.3;pointer-events: none;">
+                    M
+                </div>
+                <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte.code+'.png'}}" ng-if="carte.statut.missionLocked" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;opacity: 0.5;cursor: not-allowed;">
             </div>
 
             <md-button ng-click="cancelAction()" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">
@@ -52,7 +56,15 @@
                 Tu n'as pas assez de glutis pour acheter cet objet : il coûte {{actionCase.carte.info.prix}}₲
             </div>
             <div ng-if="actionCase.carte.info.paiement === 'echange' && actionCase.paiementPossible" style="width: 250px;">
-                Souhaites-tu acheter cet objet contre une carte {{actionCase.carteEchangeNom}} ?
+                <span ng-if="actionCase.carteEchangeNoms.length === 1">
+                    Souhaites-tu acheter cet objet contre une carte {{actionCase.carteEchangeNoms[0]}} ?
+                </span>
+                <span ng-if="actionCase.carteEchangeNoms.length === 2">
+                    Souhaites-tu acheter cet objet contre les cartes {{actionCase.carteEchangeNoms[0]}} et {{actionCase.carteEchangeNoms[1]}} ?
+                </span>
+                <span ng-if="actionCase.carteEchangeNoms.length === 3">
+                    Souhaites-tu acheter cet objet contre les cartes {{actionCase.carteEchangeNoms[0]}}, {{actionCase.carteEchangeNoms[1]}} et {{actionCase.carteEchangeNoms[2]}} ?
+                </span>
             </div>
             <div ng-if="actionCase.carte.info.paiement === 'echange' && !actionCase.paiementPossible" layout="column" style="width: 250px;font-size: 20px;">
                 <span>
@@ -60,7 +72,7 @@
                 </span>
             </div>
             
-            <img ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+actionCase.carte.info.echange+'.png'}}" ng-if="actionCase.carte.info.paiement === 'echange' && !actionCase.paiementPossible" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;">
+            <img ng-repeat="carte in actionCase.carte.info.echange" ng-src="{{'modules/cartes/img/hors-pioche/cartes_hors_pioche_'+carte+'.png'}}" ng-if="actionCase.carte.info.paiement === 'echange' && !actionCase.paiementPossible" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;">
             
             <div ng-if="actionCase.paiementPossible" layout="column">
                 <md-button ng-click="acheterObjet()" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">

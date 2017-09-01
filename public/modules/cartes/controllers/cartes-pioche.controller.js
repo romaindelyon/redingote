@@ -13,7 +13,8 @@ angular.module('cartes').controller('CartesPiocheController',
 			categorie: 'notification',
 			type: 'effet_immediat',
 			cible: $scope.joueurId,
-			info: carte
+			info: carte,
+			priority: 1
 		});
 	}
 
@@ -152,6 +153,26 @@ angular.module('cartes').controller('CartesPiocheController',
 			$scope.pioches.missions.splice(carteOrder,1);
 			$scope.piochesDisponibles = true;
 			$scope.partie.dispo.pioches.missions --;
+			// Updater le statut des objets hors pioche requis pour la mission :
+			for (var i = 0;i < $scope.jeu.horsPioche.length;i ++){
+				console.log($scope.jeu.horsPioche[i]);
+				if ($scope.jeu.horsPioche[i].categorie === "objet"){
+					for (var j = 0;j < carte.info.etapes.length;j ++){
+						for (var k = 0;k < carte.info.etapes[j].cartes.length; k ++){
+							console.log(carte.info.etapes[j]);
+							if (carte.info.etapes[j].cartes[k] != undefined && carte.info.etapes[j].cartes[k].code === $scope.jeu.horsPioche[i].code){
+								console.log("mission locked");
+								$scope.jeu.horsPioche[i].statut.missionLocked = true;
+								Cartes.changementStatut({id: $scope.jeu.horsPioche[i].id,statut: $scope.jeu.horsPioche[i].statut}).success(function(){
+									console.log("updated statut accordingly");
+								}).error(function(){
+									console.log("problème de statut update");
+								});
+							}
+						}
+					}
+				}
+			}
     	}).error(function(){
     		$scope.piochesDisponibles = true;
     	});

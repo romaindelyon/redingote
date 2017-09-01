@@ -9,7 +9,7 @@
 		</div>
 	</div>
 
-	<table ng-if="view == 'table_cartes'" layout="column" class="cartes-table red-font">
+	<table ng-if="view == 'table_cartes'" layout="column" class="cartes-table cartes-table-blue red-font">
 		<thead layout="row" flex>
 			<tr layout="row" flex>
 				<td width="30%">
@@ -53,7 +53,51 @@
 		</tbody>
 	</table>
 
-	<table ng-if="view == 'table_objets'" layout="column" class="cartes-table red-font">
+	<table ng-if="view == 'table_humeurs'" layout="column" class="cartes-table cartes-table-green red-font">
+		<thead layout="row" flex>
+			<tr layout="row" flex>
+				<td width="30%">
+					Humeur
+				</td>
+				<td width="20%">
+					Nom du Sims
+				</td>
+				<td width="20%">
+					Maison
+				</td>
+				<td colspan="2" width="20%">
+					Ami / Ennemi
+				</td>
+				<td width="10%">
+					
+				</td>
+			</tr>
+		</thead>
+		<tbody flex>
+			<tr ng-repeat="(key,carte) in cartesTable" layout="row" flex>
+				<td width="30%">
+					{{carte.nom}}
+				</td>
+				<td width="20%">
+					{{carte.info.nomSims}}
+				</td>
+				<td width="20%">
+					{{carte.info.maison}}
+				</td>
+				<td width="10%">
+					{{carte.info.ami}}
+				</td>
+				<td width="10%">
+					{{carte.info.ennemi}}
+				</td>
+				<td width="10%">
+					<a ng-click="modifierCarte(key)">Modifier</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table ng-if="view == 'table_objets'" layout="column" class="cartes-table cartes-table-orange red-font">
 		<thead layout="row" flex>
 			<tr layout="row" flex>
 				<td width="30%">

@@ -32,7 +32,7 @@ angular.module('des').controller('DesContainerController', ['$scope',
 				$scope.partie.dispo.pioches.pioche += result;
 			}
 			else if (de === 'paysage'){
-				$scope.partie.dispo.plateaux.paysage = 1;
+				$scope.$emit('plateaux-paysage-de', {result: result});
 			}
 			else if (de === 'labyrinthe'){
 				$scope.$emit('plateaux-labyrinthe-de', {result: result});

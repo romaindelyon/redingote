@@ -29,7 +29,12 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		$scope.focusedTab = index;
 		if ($scope.tabs[index].id != 'nouvelle_carte' && $scope.tabs[index].id != 'objets'){
 			$scope.cartesTable = $scope.cartes[$scope.tabs[index].id];
-			$scope.view = 'table_cartes';
+			if ($scope.tabs[index].id == 'humeurs'){
+				$scope.view = 'table_humeurs';
+			}
+			else {
+				$scope.view = 'table_cartes';
+			}
 			$scope.formSubmitted = false;
 		}
 		else if ($scope.tabs[index].id === 'objets'){
@@ -44,6 +49,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				contraintes: [],
 				circonstances: [1],
 				info: {
+					echangeQuantite: 1,
 					etapes: [{
 						cartes: [{}],
 						cases: [{}]
@@ -94,7 +100,11 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		if (carte.pile === 'Hors Pioche' && carte.categorie === 'Objet'){
 			carte.info.paiement = CartesProprietes[carte.info.paiement];
 			if (carte.info.paiement === 'Echange'){
-				carte.info.echange = $scope.cartes.toutes[carte.info.echange].nom;
+				for (var i = 0;i < carte.info.echange.length;i ++){
+					console.log(carte.info.echange[i]);
+					carte.info.echange[i] = $scope.cartes.toutes[carte.info.echange[i]].nom;
+				}
+				carte.info.echangeQuantite = carte.info.echange.length;
 			}
 			else {
 				carte.info.reduction = CartesProprietes[carte.info.reduction];
@@ -211,11 +221,11 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 	Cartes.getCartes({partieId: 1}).success(function(response){
 		for (var i in response){
 			// agreger cartes par code:
-			if (response[i].pile === 'pioche' || response[i].pile === 'hors_pioche' && cartesCodes.indexOf(response[i].code < 0)){
+			if (response[i].pile === 'pioche' || response[i].pile === 'hors_pioche' && cartesCodes.indexOf(response[i].code) < 0){
 				cartesCodes.push(response[i].code);
 				$scope.cartesNoms.push(response[i].nom);
 			}
-			if (response[i].pile === 'hors_pioche' && response[i].categorie === 'objet' && $scope.objetsHorsPiocheCodes.indexOf(response[i].code < 0)){
+			if (response[i].pile === 'hors_pioche' && response[i].categorie === 'objet' && $scope.objetsHorsPiocheCodes.indexOf(response[i].code) < 0){
 				$scope.objetsHorsPiocheNoms.push(response[i].nom);
 				$scope.objetsHorsPiocheCodes.push(response[i].code);
 			}
@@ -500,13 +510,16 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				}
 				if ($scope.carte.info.paiement === "Echange"){
 					console.log('echange');
-					var carteNom = $scope.carte.info.echange;
-					console.log(carteNom);
-					var carteCode = $scope.objetsHorsPiocheCodes[$scope.objetsHorsPiocheNoms.indexOf(carteNom)];
-					console.log(carteCode);
-					console.log($scope.objetsHorsPiocheCodes);
-					console.log($scope.objetsHorsPiocheNoms);
-					carte.info.echange = carteCode;
+					carte.info.echange = [];
+					for (var i = 0;i < $scope.carte.info.echange.length;i ++){
+						var carteNom = $scope.carte.info.echange[i];
+						console.log(carteNom);
+						var carteCode = $scope.objetsHorsPiocheCodes[$scope.objetsHorsPiocheNoms.indexOf(carteNom)];
+						console.log(carteCode);
+						console.log($scope.objetsHorsPiocheCodes);
+						console.log($scope.objetsHorsPiocheNoms);
+						carte.info.echange[i] = carteCode;
+					}
 				}
 				else if ($scope.carte.info.paiement === "Glutis"){
 					carte.info.prix = $scope.carte.info.prix;
@@ -570,6 +583,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		}
 		else {
 			carte.id = $scope.carte.id;
+			console.log(carte);
 			Cartes.modifierCarte(carte).success(function(){
 				if (carte.pile == 'pioche' && carte.categorie == 'objet'){
 					objets[0].id = $scope.objets[0].id;

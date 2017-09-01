@@ -1,8 +1,9 @@
 <div ng-controller="ActionsController">
 
-    <red-actions-achat layout="column" flex layout-align="center center"></red-actions-achat>
-    <red-actions-action layout="column" flex layout-align="center center"></red-actions-action>
+    <red-actions-achat ng-if="action.categorie === 'achat'" layout="column" flex layout-align="center center"></red-actions-achat>
+    <red-actions-action ng-if="action.categorie === 'action'" layout="column" flex layout-align="center center"></red-actions-action>
     <red-actions-question layout="column" flex layout-align="center center"></red-actions-question>
+    <red-actions-deplacement ng-if="action.categorie === 'deplacement'" layout="column" flex layout-align="center center"></red-actions-deplacement>
     <red-actions-recompense ng-if="action.categorie === 'recompense'" layout="column" flex layout-align="center center"></red-actions-recompense>
     <red-actions-notification ng-if="action.categorie === 'notification'" layout="column" flex layout-align="center center"></red-actions-notification>
 

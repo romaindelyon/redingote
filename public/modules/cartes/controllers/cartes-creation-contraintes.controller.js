@@ -48,7 +48,7 @@ angular.module('cartes').controller('CartesCreationContraintesController', ['$sc
 	var cases = [];
 	var zones = ['Désert','Forêt','Mer','Marécages','Monde onirique','Montagne','Prairie','Royaume des ténèbres','Village','Ville','Zone industrielle'];
 	var typesObjets = ['Animal','Chat','Combustible','Electrique','Insecte','Marin','Métallique','Potion bénéfique','Potion malefique','Toxique'];
-	var typesActions = ['Combustible','Faim','Insecte','Nuit','Soif','Toxique'];
+	var typesActions = ['Combustible','Faim','Insecte','Nuit','Soif','Toxique','Piège','Immédiat','Test'];
 	var typesHumeurs = ['Négative','Russe','Triste'];
 	var deplacement_avantages = ["Crapauduc","Respiration sous l'eau","Vitesse doublée"];
 

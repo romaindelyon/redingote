@@ -13,7 +13,7 @@ header("Content-Type: application/json; charset=UTF-8");
     }
 
     foreach ($carteIds as $carteId){
-        if ($position != -2){
+        if ($position >= 0){
             $stmt = $con -> prepare("UPDATE cartes SET position = ? WHERE id = ?");
         }
         else {

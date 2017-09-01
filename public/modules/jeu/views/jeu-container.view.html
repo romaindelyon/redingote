@@ -7,7 +7,7 @@
             </div>
             <div flex></div>
             <div style="text-align: center;">
-                <span style="font-size: 16px;">
+                <span style="font-size: 18px;font-weight: bold;">
                     {{joueur.nom}}
                 </span>
                 <br>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <red-jeu-ouvertes ng-if="focusedTab === 0" layout="row" flex ng-style="{{tabs[0].style}}"></red-jeu-ouvertes>
-                <red-jeu-hors-pioche ng-if="focusedTab === 1" layout="row" flex ng-style="{{tabs[1].style}}"></red-jeu-hors-pioche>
+                <red-jeu-hors-pioche ng-show="focusedTab === 1" layout="row" flex ng-style="{{tabs[1].style}}"></red-jeu-hors-pioche>
                 <red-jeu-humeurs ng-if="focusedTab === 2" layout="row" flex ng-style="{{tabs[2].style}}"></red-jeu-humeurs>
                 <red-jeu-mission ng-show="focusedTab === 3" layout="row" flex ng-style="{{tabs[3].style}}"></red-jeu-mission>
                 <red-jeu-grandes-cartes ng-if="focusedTab === 4" layout="row" flex ng-style="{{tabs[4].style}}"></red-jeu-grandes-cartes>

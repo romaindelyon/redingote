@@ -70,6 +70,9 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 		'Animaux ouverts': {
 			'Utiliser autres joueurs': []
 		},
+		'Aucune': {
+			'Aucune': []
+		},
 		'Belette': {
 			"Brouiller l'ordre": [],
 			'Réduire nombre requis': [1,2,3,4,5,6]
@@ -98,6 +101,7 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 		'Déplacement': {
 			'Avantage': deplacement_avantages,
 			'Case': $scope.cases,
+			'Hubs': ['Hub','Hub interplanétaire'],
 			'Téléportation': ['Vers un joueur','Cases 62'],
 			'Nombre de cases': [1,2,3,4,5,6,7,8,9,10],
 			'Zone': zones

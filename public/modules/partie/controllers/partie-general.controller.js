@@ -25,7 +25,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 		achat: [],
 		duel: [],
 		notification: [],
-		pouvoir: [],
+		deplacement: [],
 		question: [],
 		recompense: [],
 		troisFamilles: []
@@ -99,7 +99,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 				notification: [0,$scope.actions.notification.length],
 				recompense: [0,0],
 				action: [0,0],
-				pouvoir: [0,0],
+				deplacement: [0,0],
 				question: [0,0],
 				achat: [0,0],
 				'trois-familles': [0,0],

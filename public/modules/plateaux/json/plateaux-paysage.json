@@ -20,8 +20,8 @@
 ,{"id":19,"numero":947,"question":false,"zones":["Ville"],"action":false,"achat":false},
 {"id":20,"numero":802,"question":false,"zones":["Marecage"],"action":false,"achat":false},
 {"id":21,"numero":145,"question":false,"zones":["Ville"],"action":true,"achat":false},
-{"id":22,"numero":675,"question":false,"zones":["Desert"],"action":false,"achat":false},
-{"id":23,"numero":662,"question":false,"zones":["Marecage"],"action":false,"achat":false}]},
+{"id":22,"numero":443,"question":false,"zones":["Ville"],"action":false,"achat":true},
+{"id":23,"numero":209,"question":false,"zones":["Ville"],"action":false,"achat":true}]},
 
 {"id":1,"colonnes":[
 {"id":0,"numero":729,"question":false,"zones":["Mer"],"action":false,"achat":false},
@@ -344,7 +344,7 @@
 {"id":9,"numero":294,"question":false,"zones":["Royaume des tenebres"],"action":false,"achat":false},
 {"id":10,"numero":907,"question":false,"zones":["Ville"],"action":false,"achat":false},
 {"id":11,"numero":335,"question":false,"zones":["Village"],"action":false,"achat":false},
-{"id":12,"numero":721,"question":false,"zones":["Ville","Montagne"],"action":false,"achat":false},
+{"id":12,"numero":31,"question":false,"zones":["Monde onirique"],"action":false,"achat":true},
 {"id":13,"numero":186,"question":false,"zones":["Mer","Mer"],"action":false,"achat":false},
 {"id":14,"numero":992,"question":false,"zones":["Marecage"],"action":false,"achat":false},
 {"id":15,"numero":726,"question":false,"zones":["Foret","Marecage"],"action":false,"achat":false},

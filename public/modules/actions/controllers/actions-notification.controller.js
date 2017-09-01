@@ -32,6 +32,15 @@ angular.module('actions').controller('ActionsNotificationController', ['$scope',
     		position: joueurIndex
     	}).success(function(){
 			var carte = $scope.pioches.humeurs[carteOrder];
+			carte.statut.piocheDate = new Date();
+			Cartes.changementStatut({
+				carteId: carte.id,
+				statut: carte.statut
+			}).success(function(){
+				console.log("status changed");
+			}).error(function(){
+				console.log("error when trying to change status");
+			});
 			if (joueurIndex != $scope.joueurId){
 				console.log(joueurIndex);
 				console.log($scope.joueurs);

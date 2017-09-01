@@ -71,6 +71,7 @@ angular.module('cartes').value('CartesProprietes', {
 	// Types consequences/contraintes/circonstances
 	'annulation': 'Annulation',
 	'adversaire': 'Adversaire',
+	'aucune': 'Aucune',
 	'avantage': 'Avantage',
 	'bonus_attaque': 'Bonus attaque',
 	'bonus_attaque_et_defense': 'Bonus attaque et défense',
@@ -97,6 +98,9 @@ angular.module('cartes').value('CartesProprietes', {
 	'gagner': 'Gagner',
 	'grandes_cartes': 'Grandes cartes',
 	'hubs_sans_documents': "Hubs sans documents",
+	'hubs': "Hubs",
+	'hub': "Hub",
+	'hub_interplanetaire': "Hub interplanétaire",
 	'humeur': 'Humeur',
 	'inverser': 'Inverser',
 	'jeu': 'Jeu',

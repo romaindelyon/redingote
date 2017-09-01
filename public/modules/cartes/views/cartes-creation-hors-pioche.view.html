@@ -39,12 +39,16 @@
 				</md-select>
 				<label>Réduction</label>
 			</md-input-container>
-			<md-input-container ng-if="carte.info.paiement === 'Echange'" class="cartes-input" style="width: 200px;">
-				<md-select ng-model="carte.info.echange" required aria-label="Case">
-					<md-option ng-repeat="carte in objetsHorsPiocheNoms | orderBy: carte">{{carte}}</md-option>
-				</md-select>
-				<label>Objet</label>
-			</md-input-container>
+			<div layout="row" ng-if="carte.info.paiement === 'Echange'">
+				<md-input-container ng-repeat="index in createArrayFromNumber(carte.info.echangeQuantite) track by $index" class="cartes-input" style="width: 200px;">
+					<md-select ng-model="carte.info.echange[$index]" required aria-label="Case">
+						<md-option ng-repeat="carte in objetsHorsPiocheNoms | orderBy: carte">{{carte}}</md-option>
+					</md-select>
+					<label>Objet</label>
+				</md-input-container>
+				<a ng-click="ajouterObjet(carte)" ng-if="carte.info.echangeQuantite < 3" style="outline: none;margin-top: 41px;margin-left: 10px;">Ajouter un objet</a>
+				<a ng-click="retirerObjet(carte)" ng-if="carte.info.echangeQuantite > 1" style="outline: none;margin-top: 41px;margin-left: 10px;">Retirer un objet</a>
+			</div>
 		</div>
 		<div ng-if="carte.utilisation == 'Action' || carte.utilisation == 'Réaction' || carte.utilisation == 'Ouverture'" layout="column">
 			<red-cartes-creation-consequences carte="carte"></red-cartes-creation-consequences>
