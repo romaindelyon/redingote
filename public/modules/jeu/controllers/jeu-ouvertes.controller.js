@@ -6,6 +6,7 @@ angular.module('jeu').controller('JeuOuvertesController', ['$scope','Cartes',
 	$scope.focusIndex = -2;
 
 	$scope.focusCarte = function(index){
+		console.log(index);
 		if (index == $scope.focusIndex){
 			$scope.focusIndex = -2;
 		}

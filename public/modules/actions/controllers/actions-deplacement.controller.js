@@ -21,12 +21,16 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 				$scope.$emit('plateaux-paysage-rose-ready',{});
 				console.log("allowing rose");
 			}
+			else {
+				$scope.action.deplacement.info.actionsRestantes = $scope.action.deplacement.info.deResult + 1;
+				$scope.$emit('plateaux-paysage-deplacement-ready',{deResult: $scope.action.deplacement.info.deResult});
+			}
 		}
 	}
 
 	$rootScope.$on('plateaux-paysage-de',function(event,args){
 		$scope.action.deplacement.info.deResult = args.result;
-		Actions.update($scope.action.deplacement.info).success(function(){
+		Actions.update({info: $scope.action.deplacement.info}).success(function(){
 			console.log("Action updatée");
 			$scope.$emit('plateaux-paysage-rose-ready',{});
 		}).error(function(){
@@ -40,13 +44,68 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 			direction = 'libre';
 		}
 		$scope.action.deplacement.info.direction = direction;
-		Actions.update($scope.action.deplacement.info).success(function(){
+		Actions.update({info: $scope.action.deplacement.info}).success(function(){
 			console.log("Action updatée");
+			$scope.action.deplacement.info.actionsRestantes = $scope.action.deplacement.info.deResult + 1;
 			$scope.$emit('plateaux-paysage-deplacement-ready',{deResult: $scope.action.deplacement.info.deResult});
 		}).error(function(){
 			console.log("Erreur d'update de notification d'humeur");
 		});
 	});
+
+	$scope.terminerDeplacement = function(){
+		var arrivee = $scope.action.deplacement.info.deplacement[$scope.action.deplacement.info.deplacement.length - 1];
+		$scope.action.deplacement.info.arrivee = arrivee;
+		$scope.$emit('plateaux-paysage-deplacement-over',{deResult: $scope.action.deplacement.info.deResult});
+		if ($scope.action.deplacement.info.arrivee.case.zones.length > 1){
+			$scope.action.deplacement.choixZone = true;
+		}
+		else {
+			$scope.action.deplacement.info.zone = $scope.action.deplacement.info.arrivee.case.zoneKey[0];
+			$scope.action.deplacement.fini = true;
+		}
+	}
+
+	$scope.choixZone = function(zone){
+		$scope.action.deplacement.info.zone = zone;
+		$scope.action.deplacement.fini = true;
+	} 
+
+	$scope.validerDeplacement = function(){
+		// Move pion
+		$scope.$emit('plateaux-move-pion',{
+			case: $scope.action.deplacement.info.arrivee.numero,
+			plateau: 'paysage',
+			zone: $scope.action.deplacement.info.zone,
+			row: $scope.action.deplacement.info.arrivee.row,
+			colonne: $scope.action.deplacement.info.arrivee.colonne,
+			position: $scope.action.deplacement.info.arrivee.position
+		});
+		// Effacer les données de déplacement et relancer la rose des vents
+		$scope.$emit('plateaux-paysage-deplacement-erase',{});
+		// Retirer l'action
+		$scope.cancelAction();
+	}
+
+	$rootScope.$on('plateaux-paysage-deplacement',function(event,args){
+		$scope.action.deplacement.info.actionsRestantes --;
+		$scope.action.deplacement.info.deplacement = args.deplacement;
+		if ($scope.action.deplacement.info.actionsRestantes === 0){
+			console.log('fini');
+			console.log(args.deplacement[args.deplacement.length - 1]);
+			$scope.terminerDeplacement();
+		}
+	});
+
+	$scope.recommencerDeplacement = function(){
+		$scope.action.deplacement.info.actionsRestantes = $scope.action.deplacement.info.deResult + 1;	
+		$scope.$emit('plateaux-paysage-deplacement-ready',{deResult: $scope.action.deplacement.info.deResult});
+	}
+	$scope.ajouterActionDeplacement = function(){
+		$scope.$emit('plateaux-paysage-deplacement-restart',{});
+		$scope.action.deplacement.info.actionsRestantes ++;
+		$scope.action.deplacement.info.arrivee = null;
+	}
 
 
 	// Initialization
@@ -58,6 +117,8 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 	console.log($scope.action);
 	$scope.action.numero = numero;
 	$scope.action.phase = 1;		
+
+	$scope.$emit('cartes-utilisation-possible-circonstance',{categorie: 'deplacement',type: $scope.action.deplacement.type});
 
 	startDeplacement();
 

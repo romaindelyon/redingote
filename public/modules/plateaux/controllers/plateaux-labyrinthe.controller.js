@@ -478,7 +478,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 	}
 
 	// Initiate couronnes
-	$rootScope.$on('partie-general-partie-loaded', function(event, args) {
+	var partieGeneralPartieLoadedEventListener = $rootScope.$on('partie-general-partie-loaded', function(event, args) {
 		$scope.positionCouronnes = $scope.partie.positionCouronnes;
 		for (var i in $scope.plateauLabyrinthe){
 			if (i > 0){
@@ -486,6 +486,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 			}
 		}
 	});
+	$scope.$on("$destroy",partieGeneralPartieLoadedEventListener);
 
 	function getCoordinates(numero){
 		var coordinates = {
@@ -693,13 +694,14 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		}
 	}
 
-	$rootScope.$on('partie-general-joueurs-loaded', function(event, args) {
+	var partieGeneralJoueursLoadedEventListener = $rootScope.$on('partie-general-joueurs-loaded', function(event, args) {
 		for (var i in $scope.joueurs){
 			if ($scope.joueurs[i].pions[0].plateau === 'labyrinthe'){
 				addPionToCase($scope.joueurs[i].pions[0].case,$scope.joueurs[i].id);
 			}
 		}
 	});
+	$scope.$on("$destroy",partieGeneralJoueursLoadedEventListener);
 
 	// $rootScope.$on('plateaux-labyrinthe-move-pion', function(event, args) {
 	// 	$scope.joueurs[$scope.joueurId].pions[0].plateau = 'labyrinthe';
@@ -707,7 +709,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 	// 	$scope.goToPlateau(1);
 	// });
 
-	$rootScope.$on('plateaux-move-pion-callback', function(event, args) {
+	var plateauxMovePionCallbackEventListener = $rootScope.$on('plateaux-move-pion-callback', function(event, args) {
 		if (args.plateau === 'labyrinthe'){
 			addPionToCase(args.case,$scope.joueurId);
 		}
@@ -715,6 +717,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 			removePionFromCase(args.previousCase,$scope.joueurId);
 		}		
 	});
+	$scope.$on("$destroy",plateauxMovePionCallbackEventListener);
 
 	// Tour de Jeu:
 
@@ -800,7 +803,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		}
 	}
 
-	$rootScope.$on('plateaux-labyrinthe-de', function(event, args) {
+	var plateauxLabyrintheDeEventListener = $rootScope.$on('plateaux-labyrinthe-de', function(event, args) {
 		$scope.plateauLabyrintheTourDeJeu = {
 			casesDisponibles: [],
 			monteeDisponible: []
@@ -820,6 +823,7 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		rechercheCasesDisponibles(position,couronne);
 		rechercheMonteeDisponible(position,couronne);
 	});	
+	$scope.$on("$destroy",plateauxLabyrintheDeEventListener);
 
 	$scope.movePion = function(numero){
 		var previousCoordinates = getCoordinates($scope.joueurs[$scope.joueurId].pions[0].case);

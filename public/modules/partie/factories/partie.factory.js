@@ -3,7 +3,7 @@
 angular.module('partie').factory('Partie', ['$http','configService',
 	function($http,configService) {
 		return {
-			// Get all the cartes:
+			// Get specific partie:
 			getPartie: function(){
 				if (configService.local){
 					return $http({
@@ -15,6 +15,24 @@ angular.module('partie').factory('Partie', ['$http','configService',
 					return $http({
 				        method: 'GET', 
 				        url: 'modules/partie/php/partie.php',
+				        headers: {
+				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
+				        }
+				    });
+				}
+			},
+			// Get all the parties:
+			getAllParties: function(){
+				if (configService.local){
+					return $http({
+				        method: 'GET', 
+				        url: 'modules/partie/json/partie.json'
+				    });
+				}
+				else {
+					return $http({
+				        method: 'GET', 
+				        url: 'modules/partie/php/partie-get-all.php',
 				        headers: {
 				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
 				        }

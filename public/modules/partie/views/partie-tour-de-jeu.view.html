@@ -14,7 +14,7 @@
                     C'est ton tour {{attaques.length}}
                 </span>
             </div>
-            <div layout="column" layout-align="center center" ng-show="!partie.dispo.tourDeJeu.actionEnCours && actionsDisponibles.nextAction && attaques.defenses.length <= 0" ng-click="nextAction()" ng-if="partie.tour_joueur == joueurId" style="outline: none;">
+            <div layout="column" layout-align="center center" ng-show="!partie.dispo.tourDeJeu.actionEnCours && actionsDisponibles.nextAction && attaques.defenses.length <= 0 && (partie.dispo.tourDeJeu.notification[1] + partie.dispo.tourDeJeu.recompense[1] + partie.dispo.tourDeJeu.action[1] + partie.dispo.tourDeJeu.deplacement[1] + partie.dispo.tourDeJeu.question[1] + partie.dispo.tourDeJeu.achat[1] + partie.dispo.tourDeJeu.duel[1] + partie.dispo.tourDeJeu.troisFamilles[1]) === 0" ng-click="nextAction()" ng-if="partie.tour_joueur == joueurId" style="outline: none;">
                 <img src="modules/jeu/img/jeu_icones_next.png" style="height: 20px;">
             </div>
         </div>

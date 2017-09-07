@@ -40,7 +40,7 @@ angular.module('jeu').controller('JeuHorsPiocheController', ['$scope','$rootScop
 
 	$scope.utiliserCarteHorsPioche = function(index){
 		console.log($scope.jeu.horsPioche[index]);
-		if ($scope.jeu.horsPioche[index].utilisation[0] === 'reaction'){
+		if ($scope.jeu.horsPioche[index].utilisation.indexOf('reaction') >= 0){
 			$scope.$emit('cartes-utilisation',{carte: $scope.jeu.horsPioche[index]});
 		}
 		$scope.focusIndex = -2;

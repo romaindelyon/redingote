@@ -6,7 +6,7 @@ angular.module('partie').config(['$stateProvider', '$urlRouterProvider',
 	// Home state routing
 	$stateProvider.
 	state('partie', {
-		url: '/partie/:joueur',
+		url: '/partie/:partie/:joueur',
 		templateUrl: 'modules/partie/views/partie-general.view.html'
 	});
 

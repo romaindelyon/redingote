@@ -3,6 +3,8 @@
 angular.module('actions').controller('ActionsController', ['$scope','$rootScope','$http','$timeout','Partie','Joueurs','Cartes','Objets','Actions','Questions',
 	function($scope,$rootScope,$http,$timeout,Partie,Joueurs,Cartes,Objets,Actions,Questions) {
 
+	console.log('initializing actionscontroller');
+
 	$scope.action = {};
 
 	$scope.actionSwitchTab = function(increment){
@@ -10,12 +12,13 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 	}
 
     $scope.cancelAction = function(){
+    	$scope.$emit('cartes-utilisation-reset',{});
     	$scope.partie.dispo.tourDeJeu.actionEnCours = false;
     	if ($scope.actionCase !== undefined){
     		$scope.actionCase.phase = 0;
     	}
-    	if ($scope.action.categorie === 'notification'){
-    		Actions.delete({id: $scope.action.notification.id}).success(function(){
+    	if ($scope.action.categorie === 'notification' || $scope.action.categorie === 'deplacement'){
+    		Actions.delete({id: $scope.action[$scope.action.categorie].id}).success(function(){
     			$scope.actions[$scope.action.categorie].splice(0,1);
     			$scope.partie.dispo.tourDeJeu[$scope.action.categorie][1] --;
     			$scope.action = {};
@@ -29,7 +32,7 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
     	
     }
 
-	$rootScope.$on('actions-lancer', function(event, args) {
+	var actionsLancerEventListener = $rootScope.$on('actions-lancer', function(event, args) {
 		console.log("starting this");
 		if (args.action === 'question'){
 			$scope.startQuestion();
@@ -39,7 +42,9 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 		}
 	});
 
-	$rootScope.$on('actions-add', function(event, args) {
+	$scope.$on("$destroy", actionsLancerEventListener);
+
+	var actionsAddEventListener = $rootScope.$on('actions-add', function(event, args) {
 		var action = {
 			categorie: args.categorie,
 			type: args.type,			
@@ -64,6 +69,7 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 		});
 	});
 
+	$scope.$on("$destroy", actionsAddEventListener);
 
 	function shuffle(array) {
 	  var currentIndex = array.length, temporaryValue, randomIndex;
@@ -284,13 +290,15 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 	    });		
 	}
 
-	$rootScope.$on('plateaux-action-case-start', function(event, args) {
+	var plateauxActionCaseStartEventListener = $rootScope.$on('plateaux-action-case-start', function(event, args) {
 		initializeActionCase();
 	});
+	$scope.$on("$destroy", plateauxActionCaseStartEventListener)
 
 	// Une carte de type REACTION vient d'être utilisée
-	$rootScope.$on('cartes-utilisation',function(event, args){
+	var cartesUtilisationEventListener = $rootScope.$on('cartes-utilisation',function(event, args){
 		$scope.actionCase.carteUtilisee = args.carte;
 	});
+	$scope.$on("$destroy", cartesUtilisationEventListener)
 
 }]);

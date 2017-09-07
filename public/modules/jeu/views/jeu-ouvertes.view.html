@@ -2,7 +2,7 @@
 
 	<div layout="column" layout-align="center center" style="width: 150px;margin-right: 100px;">
 		<div ng-if="focusIndex >= 0">
-			<md-button ng-if="partie.dispo.cartes.ouvertes_jeter && !jeu.ouvertes[focusIndex].categorie === 'pouilleux'" ng-click="jeterCarte(focusIndex)" class="md-primary">
+			<md-button ng-if="partie.tour_action === 1 && jeu.ouvertes[focusIndex].categorie !== 'pouilleux'" ng-click="jeterCarte(focusIndex)" class="md-primary">
 				Jeter
 			</md-button>
 			<md-button ng-if="partie.dispo.cartes.utiliser && jeu.ouvertes[focusIndex].categorie === 'combat' && !confrontation.active" ng-click="utiliserCarte(focusIndex)" class="md-primary">

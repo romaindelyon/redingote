@@ -1,7 +1,7 @@
-<div ng-controller="AccueilController" layout="column">
+<div ng-controller="AccueilController" class="red-font" layout="column" style="min-width: 1024px;">
 	<!-- Toolbar -->
-	<red-core-toolbar></red-core-toolbar>
-	<div style="height: 100px;" layout="row" flex layout-align="center center">
+	<red-core-toolbar style="width: 100%;"></red-core-toolbar>
+	<div style="height: 100px;width: 100%;" layout="row" flex layout-align="center center">
 		<div layout-flex>
 		</div>
 		<span layout="row" style="font-size: 40px;">
@@ -10,20 +10,56 @@
 		<div layout-flex>
 		</div>
 	</div>
-	<div layout="row" flex style="height: 100px;">
-		<div ng-click="goToPartie(0)" layout="row" flex layout-align="center center">
-			Je suis Julia !
+	<div ng-repeat="partie in parties" layout="column" flex style="height: 100px;width: 100%;font-size: 20px;">
+		<div style="width: 100%;height: 40px;background-color: #f6f6f6;">
+			<span style="padding: 15px;text-align: center;">
+				Partie {{partie.id}}- {{partie.nom}}
+			</span>
 		</div>
-		<div ng-click="goToPartie(1)" layout="row" flex layout-align="center center">
-			Je suis Marie !
-		</div>
-		<div ng-click="goToPartie(2)" layout="row" flex layout-align="center center">
-			Je suis Romain !
+		<div layout="row" style="width: 100%;height: 80px;">
+			<div ng-click="goToPartie(partie.id,0)" layout="row" flex layout-align="center center" style="text-align: center;outline: none;">
+				<span ng-if="!partie.showPassword[0]">Je suis Julia !</span>
+				<md-input-container class="cartes-input" ng-if="partie.showPassword[0]" style="width: 200px;">
+					<input ng-model="authentication.password" type="password" required aria-label="mot de passe">
+					<label>Mot de passe</label>
+				</md-input-container>
+				<md-button type="submit" ng-if="partie.showPassword[0]" ng-click="submitPassword(partie.id,0)" class="confrontations-button red-font md-primary md-raised" style="margin-top: 20px;">
+                	OK !
+            	</md-button>
+			</div>
+			<div ng-click="goToPartie(partie.id,1)" layout="row" flex layout-align="center center" style="text-align: center;outline: none;">
+				<span ng-if="!partie.showPassword[1]">Je suis Marie !</span>
+				<md-input-container class="cartes-input" ng-if="partie.showPassword[1]" style="width: 200px;">
+					<input ng-model="authentication.password" type="password" required aria-label="mot de passe">
+					<label>Mot de passe</label>
+				</md-input-container>
+				<md-button type="submit" ng-if="partie.showPassword[1]" ng-click="submitPassword(partie.id,1)" class="confrontations-button red-font md-primary md-raised" style="margin-top: 20px;">
+                	OK !
+            	</md-button>
+			</div>
+			<div ng-click="goToPartie(partie.id,2)" layout="row" flex layout-align="center center" style="text-align: center;outline: none;">
+				<span ng-if="!partie.showPassword[2]">Je suis Romain !</span>
+				<md-input-container class="cartes-input" ng-if="partie.showPassword[2]" style="width: 200px;">
+					<input ng-model="authentication.password" type="password" required aria-label="mot de passe">
+					<label>Mot de passe</label>
+				</md-input-container>
+				<md-button type="submit" ng-if="partie.showPassword[2]" ng-click="submitPassword(partie.id,2)" class="confrontations-button red-font md-primary md-raised" style="margin-top: 20px;">
+                	OK !
+            	</md-button>
+			</div>
 		</div>
 	</div>
 	<div layout="column" flex>
 		<div>
 			<img src="modules/accueil/img/accueil.jpg" style="min-width: 1024px;max-width: 100%;outline: none;">
+		</div>
+	</div>
+	<div layout="column" flex>
+		<div style="width: 100%;height: 40px;" ng-click="creerPartie()">
+			Créer une nouvelle partie
+		</div>
+		<div style="width: 100%;height: 40px;" ng-if="nouvellePartieCree">
+			
 		</div>
 	</div>
 </div>

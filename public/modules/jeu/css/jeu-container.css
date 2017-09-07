@@ -68,3 +68,22 @@
 	filter: grayscale(100%);
     opacity: 0.4;
 }
+
+.jeu-container-icone,
+.jeu-container-icone-selected {
+	height: 100px;
+	margin-bottom: 10px;
+}
+.jeu-container-icone:hover {
+	opacity: 1;
+}
+
+.jeu-container-icone{
+    opacity: 0.5;
+    filter: grayscale(30%);
+}
+
+.jeu-container-icone-selected {
+    opacity: 1;
+    filter: grayscale(0%);
+}

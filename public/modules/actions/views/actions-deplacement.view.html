@@ -13,8 +13,14 @@
             <span ng-show="action.deplacement.info.deResult && !action.deplacement.info.direction">
                 Choisis une direction
             </span>
-            <span ng-show="action.deplacement.info.deResult && action.deplacement.info.direction">
+            <span ng-show="action.deplacement.info.deResult && action.deplacement.info.direction && !action.deplacement.choixZone && !action.deplacement.fini">
                 Choisis ton déplacement
+            </span>
+            <span ng-show="action.deplacement.info.arrivee != undefined && !action.deplacement.fini">
+                Indique ta zone
+            </span>
+            <span ng-show="action.deplacement.info.zone != undefined">
+                Déplacement terminé !
             </span>
         </div>
 
@@ -25,7 +31,7 @@
 
             </div>
 
-            <div layout="column" layout-align="center start">
+            <div layout="column" layout-align="center start" style="font-size: 16px;">
                 <span>
                     Départ : {{action.deplacement.info.depart}}
                 </span>
@@ -39,13 +45,34 @@
                         <img ng-src="{{'modules/plateaux/img/plateau_paysage_direction_'+action.deplacement.info.direction+'.png'}}">
                     </div>
                 </div>
-                <span>
-                    Arrivée : {{action.deplacement.info.arrivee}}
+                <div ng-if="action.deplacement.info.direction != undefined && !action.deplacement.fini && !action.deplacement.choixZone" layout="column" layout-align="center start" style="height: 105px;">
+                    <span>
+                    Actions restantes : {{action.deplacement.info.actionsRestantes}}
+                    </span>
+                    <a ng-click="ajouterActionDeplacement()">
+                        Ajouter un déplacement qui ne compte pas
+                    </a>
+                    <a ng-click="recommencerDeplacement()">
+                        Recommencer le déplacement
+                    </a>
+                    <a ng-if="action.deplacement.info.direction !== 'libre'" ng-click="terminerDeplacement()">
+                        Terminer le déplacement
+                    </a>
+                </div>
+                <span style="height: 35px;" ng-if="action.deplacement.info.arrivee != undefined">
+                    Arrivée : {{action.deplacement.info.arrivee.numero}}
                 </span>
+                <div ng-if="action.deplacement.choixZone"  layout="row" layout-align="space-around center">
+                    <div ng-repeat="zone in action.deplacement.info.arrivee.case.zoneKey">
+                        <img ng-src="{{'modules/plateaux/img/plateaux_zones_'+zone+'.png'}}" ng-click="choixZone(zone)" ng-class="action.deplacement.info.zone === zone ? 'actions-deplacement-zone-selected' : 'actions-deplacement-zone'">
+                    </div>
+                </div>
             </div>            
 
-            <div style="width: 100px;height:100px;">
-
+            <div style="width: 150px;">
+                <md-button ng-click="validerDeplacement()" ng-if="action.deplacement.fini" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">
+                    Déplacement terminé !
+                </md-button>
             </div>
 
         </div>

@@ -161,18 +161,20 @@ angular.module('actions').controller('ActionsActionController', ['$scope','$root
 	        		});
 				}
 				$scope.okButtonDisabled = true;
-				$rootScope.$on('cartes-jeter-full', function(event, args) {
+				var cartesJeterFullEventListener = $rootScope.$on('cartes-jeter-full', function(event, args) {
 					$scope.okButtonDisabled = false;
 					$scope.actionCase.cartesDefausse = args.cartes;
 				});
+				$scope.$on("$destroy", cartesJeterFullEventListener);
 				$scope.actionCaseDisplay.description = false;
 				$scope.actionCaseDisplay.perteCartes = true;
 				$scope.actionCase.valiseNonMaterialisee = undefined;
 				$scope.bouton1 = "OK";
 				$scope.bouton2 = "";
-				$rootScope.$on('cartes-jeter-notfull', function(event, args) {
+				var cartesJeterNotFullEventListener = $rootScope.$on('cartes-jeter-notfull', function(event, args) {
 					$scope.okButtonDisabled = true;
 				});
+				$scope.$on("$destroy", cartesJeterNotFullEventListener);
 			}
 			else if ('Hub interplanétaire'){
 				Cartes.moveCartes({

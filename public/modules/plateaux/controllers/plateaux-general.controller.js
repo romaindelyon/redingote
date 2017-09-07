@@ -3,7 +3,7 @@
 angular.module('plateaux').controller('PlateauxGeneralController', ['$scope','$rootScope','$state','Joueurs',
 	function($scope,$rootScope,$state,Joueurs) {
 
-	function movePion(numero,plateau){
+	function movePion(numero,plateau,row,colonne,position,zone){
 		var previousCase = $scope.joueurs[$scope.joueurId].pions[0].case;
 		var previousPlateau = $scope.joueurs[$scope.joueurId].pions[0].plateau;
 		var newPions = [];
@@ -12,6 +12,10 @@ angular.module('plateaux').controller('PlateauxGeneralController', ['$scope','$r
 		});
 		newPions[0].case = numero;
 		newPions[0].plateau = plateau;
+		newPions[0].row = row;
+		newPions[0].colonne = colonne;
+		newPions[0].position = position;
+		newPions[0].zone = zone;
 		Joueurs.movePion({
 			pions: JSON.stringify(newPions),
 			joueurId: $scope.joueurId,
@@ -27,8 +31,10 @@ angular.module('plateaux').controller('PlateauxGeneralController', ['$scope','$r
 		});
 	}
 
-	$rootScope.$on('plateaux-move-pion', function(event, args) {
-		movePion(args.case,args.plateau);
+	var plateauxMovePionEventListener = $rootScope.$on('plateaux-move-pion', function(event, args) {
+		console.log(args);
+		movePion(args.case,args.plateau,args.row,args.colonne,args.position,args.zone);
 	});
+	$scope.$on("$destroy", plateauxMovePionEventListener);
 
 }]);

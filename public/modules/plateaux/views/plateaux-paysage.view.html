@@ -37,25 +37,23 @@
 					</div>
 					<!-- Pions -->
 					<div ng-if="!(selectedCase.numero === case.numero && partie.dispo.plateaux.paysage > 0) && case.joueursNumber > 0" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
-						<div ng-if="case.joueursNumber == 1">
-							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[0]+'.png'}}" class="plateaux-paysage-pion">
-						</div>
-						<div ng-if="case.joueursNumber == 2" layout="row">
-							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[0]+'.png'}}" class="plateaux-paysage-pion">
-							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[1]+'.png'}}" class="plateaux-paysage-pion">
-						</div>
-						<div ng-if="case.joueursNumber == 3" layout="column">
-							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[0]+'.png'}}" class="plateaux-paysage-pion-small">
-							<div layout="row">
-								<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[1]+'.png'}}" class="plateaux-paysage-pion-small">
-								<img ng-src="{{'modules/plateaux/img/plateau_pion_'+case.joueurs[2]+'.png'}}" class="plateaux-paysage-pion-small">
-							</div>
+						<div ng-repeat="joueur in case.joueurs">
+							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+joueur+'.png'}}" class="plateaux-paysage-pion" style="position: absolute;" ng-style="{
+							'margin-left':'' + pionDeplacementImage[joueurs[case.joueurs[joueur]].pions[0].position].marginLeft + 'px',
+							'margin-top':''+ pionDeplacementImage[joueurs[case.joueurs[joueur]].pions[0].position].marginTop +'px'
+						}">
 						</div>
 					</div>
+					<div ng-if="case.deplacement >= 0 && deplacementEnCours" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
+						<img ng-src="{{'modules/plateaux/img/plateau_pion_'+joueurId+'.png'}}" class="plateaux-paysage-pion" style="position: absolute;opacity: 0.6;" ng-style="{
+							'margin-left':'' + pionDeplacementImage[case.deplacement].marginLeft + 'px',
+							'margin-top':''+ pionDeplacementImage[case.deplacement].marginTop +'px'
+						}">
+					</div>
 					<div ng-if="selectedCase.numero === case.numero && deplacementPossible > 0 && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
-						<img ng-repeat="index in [0,1,2,3,4,5,6,7,8,9,10,11]" ng-click="deplacePion(case.numero)" ng-src="{{'modules/plateaux/img/plateau_pion_move.png'}}" class="plateaux-paysage-pion-move" style="width: 10px;" ng-style="{
-						'margin-left':'' + pionDeplacementImage[0].marginLeft + 'px',
-						'margin-top':''+ pionDeplacementImage[0].marginTop +'px'
+						<img ng-repeat="index in [0,1,2,3,4,5,6,7,8,9,10,11]" ng-click="deplacementPion($parent.$parent.$parent.$index,$parent.$index,case.numero,index)" ng-src="{{'modules/plateaux/img/plateau_pion_move.png'}}" class="plateaux-paysage-pion-move" style="width: 8px;height: 8px;position: absolute;" ng-style="{
+						'margin-left':'' + pionDeplacementImage[index].marginLeft + 'px',
+						'margin-top':''+ pionDeplacementImage[index].marginTop +'px'
 					}">
 					</div>
 				</div>

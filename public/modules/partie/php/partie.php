@@ -12,12 +12,13 @@ header("Pragma: no-cache");
     $stmt = $con -> prepare("SELECT * FROM parties WHERE id = 1");
 
     $stmt -> execute();
-    $stmt -> bind_result($id,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo,$positionCouronnes,$valiseNonMaterialisee);
+    $stmt -> bind_result($id,$nom,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo,$positionCouronnes,$valiseNonMaterialisee);
 
     $results = array();
     while($stmt->fetch()) {
             $result = array();
             $result["id"] = $id;
+            $result["nom"] = $nom;
             $result["tour_joueur"] = $tour_joueur;
             $result["tour_action"] = $tour_action;
             $result["tour_skip"] = json_decode($tour_skip);

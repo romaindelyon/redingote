@@ -36,12 +36,13 @@ angular.module('plateaux').controller('PlateauxEscalierController', ['$scope','$
 
 	console.log("defining event listeners");
 
-	$rootScope.$on('partie-general-joueurs-loaded',function(event,args){
+	var partieGeneralJoueursLoadedEventListener = $rootScope.$on('partie-general-joueurs-loaded',function(event,args){
 		initalizePlateauEscalier();
 	});
+	$scope.$on("$destroy",partieGeneralJoueursLoadedEventListener);
 
 
-	$rootScope.$on('plateaux-escalier-monter-case',function(event,args){
+	var plateauxEscalierMonterCaseEventListener = $rootScope.$on('plateaux-escalier-monter-case',function(event,args){
 		console.log("receiving escalier");
 		Joueurs.updateEscalier({escalier: $scope.joueurs[$scope.joueurId].escalier + 1}).success(function(){
 			$scope.joueurs[$scope.joueurId].escalier ++;
@@ -51,8 +52,9 @@ angular.module('plateaux').controller('PlateauxEscalierController', ['$scope','$
 			console.log("bug d'update escalier");
 		});
 	});
+	$scope.$on("$destroy",plateauxEscalierMonterCaseEventListener);
 
-	$rootScope.$on('plateaux-move-pion-callback', function(event, args) {
+	var plateauxMovePionCallback = $rootScope.$on('plateaux-move-pion-callback', function(event, args) {
 		if (args.plateau === 'escalier'){
 			console.log("escalier added");
 			console.log($scope.escalierPions);
@@ -65,5 +67,6 @@ angular.module('plateaux').controller('PlateauxEscalierController', ['$scope','$
 			$scope.escalierPions[$scope.joueurs[$scope.joueurId].escalier].splice($scope.escalierPions[$scope.joueurs[$scope.joueurId].escalier].indexOf($scope.joueurId));
 		}		
 	});
+	$scope.$on("$destroy",plateauxMovePionCallback);
 
 }]);

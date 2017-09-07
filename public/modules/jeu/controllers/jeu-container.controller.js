@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('jeu').controller('JeuContainerController', ['$scope','Joueurs',
-	function($scope,Joueurs) {
+angular.module('jeu').controller('JeuContainerController', ['$scope','$rootScope','Joueurs',
+	function($scope,$rootScope,Joueurs) {
 
 	$scope.actionsDisponibles = {
 		action: true,
@@ -13,9 +13,9 @@ angular.module('jeu').controller('JeuContainerController', ['$scope','Joueurs',
 	$scope.tabs = [
 		{id: 'cartes_ouvertes',nom: 'Cartes ouvertes',style: "{'background-color':'#fff8e8'}"},
 		{id: 'objets_hors_pioche',nom: 'Objets hors pioche',style: "{'background-color':'#fff5f5'}"},
-		{id: 'humeurs',nom: 'Humeurs',style: "{'background-color':'#fff0ff'}"},
+		{id: 'pouvoirs',nom: 'Pouvoirs',style: "{'background-color':'#fff0ff'}"},
 		{id: 'missions',nom: 'Missions',style: "{'background-color':'#e8fbff'}"},
-		{id: 'grande_cartes',nom: 'Grandes cartes',style: "{'background-color':'#efe8ff'}"}
+		{id: 'grandes_cartes',nom: 'Grandes cartes',style: "{'background-color':'#efe8ff'}"}
 	];
 	
 	$scope.changeTab = function(index){
@@ -51,5 +51,33 @@ angular.module('jeu').controller('JeuContainerController', ['$scope','Joueurs',
 			$scope.view = 'cartes';
 		}
 	}
+
+	var cartesUtilisationPossibleCirconstance = $rootScope.$on('cartes-utilisation-possible-circonstance',function(event,args){
+		console.log('utilisation possible');
+
+		for (var i = 0;i < $scope.jeu.horsPioche.length;i ++){
+			console.log($scope.jeu.horsPioche[i]);
+			if ($scope.jeu.horsPioche[i].utilisation.indexOf('reaction') >= 0 && $scope.jeu.horsPioche[i].info.circonstances.length > 0){
+				for (var j = 0;j < $scope.jeu.horsPioche[i].info.circonstances.length;j ++){
+					if ($scope.jeu.horsPioche[i].info.circonstances[j].categorie === args.categorie &&
+						($scope.jeu.horsPioche[i].info.circonstances[j].type === args.type || $scope.jeu.horsPioche[i].info.circonstances[j].type == undefined) &&
+						($scope.jeu.horsPioche[i].info.circonstances[j].valeur === args.valeur || $scope.jeu.horsPioche[i].info.circonstances[j].valeur == undefined)){
+						console.log('code trouvé');
+						$scope.jeu.horsPioche[i].statut.utilisable = true;
+					}
+				}			
+			}
+
+		}
+	});
+	$scope.$on("$destroy", cartesUtilisationPossibleCirconstance);
+
+	var cartesUtilisationReset = $rootScope.$on('cartes-utilisation-reset',function(event,args){
+		console.log('utilisation reset');
+		for (var i = 0;i < $scope.jeu.horsPioche.length;i ++){
+			$scope.jeu.horsPioche[i].statut.utilisable = false;
+		}
+	});
+	$scope.$on("$destroy", cartesUtilisationReset);
 
 }]);

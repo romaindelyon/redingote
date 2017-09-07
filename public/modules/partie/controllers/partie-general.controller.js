@@ -16,7 +16,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.joueurId = parseInt($stateParams.joueur);
 
-	$scope.partieId = 1;//parseInt($stateParams.partie);
+	$scope.partieId = parseInt($stateParams.partie);
 
 	// Actions : tout devra être unifié sous cette bannière
 
@@ -53,12 +53,12 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 						else {
 							console.log(response[i].categorie);
 							$scope.actions[response[i].categorie].push(response[i]);
+							$scope.partie.dispo.tourDeJeu[response[i].categorie][1] ++;
 						}
 						
 					}
 					$scope.loaded.defenses = true;
 					$scope.$emit('confrontations-defense-start', {});
-					$scope.partie.dispo.tourDeJeu.notification[1] = $scope.actions.notification.length;
 				});
 			}
 			$scope.loaded.defenses = true;

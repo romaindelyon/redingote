@@ -199,6 +199,7 @@ angular.module('cartes').controller('CartesPiocheController',
     			var createMission = function(index){
     				var carte = jQuery.extend({}, missionsNormales[index]);
     				carte.statut = {};
+    				carte.categorie = "copie";
     				carte.position = -1;
     				console.log(carte);
 	    			Cartes.createCarte(carte).success(function(){

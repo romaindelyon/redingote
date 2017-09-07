@@ -28,14 +28,13 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 		// Zones :
 
 		 function findZoneKey(zone){
-			console.log(zone);
 			var zoneKey = zone;
 			zoneKey = zoneKey.replace("é","e");
 			zoneKey = zoneKey.replace("è","e");
 			zoneKey = zoneKey.replace("ê","e");
 			zoneKey = zoneKey.replace(" ","_");
 			zoneKey = zoneKey.replace(" ","_");
-			console.log(zoneKey);
+			zoneKey = zoneKey.toLowerCase();
 			return(zoneKey);
 		}
 
@@ -215,10 +214,11 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 			$scope.roseAiguille.y = roseAiguilleValues[$scope.roseAiguille.angle/6].y;
 		},1000);
 
-		$rootScope.$on('plateaux-paysage-rose-ready',function(event,args){
+		var plateauxPaysageRoseReadyEventListener = $rootScope.$on('plateaux-paysage-rose-ready',function(event,args){
 			console.log("rose ready");
 			$scope.roseDesVents.status = "ready";
 		});
+		$scope.$on("$destroy",plateauxPaysageRoseReadyEventListener);
 
 		function addPionToCase(coordinates,joueurId){
 			if ($scope.plateauPaysage[coordinates.row].colonnes[coordinates.col].joueurs != undefined &&
@@ -242,7 +242,7 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 			}
 		}
 
-		$rootScope.$on('partie-general-joueurs-loaded', function(event, args) {
+		var partieGeneralJoueursLoadedEventListener = $rootScope.$on('partie-general-joueurs-loaded', function(event, args) {
 			$http({
 		        method: 'GET', 
 		        url: 'modules/plateaux/json/plateaux-paysage.json'
@@ -264,33 +264,67 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 		    	}
 		    });
 		});
+		$scope.$on("$destroy",partieGeneralJoueursLoadedEventListener);
 
 	    // Déplacement :
 
 	    $scope.deplacementPossible = -1;
 
 	    $scope.pionDeplacementImage = [
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0},
-	    	{marginLeft: 0,marginTop: 0}
+	    	{marginLeft: -23,marginTop: -25},
+	    	{marginLeft: 0,marginTop: -25},
+	    	{marginLeft: 23,marginTop: -25},
+	    	{marginLeft: -23,marginTop: -8},
+	    	{marginLeft: 0,marginTop: -8},
+	    	{marginLeft: 23,marginTop: -8},
+	    	{marginLeft: -23,marginTop: 8},
+	    	{marginLeft: 0,marginTop: 8},
+	    	{marginLeft: 23,marginTop: 8},
+	    	{marginLeft: -23,marginTop: 25},
+	    	{marginLeft: 0,marginTop: 25},
+	    	{marginLeft: 23,marginTop: 25}
 	    ];
 
-	    $rootScope.$on('plateaux-paysage-deplacement-ready',function(event,args){
+	    var plateauxPaysageDeplacementReadyEventListener = $rootScope.$on('plateaux-paysage-deplacement-ready',function(event,args){
 	    	$scope.deplacementPossible = args.deResult;
+	    	$scope.deplacementEnCours = true;
 	    	$scope.deplacement = [];
+	    	for (var i = 0;i < $scope.plateauPaysage.length;i ++){
+	    		for (var j = 0;j < $scope.plateauPaysage[i].colonnes.length;j ++){
+	    			$scope.plateauPaysage[i].colonnes[j].deplacement = -1;
+	    		}
+	    	}
+	    	var pion = $scope.joueurs[$scope.joueurId].pions[0];
+	    	$scope.deplacementPion(pion.row,pion.colonne,pion.case,pion.numero);
 	    });
+	    $scope.$on("$destroy",plateauxPaysageDeplacementReadyEventListener);
+		var plateauxPaysageDeplacementRestartEventListener = $rootScope.$on('plateaux-paysage-deplacement-restart',function(event,args){
+			console.log("deplacement restart");
+			$scope.deplacementPossible = 1;
+		});
+		$scope.$on("$destroy",plateauxPaysageDeplacementOverEventListener);
+		var plateauxPaysageDeplacementRestartEventListener =  $rootScope.$on('plateaux-paysage-deplacement-over',function(event,args){
+			console.log("deplacement over");
+			$scope.deplacementPossible = -1;
+		});
+		$scope.$on("$destroy",plateauxPaysageDeplacementOverEventListener);
+		var plateauxPaysageDeplacemenEraseEventListener =  $rootScope.$on('plateaux-paysage-deplacement-erase',function(event,args){
+			console.log("deplacement over");
+			$scope.deplacementPossible = -1;
+			$scope.deplacementEnCours = false;
+			$scope.roseDesVents = {
+				status: "neutral"
+			}
+		});
+		$scope.$on("$destroy",plateauxPaysageDeplacemenEraseEventListener);
 
-	    $scope.deplacementPion = function(numero,position){
-	    	$scope.deplacement.push({numero: numero,position: position});
+	    $scope.deplacementPion = function(row,colonne,numero,position){
+	    	console.log(row);
+	    	console.log(colonne);
+	    	console.log(position);
+	    	$scope.plateauPaysage[row].colonnes[colonne].deplacement = position;
+	    	$scope.deplacement.push({row: row,colonne: colonne,numero: numero,position: position,case: $scope.plateauPaysage[row].colonnes[colonne]});
+	    	$scope.$emit('plateaux-paysage-deplacement',{deplacement: $scope.deplacement});
 	    }
 
 	    $scope.movePion = function(numero){
@@ -317,7 +351,7 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 			});
 	    }
 
-		$rootScope.$on('plateaux-move-pion-callback', function(event, args) {
+		var plateauxMovePionCallbackEventListener = $rootScope.$on('plateaux-move-pion-callback', function(event, args) {
 			if (args.plateau === 'paysage'){
 				addPionToCase(getCoordinates(args.case),$scope.joueurId);
 			}
@@ -325,6 +359,7 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 				removePionFromCase(getCoordinates(args.previousCase),$scope.joueurId);
 			}		
 		});
+		$scope.$on("$destroy",plateauxMovePionCallbackEventListener);
 
 		$scope.selectedCase = {
 			clicked: false,
