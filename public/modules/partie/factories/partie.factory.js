@@ -4,7 +4,7 @@ angular.module('partie').factory('Partie', ['$http','configService',
 	function($http,configService) {
 		return {
 			// Get specific partie:
-			getPartie: function(){
+			getPartie: function(params){
 				if (configService.local){
 					return $http({
 				        method: 'GET', 
@@ -13,8 +13,9 @@ angular.module('partie').factory('Partie', ['$http','configService',
 				}
 				else {
 					return $http({
-				        method: 'GET', 
+				        method: 'POST', 
 				        url: 'modules/partie/php/partie.php',
+				        params: params,
 				        headers: {
 				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
 				        }
@@ -33,6 +34,25 @@ angular.module('partie').factory('Partie', ['$http','configService',
 					return $http({
 				        method: 'GET', 
 				        url: 'modules/partie/php/partie-get-all.php',
+				        headers: {
+				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
+				        }
+				    });
+				}
+			},
+			// Get all the parties:
+			createPartie: function(params){
+				if (configService.local){
+					return $http({
+				        method: 'GET', 
+				        url: 'modules/partie/json/partie.json'
+				    });
+				}
+				else {
+					return $http({
+				        method: 'POST', 
+				        url: 'modules/partie/php/partie-create.php',
+				        params: params,
 				        headers: {
 				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
 				        }

@@ -55,7 +55,7 @@
                     <a ng-click="recommencerDeplacement()">
                         Recommencer le déplacement
                     </a>
-                    <a ng-if="action.deplacement.info.direction !== 'libre'" ng-click="terminerDeplacement()">
+                    <a ng-if="action.deplacement.info.direction !== 'libre' || action.deplacement.info.deResult === 73" ng-click="terminerDeplacement()">
                         Terminer le déplacement
                     </a>
                 </div>

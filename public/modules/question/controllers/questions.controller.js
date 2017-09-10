@@ -4,6 +4,7 @@ angular.module('question').controller('QuestionsController', ['$scope','$statePa
 	function($scope,$stateParams,Questions) {
 
 	var joueurId = parseInt($stateParams.joueur);
+	var partieId = parseInt($stateParams.partie);
 
 	$scope.newQuestion = {
 		joueur: joueurId,
@@ -14,6 +15,7 @@ angular.module('question').controller('QuestionsController', ['$scope','$statePa
 		var newQuestion = jQuery.extend({},$scope.newQuestion);
 		newQuestion.options = $scope.newQuestion.options;
 		newQuestion.options = JSON.stringify(newQuestion.options);
+		newQuestion.partieId = partieId;
 		Questions.createQuestion(newQuestion).success(function(){
 			$scope.questions.push($scope.newQuestion);
 			$scope.NouvelleQuestion.$setUntouched();
@@ -43,7 +45,7 @@ angular.module('question').controller('QuestionsController', ['$scope','$statePa
 		$scope.questions = questions;
 	}
 
-	Questions.getQuestionsJoueur({joueurId: joueurId}).success(function(response){
+	Questions.getQuestionsJoueur({joueurId: joueurId,partieId: partieId}).success(function(response){
 		initializeQuestions(response);
 		console.log(response);
 	}).success(function(){

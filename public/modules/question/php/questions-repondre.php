@@ -16,9 +16,9 @@ header("Content-Type: application/json; charset=UTF-8");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("UPDATE questions SET repondant = ?, succes = ?, reponseDonnee = ?, reponsePartie = ?, reponseTime = ? WHERE id = ?");
+    $stmt = $con -> prepare("UPDATE questions SET repondant = ?, succes = ?, reponseDonnee = ?, reponsePartie = ?, reponseTime = ? WHERE id = ? AND partie = ?");
 
-    $stmt -> bind_param('sssisi',$repondant,$succes,$reponseDonnee,$reponsePartie,$reponseTime,$questionId);
+    $stmt -> bind_param('sssisii',$repondant,$succes,$reponseDonnee,$reponsePartie,$reponseTime,$questionId,$reponsePartie,$partie);
     $stmt -> execute();
 
     mysqli_close($con); 

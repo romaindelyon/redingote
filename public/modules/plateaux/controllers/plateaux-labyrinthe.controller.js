@@ -531,7 +531,8 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		var newPositionCouronnes = $scope.positionCouronnes;
 		newPositionCouronnes[index] += increment;
 		Partie.changeCouronnes({
-			positionCouronnes: JSON.stringify(newPositionCouronnes)
+			positionCouronnes: JSON.stringify(newPositionCouronnes),
+			partieId: $scope.partieId
 		}).success(function(){
 			$scope.positionCouronnes = newPositionCouronnes;
 			setPositionCouronne(index);

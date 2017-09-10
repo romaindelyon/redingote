@@ -9,6 +9,7 @@ header("Content-Type: application/json; charset=UTF-8");
     $reponse = utf8_decode($_GET["reponse"]);
     $indice = utf8_decode($_GET["indice"]);
     $reponsePartie = -1;
+    $partie = $_GET["partieId"];
 
     $con = mysqli_connect("localhost","redingot_romain","redingote778","redingot_database");
     // Check connection
@@ -16,9 +17,9 @@ header("Content-Type: application/json; charset=UTF-8");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("INSERT INTO questions (joueur, question, options, reponse, indice, reponsePartie) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $con -> prepare("INSERT INTO questions (joueur, question, options, reponse, indice, reponsePartie, partie) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt -> bind_param('issssi',$joueur,$question,$options,$reponse,$indice,$reponsePartie);
+    $stmt -> bind_param('issssii',$joueur,$question,$options,$reponse,$indice,$reponsePartie,$partie);
     $stmt -> execute();
 
     mysqli_close($con); 

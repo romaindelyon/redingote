@@ -39,7 +39,7 @@ angular.module('cartes').controller('CartesCreationMissionController', ['$scope'
 
 	var cartesCodes = [];
 	$scope.cartesNoms = [];
-	Cartes.getCartes({partieId: 1}).success(function(response){
+	Cartes.getCartes({partieId: 0}).success(function(response){
 		for (var i in response){
 			// agreger cartes par code:
 			if (response[i].pile === 'pioche' || response[i].pile === 'hors_pioche' && cartesCodes.indexOf(response[i].code < 0)){

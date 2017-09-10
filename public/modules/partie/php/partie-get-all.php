@@ -18,7 +18,7 @@ header("Pragma: no-cache");
     while($stmt->fetch()) {
             $result = array();
             $result["id"] = $id;
-            $result["nom"] = $nom;
+            $result["nom"] = utf8_encode($nom);
             $result["tour_joueur"] = $tour_joueur;
             $result["tour_action"] = $tour_action;
             $result["tour_skip"] = json_decode($tour_skip);

@@ -6,7 +6,7 @@ angular.module('question').config(['$stateProvider', '$urlRouterProvider',
 	// Home state routing
 	$stateProvider.
 	state('questions', {
-		url: '/questions/:joueur',
+		url: '/questions/:partie/:joueur',
 		templateUrl: 'modules/question/views/questions.view.html'
 	});
 

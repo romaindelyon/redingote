@@ -9,10 +9,12 @@ header("Pragma: no-cache");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("SELECT * FROM objets");
+    $partieId = $_GET["partieId"];
 
+    $stmt = $con -> prepare("SELECT * FROM objets WHERE partie = ?");
+    $stmt -> bind_param('i',$partieId);
     $stmt -> execute();
-    $stmt -> bind_result($id,$code,$types,$utilisation,$info,$nom,$description);
+    $stmt -> bind_result($id,$code,$types,$utilisation,$info,$nom,$description,$partie);
 
     $results = array();
     while($stmt->fetch()) {
@@ -24,6 +26,7 @@ header("Pragma: no-cache");
             $result["utilisation"] = $utilisation;
             $result["info"] = json_decode($info);
             $result["types"] = json_decode($types);
+            $result["partie"] = $partie;
             array_push($results, $result);
         }
     mysqli_close($con); 

@@ -81,7 +81,7 @@
 {"id":2,"numero":1576,"question":false,"zones":["Plage","Village"],"action":false,"achat":true},
 {"id":3,"numero":1106,"question":false,"zones":["Plage","Village"],"action":false,"achat":true},
 {"id":4,"numero":"2A","question":false,"zones":["Plage","Village"],"action":false,"achat":false},
-{"id":5,"numero":1,"question":false,"zones":["Montagne","Mer"],"action":false,"achat":false},
+{"id":5,"numero":21,"question":false,"zones":["Village","Prairie"],"action":false,"achat":false},
 {"id":6,"numero":534,"question":false,"zones":["Foret","Montagne"],"action":false,"achat":false},
 {"id":7,"numero":612,"question":false,"zones":["Mer"],"action":false,"achat":false},
 {"id":8,"numero":690,"question":false,"zones":["Royaume des tenebres"],"action":false,"achat":false},
@@ -333,7 +333,7 @@
 
 {"id":13,"colonnes":[
 {"id":0,"numero":344,"question":false,"zones":["Montagne"],"action":false,"achat":false},
-{"id":1,"numero":750,"question":false,"zones":["Montagne","Foret"],"action":false,"achat":false},
+{"id":1,"numero":1108,"question":false,"zones":["Monde onirique"],"action":false,"achat":false},
 {"id":2,"numero":707,"question":false,"zones":["Village"],"action":false,"achat":false},
 {"id":3,"numero":898,"question":false,"zones":["Mer"],"action":false,"achat":false},
 {"id":4,"numero":338,"question":false,"zones":["Foret","Foret"],"action":false,"achat":false},
@@ -349,10 +349,13 @@
 {"id":14,"numero":992,"question":false,"zones":["Marecage"],"action":false,"achat":false},
 {"id":15,"numero":726,"question":false,"zones":["Foret","Marecage"],"action":false,"achat":false},
 {"id":16,"numero":220,"question":false,"zones":["Mer"],"action":false,"achat":false},
-{"id":17,"numero":506,"question":false,"zones":["Ville"],"action":false,"achat":false},
+{"id":17,"numero":1842,"question":false,"zones":["Forêt"],"action":false,"achat":false},
 {"id":18,"numero":685,"question":false,"zones":["Village"],"action":false,"achat":false},
 {"id":19,"numero":108,"question":false,"zones":["Desert","Royaume des tenebres"],"action":false,"achat":false},
 {"id":20,"numero":674,"question":false,"zones":["Montagne","Royaume des tenebres"],"action":false,"achat":false},
 {"id":21,"numero":558,"question":false,"zones":["Ville"],"action":false,"achat":false},
 {"id":22,"numero":254,"question":false,"zones":["Foret","Royaume des tenebres"],"action":false,"achat":false},
 {"id":23,"numero":395,"question":false,"zones":["Desert"],"action":false,"achat":false}]}]
+
+
+

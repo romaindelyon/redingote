@@ -109,7 +109,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 		console.log('resetting this too');
 	}
 	
-	Partie.getPartie().success(function(response){
+	Partie.getPartie({partieId: $scope.partieId}).success(function(response){
 		$scope.partie = {
 			tour_joueur: response[0].tour_joueur,
 			tour_action: response[0].tour_action,
@@ -239,7 +239,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	// Objets:
 	$scope.objets = {};
-	Objets.getObjets().success(function(responseObjets){
+	Objets.getObjets({partieId: $scope.partieId}).success(function(responseObjets){
 		for (var i in responseObjets){
 			// agreger objets par code:
 			if ($scope.objets[responseObjets[i].code] === undefined){
@@ -259,8 +259,14 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	$scope.joueur = {};
 
 	Joueurs.getJoueurs({partieId: $scope.partieId}).success(function(response){
-		console.log(response);
-		var joueur = response[$scope.joueurId]
+		console.log($scope.joueurId);
+		for (var i = 0;i < response.length;i ++){
+			$scope.joueurs[response[i].id] = response[i];
+			if (response[i].id === $scope.joueurId){
+				console.log(response[i]);
+				var joueur = response[i];
+			}
+		}
 		$scope.joueur = {
 			id: joueur.id,
 			nom: joueur.nom,
@@ -269,11 +275,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			notes_titre: joueur.notes_titre,
 			notes: joueur.notes,
 			backgroundColor: joueur.backgroundColor,
-			humeurs: joueur.humeurs
 		}
-		$scope.joueurs[0] = response[0];
-		$scope.joueurs[1] = response[1];
-		$scope.joueurs[2] = response[2];
+		console.log($scope.joueur);
 		console.log($scope.joueurs);
 		for (var i in $scope.joueurs){
 			$scope.joueurs[i].ouvertes = [];

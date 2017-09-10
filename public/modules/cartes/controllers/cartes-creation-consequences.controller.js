@@ -52,7 +52,7 @@ angular.module('cartes').controller('CartesCreationConsequencesController', ['$s
 
 	var cartesHorsPiocheCodes = [];
 	var cartesHorsPiocheNoms = [];
-	Cartes.getCartes({partieId: 1}).success(function(response){
+	Cartes.getCartes({partieId: 0}).success(function(response){
 		for (var i in response){
 			// agreger cartes par code:
 			if (response[i].pile === 'hors_pioche' && response[i].categorie === 'objet' && cartesHorsPiocheCodes.indexOf(response[i].code < 0)){

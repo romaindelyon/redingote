@@ -91,7 +91,7 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 	}
 
 	$scope.startQuestion = function(){
-		Questions.getQuestionsAutresJoueurs({joueurId : $scope.joueurId}).success(function (response){
+		Questions.getQuestionsAutresJoueurs({joueurId : $scope.joueurId,partieId: $scope.partieId}).success(function (response){
 			var questions = response;
 			var questionIndex = Math.floor(Math.random(questions.length));
 			$scope.actionCase.question = questions[questionIndex];
@@ -141,7 +141,8 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 			succes: $scope.actionCase.succes,
 			reponseDonnee: $scope.actionCase.reponse,
 			reponsePartie: $scope.partieId,
-			reponseTime: new Date()
+			reponseTime: new Date(),
+			partieId: $scope.partieId
 		}).success(function(){
 			console.log("Réponse à la question envoyée");
 		}).error(function(){

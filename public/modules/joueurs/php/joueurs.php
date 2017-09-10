@@ -13,7 +13,7 @@ header("Content-Type: application/json; charset=UTF-8");
     $stmt = $con -> prepare("SELECT * FROM joueurs WHERE partie = ?");
     $stmt -> bind_param('i',$partieId);
     $stmt -> execute();
-    $stmt -> bind_result($id,$nom,$diable,$belette,$notes_titre,$notes,$backgroundColor,$borderColor,$pions,$glutis,$escalier,$humeurs,$maison,$partie);
+    $stmt -> bind_result($id,$nom,$diable,$belette,$marsouin,$notes_titre,$notes,$backgroundColor,$borderColor,$pions,$glutis,$escalier,$partie,$password);
 
     $results = array();
     while($stmt->fetch()) {
@@ -22,6 +22,7 @@ header("Content-Type: application/json; charset=UTF-8");
             $result["nom"] = $nom;
             $result["diable"] = $diable;
             $result["belette"] = $belette;
+            $result["marsouin"] = $marsouin;
             $result["notes_titre"] = $notes_titre;
             $result["notes"] = json_decode($notes);
             $result["backgroundColor"] = $backgroundColor;
@@ -29,9 +30,8 @@ header("Content-Type: application/json; charset=UTF-8");
             $result["pions"] = json_decode($pions);
             $result["glutis"] = $glutis;
             $result["escalier"] = $escalier;
-            $result["humeurs"] = json_decode($humeurs);
-            $result["maison"] = $maison;
             $result["partie"] = $partie;
+            $result["password"] = $password;
             array_push($results, $result);
         }
     mysqli_close($con); 

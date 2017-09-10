@@ -10,11 +10,12 @@ header("Pragma: no-cache");
     }
 
     $joueurId = $_GET["joueurId"];
+    $partieId = $_GET["partieId"];
 
-    $stmt = $con -> prepare("SELECT * FROM questions WHERE joueur = ?");
-    $stmt -> bind_param('i',$joueurId);
+    $stmt = $con -> prepare("SELECT * FROM questions WHERE joueur = ? AND partie = ?");
+    $stmt -> bind_param('ii',$joueurId,$partieId);
     $stmt -> execute();
-    $stmt -> bind_result($id,$joueur,$question,$options,$reponse,$indice,$succes,$reponseDonnee,$repondant,$reponseTime,$reponsePartie);
+    $stmt -> bind_result($id,$joueur,$question,$options,$reponse,$indice,$succes,$reponseDonnee,$repondant,$reponseTime,$reponsePartie,$partie);
 
     $results = array();
     while($stmt->fetch()) {
@@ -30,6 +31,7 @@ header("Pragma: no-cache");
             $result["repondant"] = utf8_encode($repondant);
             $result["reponseTime"] = $reponseTime;
             $result["reponsePartie"] = $reponsePartie;
+            $result["partie"] = $partie;
             array_push($results, $result);
         }
     mysqli_close($con); 

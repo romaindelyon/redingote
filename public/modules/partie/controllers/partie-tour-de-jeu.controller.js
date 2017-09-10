@@ -107,7 +107,7 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 	function moveTour(numberTours,skipTours){
 		$scope.actionsDisponibles.nextAction = false;
 		// Verify if data is consistent
-		Partie.getPartie().success(function(response){
+		Partie.getPartie({partieId: $scope.partieId}).success(function(response){
 			// Data is consistent;
 			if ($scope.partie.tour_joueur == response[0].tour_joueur && $scope.partie.tour_action == response[0].tour_action){
 				console.log("data is consistent");
@@ -139,7 +139,8 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 					tour_joueur: tourJoueur,
 					tour_action: tourAction,
 					tour_skip: JSON.stringify(tourSkip),
-					dispo: $scope.partie.dispo
+					dispo: $scope.partie.dispo,
+					partieId: $scope.partieId
 				}).success(function(){
 					// Changement de tour: updater variables locales
 					$scope.partie.tour_joueur = tourJoueur;

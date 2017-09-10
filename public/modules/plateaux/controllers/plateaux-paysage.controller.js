@@ -302,8 +302,8 @@ angular.module('plateaux').controller('PlateauxPaysageController', ['$scope','$r
 			console.log("deplacement restart");
 			$scope.deplacementPossible = 1;
 		});
-		$scope.$on("$destroy",plateauxPaysageDeplacementOverEventListener);
-		var plateauxPaysageDeplacementRestartEventListener =  $rootScope.$on('plateaux-paysage-deplacement-over',function(event,args){
+		$scope.$on("$destroy",plateauxPaysageDeplacementRestartEventListener);
+		var plateauxPaysageDeplacementOverEventListener  =  $rootScope.$on('plateaux-paysage-deplacement-over',function(event,args){
 			console.log("deplacement over");
 			$scope.deplacementPossible = -1;
 		});

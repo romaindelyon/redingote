@@ -8,8 +8,11 @@ header("Pragma: no-cache");
     if (mysqli_connect_errno()) {
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
+    
+    $partieId = $_GET["partieId"];
 
-    $stmt = $con -> prepare("SELECT * FROM parties WHERE id = 1");
+    $stmt = $con -> prepare("SELECT * FROM parties WHERE id = ?");
+    $stmt -> bind_param('i',$partieId);
 
     $stmt -> execute();
     $stmt -> bind_result($id,$nom,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo,$positionCouronnes,$valiseNonMaterialisee);
@@ -18,7 +21,7 @@ header("Pragma: no-cache");
     while($stmt->fetch()) {
             $result = array();
             $result["id"] = $id;
-            $result["nom"] = $nom;
+            $result["nom"] = utf8_encode($nom);
             $result["tour_joueur"] = $tour_joueur;
             $result["tour_action"] = $tour_action;
             $result["tour_skip"] = json_decode($tour_skip);

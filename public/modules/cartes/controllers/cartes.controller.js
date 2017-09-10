@@ -180,7 +180,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 	// Get cartes
 
 	function initializeCartes(){
-		Cartes.getCartes({partieId: 1}).success(function(response){
+		Cartes.getCartes({partieId: 0}).success(function(response){
 			$scope.cartes = {
 				'toutes': {},
 				'pioche': {},
@@ -201,7 +201,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				} 
 			}
 			$scope.cartesTable = $scope.cartes.toutes;
-			Objets.getObjets().success(function(responseObjets){
+			Objets.getObjets({partieId: 0}).success(function(responseObjets){
 				for (var i in responseObjets){
 					// agreger objets par code:
 					if ($scope.cartes.objets[responseObjets[i].code] === undefined){
@@ -559,18 +559,18 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 
 		console.log($scope.view);
 		if ($scope.view === 'nouvelle_carte'){
-			Cartes.createCarte(carte).success(function(){
+			Cartes.createAll(carte).success(function(){
 				console.log(carte);
 				$scope.submitButtonDisabled = false;
 				$scope.carteSubmitted = true;
 				$scope.carteImageFileName = "cartes_"+carte.pile+"_"+carte.code+".png";
 				if (carte.pile == 'pioche' && carte.categorie == 'objet'){
-					Objets.createObjet(objets[0]);
-					Objets.createObjet(objets[1]);
+					Objets.createAll(objets[0]);
+					Objets.createAll(objets[1]);
 					console.log(objets);
 				}
 				for (var i = 1;i < $scope.carte.nombreDeCartes;i ++){
-					Cartes.createCarte(carte).success(function(){
+					Cartes.createAll(carte).success(function(){
 						console.log("Encore une carte créée");
 					}).error(function(){
 						console.log("échec de création de cartes supplémentaires");
@@ -597,7 +597,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				console.log($scope.carte.nombreDeCartes);
 				for (var i = $scope.carte.statuts.length;i < $scope.carte.nombreDeCartes;i ++){
 					console.log(i)
-					Cartes.createCarte(carte).success(function(){
+					Cartes.createAll(carte).success(function(){
 						console.log("Encore une carte créée");
 					}).error(function(){
 						console.log("échec de création de cartes supplémentaires");

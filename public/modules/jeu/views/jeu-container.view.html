@@ -37,11 +37,11 @@
             <red-jeu-main layout="row" flex style="height: 260px;"></red-jeu-main>
             <div column="row" flex style="height: 360px;">
                 <div layout="row" style="height: 100px;">
-                    <div ng-repeat="tab in tabs" ng-click="changeTab($index)" layout="row" flex layout-align="center center" class="red-font" style="outline: none;">
-                        <div ng-if="$index === focusedTab" layout="row" flex layout-align="center center">
+                    <div ng-repeat="tab in tabs" ng-click="changeTab($index)" layout="row" flex layout-align="center center" class="red-font" style="outline: none;width: 240px;">
+                        <div ng-show="$index === focusedTab" layout="row" flex layout-align="center center" style="position: absolute;width: 240px">
                             <img ng-src="{{'modules/jeu/img/jeu_icones_'+tab.id+'.png'}}" style="width: 100px;" class="jeu-container-icone-selected">
                         </div>
-                        <div ng-if="$index !== focusedTab" layout="row" flex layout-align="center center">
+                        <div ng-show="$index !== focusedTab" layout="row" flex layout-align="center center" style="position: absolute;width: 240px">
                             <img ng-src="{{'modules/jeu/img/jeu_icones_'+tab.id+'.png'}}" class="jeu-container-icone">
                         </div>
                     </div>

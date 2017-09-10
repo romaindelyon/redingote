@@ -41,6 +41,25 @@ angular.module('cartes').factory('Cartes', ['$http','configService',
 				    });
 				}				
 			},
+			createAll: function(params){
+				if (configService.local){
+					return $http({
+				        method: 'GET', 
+				        url: 'modules/cartes/json/cartes.json'
+				    });
+				}
+				else {
+					return $http({
+				        method: 'POST', 
+				        url: 'modules/cartes/php/cartes-create-all.php',
+			        	params: params,
+			        	statut: {},
+				        headers: {
+				        	'Cache-Control': 'max-age=0, no-cache, no-store, must-revalidate'
+				        }
+				    });
+				}				
+			},
 			modifierCarte: function(params){
 				if (configService.local){
 					return $http({

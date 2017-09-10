@@ -9,6 +9,7 @@ header("Content-Type: application/json; charset=UTF-8");
     $utilisation = $_GET["utilisation"];
     $types = $_GET["types"];
     $info = $_GET["info"];
+    $partie = $_GET["partie"];
 
     $con = mysqli_connect("localhost","redingot_romain","redingote778","redingot_database");
     // Check connection
@@ -16,9 +17,9 @@ header("Content-Type: application/json; charset=UTF-8");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("INSERT INTO objets (nom, code, types, description, utilisation, info) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $con -> prepare("INSERT INTO objets (nom, code, types, description, utilisation, info, partie) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt -> bind_param('ssssss',$nom,$code,$types,$description,$utilisation,$info);
+    $stmt -> bind_param('ssssssi',$nom,$code,$types,$description,$utilisation,$info,$partie);
     $stmt -> execute();
 
     mysqli_close($con); 
