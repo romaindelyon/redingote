@@ -41,6 +41,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 
 	$scope.duel = {};
 
+	$scope.action = {};
+
 	$scope.initiateConfrontations = function(){
 		if ($scope.loaded.partie && $scope.loaded.cartes && $scope.loaded.confrontationsController){
 			console.log('inside');
@@ -201,6 +203,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    			}
 	    			else if (carte.position == $scope.joueurId){
 	    				$scope.jeu.humeurs.push(carte);
+	    				$scope.joueurs[carte.position].humeurs.push(carte);
 	    			}
 	    			else {
 	    				$scope.joueurs[carte.position].humeurs.push(carte);
@@ -232,6 +235,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			$scope.loaded.cartes = true;
 			$scope.initiateConfrontations();
 			$scope.$emit('missions-initialize',{});
+			$scope.$emit('grandes-cartes-initialize',{});
 	    }).error(function(response){
 	    	console.log("Error while trying to get cartes");
 	    });

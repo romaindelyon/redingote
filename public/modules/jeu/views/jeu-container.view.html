@@ -1,15 +1,22 @@
 <div ng-controller="JeuContainerController" layout="column" flex layout-align="center center" class="red-font">
 
-    <div layout="column" class="jeu-container">
+    <div layout="column" class="jeu-container" ng-style="{'background-color': joueurs[joueurId].backgroundColor,'border-color':joueurs[joueurId].borderColor}">
         <div layout="row" style="margin-bottom: 10px;">
-            <div>
-                Boite aux lettres
+            <div style="padding: 5px;">
+                <img src="modules/joueurs/img/joueurs-courrier-icone.png" style="width: 40px;">
             </div>
             <div flex></div>
             <div style="text-align: center;">
+                <img ng-src="{{'modules/cartes/img/humeurs/cartes_humeurs_'+joueurs[joueurId].humeurs[humeurIndex].code+'.png'}}" ng-show="humeurMontree" style="position:absolute; width: 160px;height: 250px;margin-left: 108px;margin-top: 24px;z-index: 2">
                 <span style="font-size: 18px;font-weight: bold;">
-                    {{joueur.nom}}
+                    Jeu de {{joueur.nom}} -
+                    <a ng-mouseover="montrerHumeur()" ng-mouseout="cacherHumeur()" class="joueurs-recap-humeur">{{joueurs[joueurId].humeurs[humeurIndex].nom}}</a>
+                    <img src="modules/core/img/core_icones_arrow_right.png" ng-show="joueurs[joueurId].humeurs.length > 1" ng-click="updateHumeurIndex()" style="width: 18px;outline: none;">
                 </span>
+                &nbsp;&nbsp;
+                <img ng-repeat="escalier in createArrayFromNumber(joueurs[joueurId].escalier) track by $index" src="modules/joueurs/img/joueurs-escalier-icone.png" style="height: 20px;width: 20px;margin: 1px;">
+                &nbsp;&nbsp;
+                <img ng-if="joueurs[joueurId].belette >= 1" src="modules/joueurs/img/joueurs-belette-icone.png" style="height: 20px;width: 20px;">
                 <br>
                 <span>
                     {{joueur.notes_titre}}
@@ -35,8 +42,8 @@
         </div>
         <div ng-if="view === 'cartes'" layout="column" flex style="height: 660px;">
             <red-jeu-main layout="row" flex style="height: 260px;"></red-jeu-main>
-            <div column="row" flex style="height: 360px;">
-                <div layout="row" style="height: 100px;">
+            <div column="row" flex style="height: 380px;border-top: 1px solid;" ng-style="{'background-color': ''+tabs[focusedTab].style+'','border-color':joueurs[joueurId].borderColor}">
+                <div layout="row" style="height: 120px;">
                     <div ng-repeat="tab in tabs" ng-click="changeTab($index)" layout="row" flex layout-align="center center" class="red-font" style="outline: none;width: 240px;">
                         <div ng-show="$index === focusedTab" layout="row" flex layout-align="center center" style="position: absolute;width: 240px">
                             <img ng-src="{{'modules/jeu/img/jeu_icones_'+tab.id+'.png'}}" style="width: 100px;" class="jeu-container-icone-selected">
@@ -46,11 +53,11 @@
                         </div>
                     </div>
                 </div>
-                <red-jeu-ouvertes ng-if="focusedTab === 0" layout="row" flex ng-style="{{tabs[0].style}}" style="height: 260px;"></red-jeu-ouvertes>
-                <red-jeu-hors-pioche ng-show="focusedTab === 1" layout="row" flex ng-style="{{tabs[1].style}}" style="height: 260px;"></red-jeu-hors-pioche>
-                <red-jeu-humeurs ng-if="focusedTab === 2" layout="row" flex ng-style="{{tabs[2].style}}" style="height: 260px;"></red-jeu-humeurs>
-                <red-jeu-mission ng-show="focusedTab === 3" layout="row" flex ng-style="{{tabs[3].style}}" style="height: 260px;"></red-jeu-mission>
-                <red-jeu-grandes-cartes ng-if="focusedTab === 4" layout="row" flex ng-style="{{tabs[4].style}}" style="height: 260px;"></red-jeu-grandes-cartes>
+                <red-jeu-ouvertes ng-if="focusedTab === 0" layout="row" flex style="height: 260px;"></red-jeu-ouvertes>
+                <red-jeu-hors-pioche ng-show="focusedTab === 1" layout="row" flex style="height: 260px;"></red-jeu-hors-pioche>
+                <red-jeu-humeurs ng-if="focusedTab === 2" layout="row" flex style="height: 260px;"></red-jeu-humeurs>
+                <red-jeu-mission ng-show="focusedTab === 3" layout="row" flex style="height: 260px;"></red-jeu-mission>
+                <red-jeu-grandes-cartes ng-show="focusedTab === 4" layout="row" flex style="height: 260px;"></red-jeu-grandes-cartes>
             </div>
         </div>
     </div>

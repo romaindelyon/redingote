@@ -523,6 +523,19 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 		},500);
 	}
 
+	function checkIfDeplacementTermine(){
+		console.log("check if deplacement termine");
+		console.log($scope.action.deplacement.info.etapes);
+		if ($scope.action.deplacement.info.etapes[0].actionsDisponibles === 0 && $scope.action.deplacement.info.etapes.length === 4){
+			console.log("deplacement termine !");
+			$scope.action.deplacement.info.etapes.unshift({
+				positionCouronnes: $scope.positionCouronnes,
+				case: $scope.joueurs[$scope.joueurId].pions[0].numero,
+			});
+			console.log($scope.action.deplacement.info.etapes);
+		}
+	}
+
 	$scope.updatePositionCouronne = function(index,direction){
 		var increment = -1;
 		if (direction == 'down'){
@@ -552,6 +565,10 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 			// Update informations de tour de jeu :
 			$scope.plateauLabyrintheTourDeJeu.de --;
 			$scope.plateauLabyrintheTourDeJeu.type = 'couronnes';
+			// Update action infos :
+			$scope.action.deplacement.info.etapes[0].type = 'couronnes';
+			$scope.action.deplacement.info.etapes[0].actionsDisponibles --;
+			checkIfDeplacementTermine();
 			$scope.plateauLabyrintheTourDeJeu.couronne = index;
 			$scope.plateauLabyrintheTourDeJeu.casesDisponibles = [];
 		}).error(function(error){
@@ -810,6 +827,12 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 			monteeDisponible: []
 		};
 		var deResult = args.result;
+		$scope.action.deplacement.info.etapes.unshift({
+			positionCouronnes: $scope.positionCouronnes,
+			case: $scope.joueurs[$scope.joueurId].pions[0].numero,
+			actionsDisponibles: deResult,
+			deResult: deResult
+		});
 		$scope.plateauLabyrintheTourDeJeu.de = deResult;
 		var couronne = -1;
 		var position = -1;
@@ -852,6 +875,10 @@ angular.module('plateaux').controller('PlateauxLabyrintheController', ['$scope',
 				$scope.plateauLabyrintheTourDeJeu.de -= Math.min(distance1,distance2);
 			}
 			$scope.plateauLabyrintheTourDeJeu.type = 'deplacement';
+			// Update action infos :
+			$scope.action.deplacement.info.etapes[0].type = 'deplacement';
+			$scope.action.deplacement.info.etapes[0].actionsDisponibles -= Math.min(distance1,distance2);
+			checkIfDeplacementTermine();
 			if ($scope.plateauLabyrintheTourDeJeu.de === 0){
 				$scope.plateauLabyrintheTourDeJeu = {
 					casesDisponibles: [],

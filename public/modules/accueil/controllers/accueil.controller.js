@@ -244,7 +244,7 @@ angular.module('accueil').controller('AccueilController', ['$scope','$state','$h
 							joueurs[i].pions = JSON.stringify([{
 								plateau : 'paysage',
 								case: humeurs[humeurIndices[i]].info.maison,
-								position: 5,
+								position: 4,
 								row: row,
 								colonne: colonne,
 								zone: plateauPaysage[row].colonnes[colonne].zoneKey[0]

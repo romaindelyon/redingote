@@ -6,7 +6,7 @@
         	</span>
         	</div>
         </div>
-        <img ng-click="focusCarte({index: index})" ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" style="position: absolute;width: 160px;height: 250px;outline: none;">
+        <img ng-click="focusCarte(code)" ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+code+'.png'}}" style="position: absolute;width: 160px;height: 250px;outline: none;">
         <div ng-if="carte.categorie === 'objet' && index === focusIndex" style="position:absolute;margin-top:250px;width: 220px;background-color: #519bc3;margin-left: -25px;text-align:center;padding: 5px;">
         	<span class="red-font" style="color: white;">
         		{{objets[carte.info[1]].description}}

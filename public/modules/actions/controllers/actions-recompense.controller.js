@@ -47,7 +47,7 @@ angular.module('actions').controller('ActionsRecompenseController', ['$scope','$
 	    			}
 	    		}
 	    		$scope.action.recompense.valeur --;
-	    		$scope.$emit('grandes-cartes-added',{});
+	    		$scope.$emit('grandes-cartes-initialize',{});
 	    		if ($scope.action.recompense.valeur === 0){
 	    			$timeout(function(){
 	    				$scope.cancelAction();

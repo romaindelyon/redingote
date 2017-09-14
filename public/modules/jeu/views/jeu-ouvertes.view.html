@@ -11,8 +11,8 @@
 		</div>
 	</div>
 
-    <div ng-repeat="carte in jeu.ouvertes" ng-click="focusCarte($index)" layout-align="center center" style="outline: none;width: 160px;height: 260px;padding: 5px;" ng-class="{'jeu-ouvertes-carte-focused': focusIndex == $index,'jeu-ouvertes-carte': focusIndex != $index}">
-        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" style="width: 160px;height: 250px;">
+    <div ng-repeat="carte in jeu.ouvertes" layout-align="center center" ng-class="{'jeu-ouvertes-carte-focused': focusIndex == $index,'jeu-ouvertes-carte': focusIndex != $index}" style="margin: 0 5px;">
+        <red-carte code="{{carte.code}}" index="{{$index}}"></red-carte>
     </div>
 
 </div>

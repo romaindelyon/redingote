@@ -8,7 +8,6 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 		var newMissionPossible = true;
 		for (var i = 0;i < $scope.jeu.missions.length;i ++){
 			if ($scope.jeu.missions[i].statut.statut === 'open' || $scope.jeu.missions[i].statut.statut === 'ready'){
-				console.log($scope.jeu.missions[i]);
 				newMissionPossible = false;
 			}
 		}
@@ -34,8 +33,6 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 
 	// Affichage d'une autre mission :
 	$scope.updateMission = function(index){
-		console.log(index);
-		console.log($scope.jeu.missions);
 		$scope.missionIndex = index;
 		$scope.mission = $scope.jeu.missions[$scope.missionIndex];
 		$scope.missionCasesAvailable = [];
@@ -72,11 +69,11 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 	}
 
 	function updateMissionObjets(){
-		console.log($scope.mission);
 		for (var etape = 0;etape < $scope.mission.statut.info.etapes.length;etape ++){
 			if ($scope.mission.statut.info.etapes[etape].statut !== 'completed'){
 				var cartesReunies = true;
 				if ($scope.mission.statut.info.etapes[etape].categorie === 'reunir_des_cartes' || $scope.mission.statut.info.etapes[etape].categorie === 'apporter_des_cartes'){
+					console.log("on y est PRESQUE");
 					for (var i = 0;i < $scope.mission.statut.info.etapes[etape].cartes.length;i ++){
 						var carteFound = false;
 						for (var j = 0;j < $scope.jeu.horsPioche.length;j ++){
@@ -90,6 +87,7 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 						}
 					}
 					$scope.mission.statut.info.etapes[etape].cartesReunies = cartesReunies;
+					console.log(cartesReunies);
 					if ($scope.mission.statut.info.etapes[etape].categorie === 'reunir_des_cartes' && cartesReunies){
 						$scope.mission.statut.info.etapes[etape].statut = 'ready';
 					}
@@ -133,7 +131,6 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 			if ($scope.mission.statut.info.etapes[etape].statut !== 'completed' && $scope.mission.statut.info.etapes[etape].categorie === 'apporter_des_cartes'){
 				var etapeReady = false;
 				for (var i in $scope.joueurs[$scope.joueurId].pions){
-					console.log($scope.mission.statut.info.etapes[etape]);
 					if ($scope.joueurs[$scope.joueurId].pions[i].case.toString() === $scope.mission.statut.info.etapes[etape].case && $scope.mission.statut.info.etapes[etape].categorie === 'apporter_des_cartes' && $scope.mission.statut.info.etapes[etape].statut !== 'completed' && $scope.mission.statut.info.etapes[etape].cartesReunies){
 						etapeReady = true;
 					}				
@@ -151,12 +148,10 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 	$scope.completeEtape = function(etape){
 		newStatut = $.extend({}, $scope.mission.statut);
 		newStatut.info.etapes[etape].statut = 'completed';
-		console.log(newStatut);
 		Cartes.changementStatut({
     		carteId: $scope.mission.id,
     		statut: {}
     	}).success(function(){
-    		console.log(newStatut);
     		$scope.mission.statut = newStatut;
 			// Vérifier si la mission est finie :
 			var missionReady = true;
@@ -168,7 +163,6 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 			if (missionReady){
 				newStatut = $.extend({}, $scope.mission.statut);
 				newStatut.statut = 'completed';
-				console.log($scope.mission.info.consequences);
 				$scope.$emit('consequence-start',{consequences: $scope.mission.info.consequences,type: 'recompense'});
 				newStatut.completionDate = new Date();
 				updateStatutMission(newStatut);
@@ -184,17 +178,19 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 		var missions = [];
 		var completedMissions = [];
 		for (var i = 0;i < $scope.jeu.missions.length;i ++){
-			if ($scope.jeu.missions[i].statut !== 'completed'){
+			if ($scope.jeu.missions[i].statut.statut !== 'completed'){
 				missions.push($scope.jeu.missions[i]);
 			}
 			else {
 				completedMissions.push($scope.jeu.missions[i]);
 			}
 		}
+		console.log(missions);
+		console.log(completedMissions);
 		$scope.jeu.missions = missions;
 		completedMissions = $filter('orderBy')(completedMissions,['-statut.completionDate'],false);
 		for (var i = 0;i < completedMissions.length;i ++){
-			if (completedMissions[i].statut === 'completed'){
+			if (completedMissions[i].statut.statut === 'completed'){
 				$scope.jeu.missions.push(completedMissions[i]);
 			}
 		}		
@@ -203,8 +199,7 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 	function initializeMissions(){
 		missionsTriParDate();
 		$scope.missionIndex = 0;
-		console.log
-		$scope.mission = $scope.jeu.missions[$scope.missionIndex];
+		$scope.mission = $scope.jeu.missions[0];
 		console.log($scope.mission);
 		$scope.missionCasesAvailable = [];
 		updateMissionObjets();
@@ -222,7 +217,6 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 	}
 
 	$rootScope.$on('jeu-missions-case-start',function(event, args){
-		console.log('missions case start');
 		for (var i in $scope.joueurs[$scope.joueurId].pions){
 			$scope.missionCasesAvailable.push($scope.joueurs[$scope.joueurId].pions[i].case.toString());
 		}
@@ -233,24 +227,20 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 
 	// Every time hors pioche objets are changed, call this to update the visuals of ongoing mission:
 	$rootScope.$on('jeu-hors-pioche-change',function(event, args){
-		console.log("updating objets HP");
 		updateMissionObjets();
 	});	
 	// Every time a pion is moved, call this to update the visuals of ongoing mission:
 	$rootScope.$on('plateaux-pion-move',function(event, args){
-		console.log("updating cases");
 		updateMissionCases();
 	});	
 
 	// On regarde si on peut piocher des missions :
 	$rootScope.$on('partie-tour-action-start',function(event, args){
-		console.log("receiving mission pioche event");
 		missionPiochePossible();
 	});	
 
 	// On initialize les missions :
 	$rootScope.$on('missions-initialize',function(event, args){
-		console.log("Initializing missions");
 		initializeMissions();
 	});	
 

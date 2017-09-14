@@ -63,17 +63,16 @@ angular.module('cartes').directive('redCartesCreationHorsPioche', [
 	}
 ]);
 
-angular.module('cartes').directive('redCarte', [
-	function() {
+angular.module('cartes').directive('redCarte', ['$parse',
+	function($parse) {
 		return {
 			templateUrl: 'modules/cartes/views/cartes-carte.view.html',
 			restrict: 'E',
-		    scope: {
-		      carte: "=",
-		      focused: "=",
-		      focusCarte: "&",
-		      index: "="
-		    }
+			scope: true,
+			link: function(scope, element, attrs){
+				scope.code = attrs.code;
+				scope.index = attrs.index;
+			}
 		};
 	}
 ]);

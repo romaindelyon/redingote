@@ -11,11 +11,11 @@ angular.module('jeu').controller('JeuContainerController', ['$scope','$rootScope
 	$scope.focusedTab = 0;
 
 	$scope.tabs = [
-		{id: 'cartes_ouvertes',nom: 'Cartes ouvertes',style: "{'background-color':'#fff8e8'}"},
-		{id: 'objets_hors_pioche',nom: 'Objets hors pioche',style: "{'background-color':'#fff5f5'}"},
-		{id: 'pouvoirs',nom: 'Pouvoirs',style: "{'background-color':'#fff0ff'}"},
-		{id: 'missions',nom: 'Missions',style: "{'background-color':'#e8fbff'}"},
-		{id: 'grandes_cartes',nom: 'Grandes cartes',style: "{'background-color':'#efe8ff'}"}
+		{id: 'cartes_ouvertes',nom: 'Cartes ouvertes',style:'#fff8e8'},
+		{id: 'objets_hors_pioche',nom: 'Objets hors pioche',style: '#fff5f5'},
+		{id: 'pouvoirs',nom: 'Pouvoirs',style: '#fff0ff'},
+		{id: 'missions',nom: 'Missions',style: '#e8fbff'},
+		{id: 'grandes_cartes',nom: 'Grandes cartes',style: '#efe8ff'}
 	];
 	
 	$scope.changeTab = function(index){
@@ -78,6 +78,30 @@ angular.module('jeu').controller('JeuContainerController', ['$scope','$rootScope
 			$scope.jeu.horsPioche[i].statut.utilisable = false;
 		}
 	});
-	$scope.$on("$destroy", cartesUtilisationReset);
+	$scope.$
+
+	// Humeurs :
+
+	$scope.createArrayFromNumber = function(num) {
+		if (num != undefined){
+			return new Array(num); 
+		}
+    	else {
+    		return([]);
+    	}
+	}
+
+	$scope.humeurMontree = false;
+	$scope.humeurIndex = 0;
+
+	$scope.montrerHumeur = function(){
+		$scope.humeurMontree = true;
+	}
+	$scope.cacherHumeur = function(){
+		$scope.humeurMontree = false;
+	}
+	$scope.updateHumeurIndex = function(){
+		$scope.humeurIndex = ($scope.humeurIndex + 1)%$scope.joueurs[$scope.joueurId].humeurs.length;
+	}
 
 }]);

@@ -5,8 +5,6 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 
 	console.log('initializing actionscontroller');
 
-	$scope.action = {};
-
 	$scope.actionSwitchTab = function(increment){
 		$scope.action.tab += increment;
 	}
@@ -198,7 +196,7 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 	    			}
 	    		}
 	    		$scope.actionCase.recompense.valeur --;
-	    		$scope.$emit('grandes-cartes-added',{});
+	    		$scope.$emit('grandes-cartes-initialize',{});
 	    		if ($scope.actionCase.recompense.valeur === 0){
 	    			$timeout(function(){
 	    				$scope.cancelActionCase();

@@ -146,9 +146,7 @@ angular.module('cartes').controller('CartesPiocheController',
 	        	info: $scope.pioches.missions[carteOrder].info
 	        }
 	        $scope.jeu.missions.unshift($scope.pioches.missions[carteOrder]);
-	        if ($scope.jeu.missions.length === 1){
-	        	$scope.$emit('missions-initialize',{});
-	        }
+	        $scope.$emit('missions-initialize',{});
 	        // Retirer la carte de la pioche
 			$scope.pioches.missions.splice(carteOrder,1);
 			$scope.piochesDisponibles = true;

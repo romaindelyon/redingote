@@ -30,7 +30,7 @@
 	    </div> -->
 
 	    <div ng-repeat="carte in jeu.main" layout-align="center center" ng-class="{'jeu-main-carte-focused': focusIndex == $index, 'jeu-main-carte-neighbor-focused' : focusIndex == $index - 1,'jeu-main-carte': focusIndex != $index - 1 && focusIndex != $index}">
-	    	<red-carte carte="carte" focused="focusedIndex === $index" focus-carte="focusCarte(index)" index="$index"></red-carte>
+	    	<red-carte code="{{carte.code}}"></red-carte>
 	    </div>
 
 	</div>

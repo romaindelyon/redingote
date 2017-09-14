@@ -1,10 +1,12 @@
 <div ng-show="action.phase >= 0" ng-controller="ActionsDeplacementController">
 
+    <!-- PAYSAGE -->
+
     <div ng-if="action.deplacement.type === 'paysage'" layout="column" class="partie-cartouche-container">
 
         <!-- Titre -->
         <div layout="column" layout-align="center center" class="red-font" style="font-size: 20px;">
-            <span ng-show="action.phase == 1" class="confrontations-titre">
+            <span class="confrontations-titre">
                 Déplacement
             </span>
             <span ng-show="!action.deplacement.info.deResult">
@@ -79,4 +81,69 @@
 
     </div>
     
+    <!-- LABYRINTHE -->
+
+    <div ng-if="action.deplacement.type === 'labyrinthe'" layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="column" layout-align="center center" class="red-font" style="font-size: 20px;">
+            <span class="confrontations-titre">
+                Déplacement
+            </span>
+            <span ng-show="action.deplacement.info.etapes.length < 5 && (action.deplacement.info.etapes[0] == undefined || action.deplacement.info.etapes[0].actionsDisponibles == 0)">
+                Lance le dé
+            </span>
+            <span ng-show="action.deplacement.info.etapes.length < 5 && action.deplacement.info.etapes[0] != undefined && action.deplacement.info.etapes[0].actionsDisponibles == action.deplacement.info.etapes[0].deResult">
+                Déplace ton pion ou tourne les couronnes
+            </span>
+            <span ng-show="action.deplacement.info.etapes.length < 5 && action.deplacement.info.etapes[0].actionsDisponibles < 4 && action.deplacement.info.etapes[0].type === 'couronnes' && action.deplacement.info.etapes[0].actionsDisponibles > 0">
+                Tourne les couronnes
+            </span>
+            <span ng-show="action.deplacement.info.etapes.length < 5 && action.deplacement.info.etapes[0].actionsDisponibles < 4 && action.deplacement.info.etapes[0].type === 'deplacement' && action.deplacement.info.etapes[0].actionsDisponibles > 0">
+                Déplace ton pion
+            </span>
+            <span ng-show="action.deplacement.info.etapes.length === 5">
+                Déplacement terminé !
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="column" layout-align="space-around center" class="cartouche-body" style="width: 500px;">
+
+            <div layout="column" layout-align="center start" style="font-size: 16px;">
+                <div layout="row">
+                    <div layout="row" layout-align="center-center" ng-class="!action.deplacement.info.etapes[action.deplacement.info.etapes.length-1].deResult ? 'des-container-box-disabled' : 'des-container-box'">
+                        <img src="modules/des/img/des-labyrinthe-icone.png">
+                        <span ng-if="action.deplacement.info.etapes[action.deplacement.info.etapes.length-1].deResult" style="font-size: 18px;margin-top: 6px;">{{action.deplacement.info.etapes[action.deplacement.info.etapes.length-1].deResult}}</span>
+                    </div>
+                    <div layout="row" layout-align="center-center" ng-class="!action.deplacement.info.etapes[action.deplacement.info.etapes.length-2].deResult ? 'des-container-box-disabled' : 'des-container-box'">
+                        <img src="modules/des/img/des-labyrinthe-icone.png">
+                        <span ng-if="action.deplacement.info.etapes[action.deplacement.info.etapes.length-2].deResult" style="font-size: 18px;margin-top: 6px;">{{action.deplacement.info.etapes[action.deplacement.info.etapes.length-2].deResult}}</span>
+                    </div>
+                    <div layout="row" layout-align="center-center" ng-class="!action.deplacement.info.etapes[action.deplacement.info.etapes.length-3].deResult ? 'des-container-box-disabled' : 'des-container-box'">
+                        <img src="modules/des/img/des-labyrinthe-icone.png">
+                        <span ng-if="action.deplacement.info.etapes[action.deplacement.info.etapes.length-3].deResult" style="font-size: 18px;margin-top: 6px;">{{action.deplacement.info.etapes[action.deplacement.info.etapes.length-3].deResult}}</span>
+                    </div>
+                    <div layout="row" layout-align="center-center" ng-class="!action.deplacement.info.etapes[action.deplacement.info.etapes.length-4].deResult ? 'des-container-box-disabled' : 'des-container-box'">
+                        <img src="modules/des/img/des-labyrinthe-icone.png">
+                        <span ng-if="action.deplacement.info.etapes[action.deplacement.info.etapes.length-4].deResult" style="font-size: 18px;margin-top: 6px;">{{action.deplacement.info.etapes[action.deplacement.info.etapes.length-4].deResult}}</span>
+                    </div>
+                </div>
+                <div ng-if="action.deplacement.info.etapes[0].actionsRestantes > 0" layout="column" layout-align="center start" style="height: 105px;">
+                    <span>
+                    Actions restantes : {{action.deplacement.info.etapes[0].actionsRestantes}}
+                    </span>
+                </div>
+            </div>            
+
+            <div style="width: 150px;">
+                <md-button ng-click="validerDeplacement()" ng-if="action.deplacement.info.etapes.length >= 4" class="confrontations-button red-font md-primary md-raised" style="height: 20px;">
+                    Déplacement terminé !
+                </md-button>
+            </div>
+
+        </div>
+
+    </div>
+
  </div>

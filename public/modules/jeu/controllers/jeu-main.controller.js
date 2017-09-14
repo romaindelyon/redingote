@@ -7,7 +7,14 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
 
 	$scope.focusIndex = -2;
 
-	$scope.focusCarte = function(index){
+	$scope.focusCarte = function(code){
+		console.log(code);
+		var index = -1;
+		for (var i = 0;i < $scope.jeu.main.length;i ++){
+			if ($scope.jeu.main[i].code === code){
+				index = i;
+			}
+		}
 		if (index == $scope.focusIndex){
 			$scope.focusIndex = -2;
 		}
@@ -35,7 +42,8 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
 					$scope.jeu.ouvertes.push(carte);
 				}
 				else {
-					$scope.$emit('grandes-cartes-added',{});
+					$scope.jeu.grandesCartes.push(carte);
+					$scope.$emit('grandes-cartes-initialize',{});
 				}
 			},250);
 			$scope.jeu.main.splice(index,1);

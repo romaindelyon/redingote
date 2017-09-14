@@ -24,7 +24,7 @@ angular.module('jeu').controller('JeuGrandesCartesController', ['$scope','$rootS
 	
 	initializeGrandesCartes();
 
-	$rootScope.$on('grandes-cartes-added',function(event,args){
+	$rootScope.$on('grandes-cartes-initialize',function(event,args){
 		initializeGrandesCartes();
 	});
 

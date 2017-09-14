@@ -19,19 +19,21 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 			}
 			else if ($scope.action.deplacement.info.direction == undefined){
 				$scope.$emit('plateaux-paysage-rose-ready',{});
-				console.log("allowing rose");
 			}
 			else {
 				$scope.action.deplacement.info.actionsRestantes = $scope.action.deplacement.info.deResult + 1;
 				$scope.$emit('plateaux-paysage-deplacement-ready',{deResult: $scope.action.deplacement.info.deResult});
 			}
 		}
+		else if ($scope.action.deplacement.type === 'labyrinthe'){
+			$scope.action.deplacement.info.etapes = [];
+			$scope.partie.dispo.des.labyrinthe = 4;
+		}
 	}
 
 	$rootScope.$on('plateaux-paysage-de',function(event,args){
 		$scope.action.deplacement.info.deResult = args.result;
 		Actions.update({info: $scope.action.deplacement.info}).success(function(){
-			console.log("Action updatée");
 			$scope.$emit('plateaux-paysage-rose-ready',{});
 		}).error(function(){
 			console.log("Erreur d'update de notification d'humeur");
@@ -45,7 +47,6 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 		}
 		$scope.action.deplacement.info.direction = direction;
 		Actions.update({info: $scope.action.deplacement.info}).success(function(){
-			console.log("Action updatée");
 			$scope.action.deplacement.info.actionsRestantes = $scope.action.deplacement.info.deResult + 1;
 			$scope.$emit('plateaux-paysage-deplacement-ready',{deResult: $scope.action.deplacement.info.deResult});
 		}).error(function(){
@@ -72,17 +73,19 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 	} 
 
 	$scope.validerDeplacement = function(){
-		// Move pion
-		$scope.$emit('plateaux-move-pion',{
-			case: $scope.action.deplacement.info.arrivee.numero,
-			plateau: 'paysage',
-			zone: $scope.action.deplacement.info.zone,
-			row: $scope.action.deplacement.info.arrivee.row,
-			colonne: $scope.action.deplacement.info.arrivee.colonne,
-			position: $scope.action.deplacement.info.arrivee.position
-		});
-		// Effacer les données de déplacement et relancer la rose des vents
-		$scope.$emit('plateaux-paysage-deplacement-erase',{});
+		if ($scope.action.deplacement.type === 'paysage'){
+			// Move pion
+			$scope.$emit('plateaux-move-pion',{
+				case: $scope.action.deplacement.info.arrivee.numero,
+				plateau: 'paysage',
+				zone: $scope.action.deplacement.info.zone,
+				row: $scope.action.deplacement.info.arrivee.row,
+				colonne: $scope.action.deplacement.info.arrivee.colonne,
+				position: $scope.action.deplacement.info.arrivee.position
+			});
+			// Effacer les données de déplacement et relancer la rose des vents
+			$scope.$emit('plateaux-paysage-deplacement-erase',{});
+		}
 		// Retirer l'action
 		$scope.cancelAction();
 	}
@@ -91,8 +94,6 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 		$scope.action.deplacement.info.actionsRestantes --;
 		$scope.action.deplacement.info.deplacement = args.deplacement;
 		if ($scope.action.deplacement.info.actionsRestantes === 0){
-			console.log('fini');
-			console.log(args.deplacement[args.deplacement.length - 1]);
 			$scope.terminerDeplacement();
 		}
 	});
@@ -114,7 +115,6 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 	var numero = $scope.joueurs[$scope.joueurId].pions[0].case;
 	$scope.action.categorie = 'deplacement';
 	$scope.action.deplacement = $scope.actions.deplacement[0];
-	console.log($scope.action);
 	$scope.action.numero = numero;
 	$scope.action.phase = 1;		
 

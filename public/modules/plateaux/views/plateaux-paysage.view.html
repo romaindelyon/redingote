@@ -7,8 +7,8 @@
 			<!-- Colonnes -->
 			<div ng-repeat="case in ligne.colonnes" ng-click="selectCase(case.numero)" ng-mouseover="hoverCase(case.numero)" layout="column" layout-align="space-between center" class="plateaux-paysage-case">
 				<!-- Case Info -->
-				<div layout="column" layout-align="space-between center" ng-class="{'plateaux-paysage-case-info-clicked' : selectedCase.numero == case.numero, 'plateaux-paysage-case-info-hovered': hoveredCase === case.numero, 'plateaux-paysage-case-info': hoveredCase !== case.numero && selectedCase.numero !== case.numero}" >
-					<div layout="column" layout-align="space-between center" style="position: absolute;	width: 65px;height: 70px;">
+				<div layout="column" layout-align="space-between center" ng-class="{'plateaux-paysage-case-info-clicked' : selectedCase.numero == case.numero && case.numero !== -1, 'plateaux-paysage-case-info-hovered': hoveredCase === case.numero && case.numero !== -1, 'plateaux-paysage-case-info': hoveredCase !== case.numero && selectedCase.numero !== case.numero && case.numero !== -1}" >
+					<div ng-show="case.numero !== -1" layout="column" layout-align="space-between center" style="position: absolute;	width: 65px;height: 70px;">
 						<div layout="row" layout-align="space-between center" style="width: 100%;">
 							<div>
 								<span ng-if="plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero && (hoveredCase === case.numero || selectedCase.numero === case.numero)">
@@ -36,21 +36,21 @@
 						</div>
 					</div>
 					<!-- Pions -->
-					<div ng-if="!(selectedCase.numero === case.numero && partie.dispo.plateaux.paysage > 0) && case.joueursNumber > 0" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
-						<div ng-repeat="joueur in case.joueurs">
-							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+joueur+'.png'}}" class="plateaux-paysage-pion" style="position: absolute;" ng-style="{
-							'margin-left':'' + pionDeplacementImage[joueurs[case.joueurs[joueur]].pions[0].position].marginLeft + 'px',
-							'margin-top':''+ pionDeplacementImage[joueurs[case.joueurs[joueur]].pions[0].position].marginTop +'px'
+					<div ng-if="!(selectedCase.numero === case.numero && partie.dispo.plateaux.paysage > 0) && case.joueursNumber > 0 && case.numero !== -1" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
+						<div ng-repeat="joueur in case.joueurs" style="position: absolute;" ng-style="{
+							'margin-left':'' + pionDeplacementImage[joueurs[joueur].pions[0].position].marginLeft + 'px',
+							'margin-top':''+ pionDeplacementImage[joueurs[joueur].pions[0].position].marginTop +'px'
 						}">
+							<img ng-src="{{'modules/plateaux/img/plateau_pion_'+joueur+'.png'}}" class="plateaux-paysage-pion">
 						</div>
 					</div>
-					<div ng-if="case.deplacement >= 0 && deplacementEnCours" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
+					<div ng-if="case.deplacement >= 0 && deplacementEnCours && case.numero !== -1" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
 						<img ng-src="{{'modules/plateaux/img/plateau_pion_'+joueurId+'.png'}}" class="plateaux-paysage-pion" style="position: absolute;opacity: 0.6;" ng-style="{
 							'margin-left':'' + pionDeplacementImage[case.deplacement].marginLeft + 'px',
 							'margin-top':''+ pionDeplacementImage[case.deplacement].marginTop +'px'
 						}">
 					</div>
-					<div ng-if="selectedCase.numero === case.numero && deplacementPossible > 0 && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
+					<div ng-if="selectedCase.numero === case.numero && deplacementPossible > 0 && plateauPaysage[$parent.$index + 1].colonnes[$index].numero !== case.numero && case.numero !== -1" layout="row" layout-align="center center" class="plateaux-paysage-pions-container">
 						<img ng-repeat="index in [0,1,2,3,4,5,6,7,8,9,10,11]" ng-click="deplacementPion($parent.$parent.$parent.$index,$parent.$index,case.numero,index)" ng-src="{{'modules/plateaux/img/plateau_pion_move.png'}}" class="plateaux-paysage-pion-move" style="width: 8px;height: 8px;position: absolute;" ng-style="{
 						'margin-left':'' + pionDeplacementImage[index].marginLeft + 'px',
 						'margin-top':''+ pionDeplacementImage[index].marginTop +'px'
@@ -59,10 +59,11 @@
 				</div>
 				<!-- Tooltips -->
 				<!-- 1. Zone info -->
-				<div ng-if="selectedCase.numero === case.numero && plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero">
+				<div ng-if="selectedCase.numero === case.numero && plateauPaysage[$parent.$index - 1].colonnes[$index].numero !== case.numero && case.numero !== -1">
 					<img ng-src="{{'modules/plateaux/img/plateaux_zones_'+case.zoneKey[0]+'.png'}}" style="width: 47px;margin-left: -79px;margin-top: -49px;z-index: 1;">
 					<img ng-src="{{'modules/plateaux/img/plateaux_zones_'+case.zoneKey[1]+'.png'}}" ng-if="case.zoneKey[1] != undefined" style="width: 47px;margin-left: -72px;margin-top: -145px;z-index: 1;">
 					<img ng-src="{{'modules/plateaux/img/plateaux_zones_'+case.zoneKey[2]+'.png'}}" ng-if="case.zoneKey[2] != undefined" style="width: 47px;margin-left: -56px;margin-top: -249px;z-index: 1;">
+					<img ng-src="{{'modules/plateaux/img/plateaux_zones_'+case.zoneKey[3]+'.png'}}" ng-if="case.zoneKey[3] != undefined" style="width: 47px;margin-left: -47px;margin-top: -353px;z-index: 1;">
 				</div>
 
 				<!-- 2. Action info -->
@@ -77,7 +78,7 @@
 			</div>
 		</div>
 
-		<div style="position: absolute;margin-top: -633px;margin-left: 673px;">
+		<div style="position: absolute;margin-top: -634px;margin-left: 703px;">
 				<img src="modules/plateaux/img/plateau_paysage_rose_des_vents.png" ng-click="startRoseDesVents()" style="width: 216px;outline: none;">
 				<img ng-src="{{'modules/plateaux/img/plateau_paysage_quadrant_directionnel_'+roseDesVents.position+'.png'}}" ng-if="roseDesVents.position !== undefined" style="position: absolute;height: 88px;margin-left: -72px;margin-top: 109px;" ng-style="{
 						'height':'' + roseDesVents.height + 'px',
