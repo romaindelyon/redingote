@@ -52,22 +52,92 @@ angular.module('jeu').controller('JeuContainerController', ['$scope','$rootScope
 		}
 	}
 
+	// function findObjet(code){
+	// 	console.log(code);
+	// 	console.log($scope.objets);
+	// 	var objetIndex = -1;
+	// 	for (var i = 0;i < $scope.objets.length;i ++){
+	// 		if ($scope.objets[i].code === code){
+	// 			objetIndex = i;
+	// 		}
+	// 	}
+	// 	return ($scope.objets[objetIndex]);
+	// }
+
+	function circonstanceMatch(circonstanceCarte,circonstance){
+		console.log(circonstanceCarte);
+		console.log(circonstance);
+		var resultat = circonstanceCarte.categorie === circonstance.categorie &&
+			(circonstanceCarte.type === circonstance.type || circonstanceCarte.type == undefined) &&
+			(circonstanceCarte.valeur === circonstance.valeur || circonstanceCarte.valeur == undefined);
+		console.log(resultat)
+		return(resultat);
+	}
+
+	function contrainteMatch(contrainte){
+		if (contrainte != undefined){
+			var contrainteMet = false;
+			// Contraintes de position :
+			if (contrainte.categorie === 'position'){
+				if (contrainte.type === 'zone'){
+					console.log($scope.joueurs[$scope.joueurId].pions[0].zone);
+					if (contrainte.valeur === $scope.joueurs[$scope.joueurId].pions[0].zone){
+						contrainteMet = true;
+					}
+				}
+			}			
+		}
+		else {
+			var contrainteMet = true;
+		}
+		return(contrainteMet);
+	}
+
 	var cartesUtilisationPossibleCirconstance = $rootScope.$on('cartes-utilisation-possible-circonstance',function(event,args){
 		console.log('utilisation possible');
-
 		for (var i = 0;i < $scope.jeu.horsPioche.length;i ++){
 			console.log($scope.jeu.horsPioche[i]);
 			if ($scope.jeu.horsPioche[i].utilisation.indexOf('reaction') >= 0 && $scope.jeu.horsPioche[i].info.circonstances.length > 0){
 				for (var j = 0;j < $scope.jeu.horsPioche[i].info.circonstances.length;j ++){
-					if ($scope.jeu.horsPioche[i].info.circonstances[j].categorie === args.categorie &&
-						($scope.jeu.horsPioche[i].info.circonstances[j].type === args.type || $scope.jeu.horsPioche[i].info.circonstances[j].type == undefined) &&
-						($scope.jeu.horsPioche[i].info.circonstances[j].valeur === args.valeur || $scope.jeu.horsPioche[i].info.circonstances[j].valeur == undefined)){
+					// if ($scope.jeu.horsPioche[i].info.circonstances[j].categorie === args.categorie &&
+					// 	($scope.jeu.horsPioche[i].info.circonstances[j].type === args.type || $scope.jeu.horsPioche[i].info.circonstances[j].type == undefined) &&
+					// 	($scope.jeu.horsPioche[i].info.circonstances[j].valeur === args.valeur || $scope.jeu.horsPioche[i].info.circonstances[j].valeur == undefined)){
+					if (circonstanceMatch($scope.jeu.horsPioche[i].info.circonstances[j],args)){
 						console.log('code trouvé');
-						$scope.jeu.horsPioche[i].statut.utilisable = true;
+						$scope.jeu.horsPioche[i].statut.utilisable = args.categorie;
 					}
 				}			
 			}
-
+		}
+		for (var i = 0;i < $scope.jeu.ouvertes.length;i ++){
+			console.log($scope.jeu.ouvertes[i]);
+			if ($scope.jeu.ouvertes[i].categorie === 'objet'){
+				if ($scope.jeu.ouvertes[i].pile === 'hors_pioche'){
+					var objet = $scope.jeu.ouvertes[i];
+				}
+				else if ($scope.jeu.ouvertes[i].utilisation[0] === 'ouverture'){
+					var objet = $scope.objets[$scope.jeu.ouvertes[i].info[0]];
+				}
+				else if ($scope.jeu.ouvertes[i].utilisation[1] === 'ouverture'){
+					var objet = $scope.objets[$scope.jeu.ouvertes[i].info[1]];
+				}
+				console.log(objet);
+				if (objet != undefined && objet.info.circonstances.length > 0){
+					for (var j = 0;j < objet.info.circonstances.length;j ++){
+						if (circonstanceMatch(objet.info.circonstances[j],args)){
+							console.log('code trouvé');
+							var contraintesMet = true;
+							for (var k = 0;k < objet.info.contraintes.length;k ++){
+								console.log(objet.info.contraintes[k]);
+								contraintesMet = contraintesMet && contrainteMatch(objet.info.contraintes[k]);
+							}
+							if (contraintesMet){
+								$scope.jeu.ouvertes[i].statut.utilisable = args.categorie;
+							}
+						}
+					}			
+				}
+			}
 		}
 	});
 	$scope.$on("$destroy", cartesUtilisationPossibleCirconstance);
@@ -78,7 +148,7 @@ angular.module('jeu').controller('JeuContainerController', ['$scope','$rootScope
 			$scope.jeu.horsPioche[i].statut.utilisable = false;
 		}
 	});
-	$scope.$
+	$scope.$on("$destroy", cartesUtilisationReset);
 
 	// Humeurs :
 

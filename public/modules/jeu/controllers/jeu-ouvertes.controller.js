@@ -4,6 +4,7 @@ angular.module('jeu').controller('JeuOuvertesController', ['$scope','Cartes',
 	function($scope,Cartes) {
 
 	$scope.focusIndex = -2;
+	$scope.focusId = -1;
 
 	$scope.focusCarte = function(code){
 		var index = -1;
@@ -14,22 +15,29 @@ angular.module('jeu').controller('JeuOuvertesController', ['$scope','Cartes',
 		}
 		if (index == $scope.focusIndex){
 			$scope.focusIndex = -2;
+			$scope.focusId = -1;
 		}
 		else {
 			$scope.focusIndex = index;
+			$scope.focusId = $scope.jeu.ouvertes[index].id;
 		}	
 	}
 
 	$scope.jeterCarte = function(index){
+		var newPosition = -2;
+		if ($scope.jeu.ouvertes[index].pile === 'horsPioche'){
+			console.log("jeter un objet hors pioche ouvert");
+			newPosition = -1;
+		}
 		Cartes.moveCartes({
     		carteIds: [$scope.jeu.ouvertes[index].id],
-    		position: -2
+    		position: newPosition
     	}).success(function(){
     		var carte = $scope.jeu.ouvertes[index];
     		carte.main = {};
 			$scope.defausses.pioche.push(carte);
 			$scope.jeu.ouvertes.splice(index,1);
-			$scope.focusIndex = -2;
+			$scope.focusIndex = newPosition;
     	}).error(function(){
 
     	})
@@ -41,6 +49,12 @@ angular.module('jeu').controller('JeuOuvertesController', ['$scope','Cartes',
 		if (carte.categorie == 'combat'){
 			$scope.$emit('confrontations-combat-start', {carte: carte,carteIndex: index});
 		}
+		$scope.focusIndex = -2;
+    }
+
+    $scope.utiliserCarteReaction = function(index){
+    	var carte = $scope.jeu.ouvertes[index];
+    	$scope.$emit('cartes-utilisation',{carte: $scope.jeu.ouvertes[index]});
     }
 
 }]);

@@ -47,6 +47,7 @@ angular.module('cartes').controller('CartesCreationMissionController', ['$scope'
 				$scope.cartesNoms.push(response[i].nom);
 			}
 		}
+		console.log(cartesCodes);
 	});
 
 	var zones = ['Désert','Forêt','Mer','Marécages','Monde onirique','Montagne','Prairie','Royaume des ténèbres','Village','Ville','Zone industrielle'];

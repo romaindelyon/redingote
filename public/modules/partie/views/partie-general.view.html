@@ -1,53 +1,58 @@
-<div ng-controller="PartieGeneralController" layout="column" style="min-width: 1300px;">
+<div ng-controller="PartieGeneralController" style="min-width: 1300px;">
+	<div ng-show="loaded.everything" layout="column" style="min-width: 1300px;">
 
-	<!-- Top row: players and plateaux -->
+		<!-- Top row: players and plateaux -->
 
-	<div layout="row" style="width: 100%;height: 400;">
+		<div layout="row" style="width: 100%;height: 400;">
 
-		<red-joueurs-recap style="width: 38%;" joueur="{{joueurLeft}}"></red-joueurs-recap>
+			<red-joueurs-recap style="width: 38%;" joueur="{{joueurLeft}}"></red-joueurs-recap>
 
-		<div layout="column" style="width: 24%;height: 100%;">
+			<div layout="column" style="width: 24%;height: 100%;">
 
-			<!-- Toolbar -->
-			<red-core-toolbar></red-core-toolbar>
+				<!-- Toolbar -->
+				<red-core-toolbar></red-core-toolbar>
 
-			<!-- Plateaux -->
+				<!-- Plateaux -->
 
-			<div layout="column" style="width: 100%;height: 90%;">
-				<div layout="row" layout-align="center center" style="height: 50%;width: 100%;">
-					<img ng-click="goToPlateau(1)" src="modules/plateaux/img/plateau_labyrinthe_icone.png" style="height: 150px;width: 150px;outline: none;">
-					<img ng-click="goToPlateau(2)" src="modules/plateaux/img/plateau_escalier_icone.png" style="height: 125px;width: 150px;outline: none;">
+				<div layout="column" style="width: 100%;height: 90%;">
+					<div layout="row" layout-align="center center" style="height: 50%;width: 100%;">
+						<img ng-click="goToPlateau(1)" src="modules/plateaux/img/plateau_labyrinthe_icone.png" style="height: 150px;width: 150px;outline: none;">
+						<img ng-click="goToPlateau(2)" src="modules/plateaux/img/plateau_escalier_icone.png" style="height: 125px;width: 150px;outline: none;">
+					</div>
+					<div layout="row" flex layout-align="center center" style="width: 100%;height: 50%;outline: none;">
+						<img ng-click="goToPlateau(0)" src="modules/plateaux/img/plateau_paysage.png" style="height: 100%;width: 300px;outline: none;">
+					</div>
 				</div>
-				<div layout="row" flex layout-align="center center" style="width: 100%;height: 50%;outline: none;">
-					<img ng-click="goToPlateau(0)" src="modules/plateaux/img/plateau_paysage.png" style="height: 100%;width: 300px;outline: none;">
-				</div>
+
 			</div>
+
+			<red-joueurs-recap style="width: 38%;" joueur="{{joueurRight}}"></red-joueurs-recap>
 
 		</div>
 
-		<red-joueurs-recap style="width: 38%;" joueur="{{joueurRight}}"></red-joueurs-recap>
+		<!-- Plateaux -->
+
+		<div ng-controller="PlateauxGeneralController" layout="row" layout-align="center center">
+			<red-plateaux-paysage ng-show="plateau == '0'"></red-plateaux-paysage>
+			<red-plateaux-labyrinthe ng-show="plateau == '1'"></red-plateaux-labyrinthe>
+			<red-plateaux-escalier ng-show="plateau == '2'"></red-plateaux-escalier>
+		</div>
+
+
+		<!-- Tour de jeu -->
+
+		<red-partie-tour-de-jeu></red-partie-tour-de-jeu>
+
+		<!-- Actions -->
+
+		<red-actions ng-show="partie.dispo.tourDeJeu.actionEnCours"></red-actions>
+
+		<!-- Jeux -->
+
+		<red-jeu-container style="margin-bottom: 20px;"></red-jeu-container>
 
 	</div>
-
-	<!-- Plateaux -->
-
-	<div ng-controller="PlateauxGeneralController" layout="row" layout-align="center center">
-		<red-plateaux-paysage ng-show="plateau == '0'"></red-plateaux-paysage>
-		<red-plateaux-labyrinthe ng-show="plateau == '1'"></red-plateaux-labyrinthe>
-		<red-plateaux-escalier ng-show="plateau == '2'"></red-plateaux-escalier>
+	<div ng-show="!loaded.everything" layout="row" layout-align="center center">
+		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 	</div>
-
-
-	<!-- Tour de jeu -->
-
-	<red-partie-tour-de-jeu></red-partie-tour-de-jeu>
-
-	<!-- Actions -->
-
-	<red-actions ng-show="partie.dispo.tourDeJeu.actionEnCours"></red-actions>
-
-	<!-- Jeux -->
-
-	<red-jeu-container style="margin-bottom: 20px;"></red-jeu-container>
-
 </div>

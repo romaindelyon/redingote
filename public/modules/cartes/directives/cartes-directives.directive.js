@@ -36,6 +36,18 @@ angular.module('cartes').directive('redCartesCreationCirconstances', [
 	}
 ]);
 
+angular.module('cartes').directive('redCartesCreationUtilisations', [
+	function() {
+		return {
+			templateUrl: 'modules/cartes/views/cartes-creation-utilisations.view.html',
+			restrict: 'E',
+		    scope: {
+		      carte:"="
+		    }
+		};
+	}
+]);
+
 angular.module('cartes').directive('redCartesCreationMission', [
 	function() {
 		return {
@@ -71,6 +83,7 @@ angular.module('cartes').directive('redCarte', ['$parse',
 			scope: true,
 			link: function(scope, element, attrs){
 				scope.code = attrs.code;
+				scope.pile = attrs.pile;
 				scope.index = attrs.index;
 			}
 		};

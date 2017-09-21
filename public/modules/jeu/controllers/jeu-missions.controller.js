@@ -4,20 +4,24 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 	function($scope,$rootScope,$filter,Cartes) {
 
 	function missionPiochePossible(){
-		// Possibilité de piocher des missions si aucune mission au statut open ou ready
-		var newMissionPossible = true;
-		for (var i = 0;i < $scope.jeu.missions.length;i ++){
-			if ($scope.jeu.missions[i].statut.statut === 'open' || $scope.jeu.missions[i].statut.statut === 'ready'){
-				newMissionPossible = false;
+		if ($scope.partie.tour_action === 6){
+			// Possibilité de piocher des missions si aucune mission au statut open ou ready
+			var newMissionPossible = true;
+			for (var i = 0;i < $scope.jeu.missions.length;i ++){
+				if ($scope.jeu.missions[i].statut.statut === 'open' || $scope.jeu.missions[i].statut.statut === 'ready'){
+					newMissionPossible = false;
+				}
 			}
-		}
-		if (newMissionPossible){
-			console.log("new mission possible");
-			$scope.partie.dispo.pioches.missions = 1;
+			if (newMissionPossible){
+				console.log("new mission possible");
+				$scope.partie.dispo.pioches.missions = 1;
+			}
 		}
 	}
 
 	function updateStatutMission(newStatut){
+		console.log("updating mission status");
+		console.log(newStatut);
 		Cartes.changementStatut({
     		carteId: $scope.mission.id,
     		statut: newStatut
@@ -97,7 +101,7 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 	}
 
 	$scope.completeMissionCase = function(etape,index){
-		if ($scope.missionCasesAvailable.indexOf($scope.mission.statut.info.etapes[etape].cases[index].numero) > -1){
+		if ($scope.missionCasesAvailable.indexOf($scope.mission.statut.info.etapes[etape].cases[index].numero) > -1 && (etape === 0 || $scope.mission.statut.info.etapes[etape - 1].statut === 'completed')){
 			newStatut = $.extend({}, $scope.mission.statut);
 			newStatut.info.etapes[etape].cases[index].completed = true;
 			Cartes.changementStatut({
@@ -128,7 +132,7 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 
 	function updateMissionCases(){
 		for (var etape = 0;etape < $scope.mission.statut.info.etapes.length;etape ++){
-			if ($scope.mission.statut.info.etapes[etape].statut !== 'completed' && $scope.mission.statut.info.etapes[etape].categorie === 'apporter_des_cartes'){
+			if ($scope.mission.statut.info.etapes[etape].statut !== 'completed' && $scope.mission.statut.info.etapes[etape].categorie === 'apporter_des_cartes' && (etape === 0 || $scope.mission.statut.info.etapes[etape - 1].statut === 'completed')){
 				var etapeReady = false;
 				for (var i in $scope.joueurs[$scope.joueurId].pions){
 					if ($scope.joueurs[$scope.joueurId].pions[i].case.toString() === $scope.mission.statut.info.etapes[etape].case && $scope.mission.statut.info.etapes[etape].categorie === 'apporter_des_cartes' && $scope.mission.statut.info.etapes[etape].statut !== 'completed' && $scope.mission.statut.info.etapes[etape].cartesReunies){
@@ -150,17 +154,19 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 		newStatut.info.etapes[etape].statut = 'completed';
 		Cartes.changementStatut({
     		carteId: $scope.mission.id,
-    		statut: {}
+    		statut: newStatut
     	}).success(function(){
     		$scope.mission.statut = newStatut;
 			// Vérifier si la mission est finie :
 			var missionReady = true;
 			for (var i in $scope.mission.statut.info.etapes){
 				if ($scope.mission.statut.info.etapes[i].statut !== 'completed'){
+					console.log("il reste une mission à faire");
 					missionReady = false;
 				}
 			}
 			if (missionReady){
+				console.log("la mission est prête");
 				newStatut = $.extend({}, $scope.mission.statut);
 				newStatut.statut = 'completed';
 				$scope.$emit('consequence-start',{consequences: $scope.mission.info.consequences,type: 'recompense'});
@@ -206,7 +212,14 @@ angular.module('jeu').controller('JeuMissionsController', ['$scope','$rootScope'
 		updateMissionCases();
 
 		if ($scope.mission.statut.info !== undefined){
-			$scope.updateEtape(0);
+			var etape = 0;
+			for (var i = $scope.mission.info.etapes.length - 1;i >= 0;i --){
+				if ($scope.mission.statut.info.etapes[i].statut !== 'completed'){
+					etape = i;
+				}
+			}
+			console.log(i);
+			$scope.updateEtape(etape);
 		}		
 	}
 

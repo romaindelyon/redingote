@@ -43,7 +43,7 @@
 	                	OK !
 	            	</md-button>
 	            </div>
-	            <span ng-if="partie.showPassword[1] && authentication.mauvaisPasswordMessage">
+	            <span ng-if="partie.showPassword[1] && authentication.mauvaisPasswordMessage" style="color: red;font-size: 18px;">
 	            	Mauvais mot de passe
 	            </span>
 			</div>
@@ -58,10 +58,10 @@
 	                	OK !
 	            	</md-button>
 	            </div>
+	            <span ng-if="partie.showPassword[2] && authentication.mauvaisPasswordMessage" style="color: red;font-size: 18px;">
+	            	Mauvais mot de passe
+	            </span>
 			</div>
-            <span ng-if="partie.showPassword[2] && authentication.mauvaisPasswordMessage">
-            	Mauvais mot de passe
-            </span>
 		</div>
 	</div>
 	<div layout="column" flex>

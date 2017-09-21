@@ -9,6 +9,7 @@ header("Content-Type: application/json; charset=UTF-8");
     $reponseDonnee = utf8_decode($_GET["reponseDonnee"]);
     $reponsePartie = $_GET["reponsePartie"];
     $reponseTime = $_GET["reponseTime"];
+    $partie = $_GET["partieId"];
 
     $con = mysqli_connect("localhost","redingot_romain","redingote778","redingot_database");
     // Check connection

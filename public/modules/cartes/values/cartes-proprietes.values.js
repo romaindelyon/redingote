@@ -12,6 +12,7 @@ angular.module('cartes').value('CartesProprietes', {
 	'grande_carte': 'Grande carte',
 	'orc': 'Orc',
 	'personnage': 'Personnage',
+	'pouilleux': 'Pouilleux',
 	'normale': 'Normale',
 	'speciale': 'Spéciale',
 	// Utilisations:
@@ -28,6 +29,10 @@ angular.module('cartes').value('CartesProprietes', {
 	'remporter_des_duels': 'Remporter des duels',
 	'visiter_des_cases': 'Visiter des cases',
 	'visiter_des_zones': 'Visiter des zones',
+	// Familles :
+	'conducteurs_de_bus': 'Conducteurs de bus',
+	'jeux_de_tarot': 'Jeux de tarot',
+	'cabines_telephoniques': 'Cabines téléphoniques',
 	// Cibles:
 	'lanceur': 'Lanceur',
 	'adversaire': 'Adversaire',

@@ -1,15 +1,18 @@
 'use strict';
 
-angular.module('historique').controller('HistoriqueController', ['$scope','Joueurs',
-	function($scope,Joueurs) {
+angular.module('historique').controller('HistoriqueController', ['$scope','$stateParams','Joueurs','Historique',
+	function($scope,$stateParams,Joueurs,Historique) {
 
-	// TODO: change this
-	$scope.partieId = 1;
+	$scope.partieId = parseInt($stateParams.partie);;
 
 	$scope.joueurs = [];
 	Joueurs.getJoueurs({partieId: $scope.partieId}).success(function(response){
 		$scope.joueurs = response;
-		grouperHistorique();
+		Historique.get({partie: $scope.partieId}).success(function(responseHistorique){
+			console.log(responseHistorique);
+			var eventLog = responseHistorique;
+			grouperHistorique();
+		});
 	});
 
 	var date = new Date();

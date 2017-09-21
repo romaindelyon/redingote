@@ -7,8 +7,8 @@ angular.module('core').controller('CoreMenuController', ['$scope','$state',
 		$state.go(state);
 	}
 
-	$scope.goToQuestions = function(){
-		$state.go('questions',{partie: $scope.partieId,joueur: $scope.joueurId});
+	$scope.goToAuthenticated = function(state){
+		$state.go(state,{partie: $scope.partieId,joueur: $scope.joueurId});
 	}
 
 }]);

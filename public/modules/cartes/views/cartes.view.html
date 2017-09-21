@@ -176,6 +176,23 @@
 				<label>Utilisation</label>
 			</md-input-container>
 		</div>
+		<div layout="row">
+			<md-input-container class="cartes-input">
+				<input type="checkbox" ng-model="carte.ouverture" aria-label="checkbox">
+				<label>Ouverture</label>
+			</md-input-container>
+			<md-input-container class="cartes-input">
+				<input type="checkbox" ng-model="carte.action" aria-label="checkbox">
+				<label>Action</label>
+			</md-input-container>
+		</div>
+		<red-cartes-creation-utilisations ng-if="carte.categorie !== 'objet'"></red-cartes-creation-utilisations>
+		<md-input-container ng-if="carte.categorie === 'Trois familles'" class="cartes-input" style="width: 200px;">
+			<md-select ng-model="carte.info.famille" required aria-label="Famille">
+				<md-option ng-repeat="famille in familles">{{famille}}</md-option>
+			</md-select>
+			<label>Famille</label>
+		</md-input-container>
 		<div layout="column" ng-if="carte.pile == 'Pioche' && carte.categorie == 'Action'">
 			<div class="cartes-nouvelle-titre red-font">
 				Action
@@ -252,7 +269,7 @@
 						</div>
 					</md-input-container>
 					<md-input-container class="cartes-input" style="width: 200px;">
-						<input ng-model="objet.code" required aria-label="Code">
+						<input ng-model="objet.code" required ng-readonly="view == 'modifier_carte'" aria-label="Code">
 						<label>Code</label>
 						<div ng-messages>
 							<div style="color: #bdbdbd;">
@@ -297,7 +314,7 @@
 				<div ng-if="objet.utilisation == 'Action' || objet.utilisation == 'Réaction' || objet.utilisation == 'Ouverture'" layout="column">
 					<red-cartes-creation-consequences carte="objet"></red-cartes-creation-consequences>
 					<red-cartes-creation-contraintes carte="objet"></red-cartes-creation-contraintes>
-					<red-cartes-creation-circonstances ng-if="objet.utilisation == 'Réaction'" carte="objet"></red-cartes-creation-circonstances>
+					<red-cartes-creation-circonstances carte="objet"></red-cartes-creation-circonstances>
 				</div>
 			</div>
 		</div>

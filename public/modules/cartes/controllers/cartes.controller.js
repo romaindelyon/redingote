@@ -218,7 +218,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 	$scope.cartesNoms = [];
 	$scope.objetsHorsPiocheCodes = [];
 	$scope.objetsHorsPiocheNoms = [];
-	Cartes.getCartes({partieId: 1}).success(function(response){
+	Cartes.getCartes({partieId: 0}).success(function(response){
 		for (var i in response){
 			// agreger cartes par code:
 			if (response[i].pile === 'pioche' || response[i].pile === 'hors_pioche' && cartesCodes.indexOf(response[i].code) < 0){
@@ -280,6 +280,12 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 	$scope.typesHumeurs = ['Négative','Russe','Triste'];
 	var deplacement_avantages = ["Crapauduc","Respiration sous l'eau","Vitesse doublée"];
 
+	$scope.familles = [
+		"Conducteurs de bus",
+		"Jeux de tarot",
+		"Cabines téléphoniques"
+	];
+
 	$scope.piles = {
 		'Pioche': {
 			'categories': {
@@ -328,7 +334,13 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 						'Ouverture',
 						'Action'
 					]
-				},		
+				},
+				'Pouilleux': {
+					'utilisations': ['Aucune']
+				},
+				'Trois familles': {
+					'utilisations': ['Aucune']
+				}
 			}
 		},
 		'Hors Pioche': {
@@ -434,6 +446,8 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			pile: textToKeyTransformation($scope.carte.pile),
 			categorie: textToKeyTransformation($scope.carte.categorie),
 			utilisation: JSON.stringify(utilisation),
+			action: $scope.carte.action,
+			ouverture: $scope.carte.ouverture,
 			types: {},
 			info: {},
 			statut: {}
@@ -452,6 +466,15 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 						type: textToKeyTransformation($scope.carte.info.action.type)
 					},
 					cible: textToKeyTransformation($scope.carte.info.cible),
+					consequences: [],
+					contraintes: [],
+					circonstances: []
+				}
+				populateInfo(carte.info,$scope.carte.info);
+			}
+			else if (carte.categorie == 'trois_familles'){
+				carte.info = {
+					famille: textToKeyTransformation($scope.carte.info.famille),
 					consequences: [],
 					contraintes: [],
 					circonstances: []
@@ -543,10 +566,17 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				});
 				if ($scope.carte.info.etapes[i].cartes !== undefined){
 					for (var j in $scope.carte.info.etapes[i].cartes){
-						var carteNom = $scope.carte.info.etapes[i].cartes[j];
-						var carteCode = cartesCodes[$scope.cartesNoms.indexOf(carteNom)];
-						carte.info.etapes[i].cartes.push({code: carteCode});
+						console.log($scope.objetsHorsPiocheCodes);
+						console.log($scope.objetsHorsPiocheNoms);
+						if ($scope.carte.info.etapes[i].cartes[j].nom != undefined){
+							var carteNom = $scope.carte.info.etapes[i].cartes[j].nom;
+							console.log(carteNom);
+							var carteCode = $scope.objetsHorsPiocheCodes[$scope.objetsHorsPiocheNoms.indexOf(carteNom)];
+							carte.info.etapes[i].cartes.push({code: carteCode});
+							console.log(carteCode);
+						}
 					}
+					console.log($scope.carte.info.etapes[i].cartes);
 				}
 				if ($scope.carte.info.etapes[i].cases !== undefined){
 					carte.info.etapes[i].cases = [];

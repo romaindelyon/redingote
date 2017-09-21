@@ -77,12 +77,12 @@
 			</div>
 			<!-- DEPLACEMENTS -->
 			<div ng-if="event.categorie === 'deplacement'">
-				<div ng-if="event.type === 'plateau-paysage'">
+				<div ng-if="event.type === 'paysage'">
 					<span>
 						{{joueurs[tour.joueur].nom}}
 					</span>
 					<span>
-						s'est deplacé sur le Plateau-Paysage, de la case {{event.info.depart}} vers la case {{event.info.arrivee}} (lancer de dé : {{event.info.de}}, en mode {{event.info.mode}})
+						s'est deplacé sur le Plateau-Paysage, de la case {{event.info.depart}} vers la case {{event.info.arrivee}} (lancer de dé : {{event.info.deResult}}, en mode standard)
 					</span>
 				</div>
 			</div>

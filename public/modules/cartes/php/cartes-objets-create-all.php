@@ -23,14 +23,22 @@ header("Content-Type: application/json; charset=UTF-8");
     $stmt1 -> execute();
     $stmt1 -> bind_result($id,$nom,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo,$positionCouronnes,$valiseNonMaterialisee);
 
+    $results = array();
     while($stmt1->fetch()) {
-        // 2. Create cartes
+        array_push($results,$id);
         $partie = $id;
-        echo($partie);
+    }
+
+    $stmt1 -> close();
+
+    foreach($results as $id){
+        // 2. Create objets
         $stmt2 = $con -> prepare("INSERT INTO objets (nom, code, types, description, utilisation, info, partie) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt2 -> bind_param('ssssssi',$nom,$code,$types,$description,$utilisation,$info,$partie);
         $stmt2 -> execute();
     }
+
+    $stmt2 -> close();
 
     mysqli_close($con); 
 

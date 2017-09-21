@@ -8,6 +8,8 @@ header("Content-Type: application/json; charset=UTF-8");
     $position = $_GET["position"];
     $pile = $_GET["pile"];
     $categorie = $_GET["categorie"];
+    $ouverture = $_GET["ouverture"];
+    $action = $_GET["action"];
     $utilisation = $_GET["utilisation"];
     $types = $_GET["types"];
     $info = $_GET["info"];
@@ -20,9 +22,9 @@ header("Content-Type: application/json; charset=UTF-8");
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $stmt = $con -> prepare("INSERT INTO cartes (nom, code, position, pile, categorie, utilisation, info, types, statut, partie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $con -> prepare("INSERT INTO cartes (nom, code, position, pile, categorie, ouverture, action, utilisation, info, types, statut, partie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt -> bind_param('ssissssssi',$nom,$code,$position,$pile,$categorie,$utilisation,$info,$types,$statut,$partie);
+    $stmt -> bind_param('ssissiissssi',$nom,$code,$position,$pile,$categorie,$ouverture,$action,$utilisation,$info,$types,$statut,$partie);
     $stmt -> execute();
 
     mysqli_close($con); 

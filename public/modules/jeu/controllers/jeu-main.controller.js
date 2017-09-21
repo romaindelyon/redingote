@@ -6,6 +6,7 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
 	// Mains:
 
 	$scope.focusIndex = -2;
+	$scope.focusId = -1;
 
 	$scope.focusCarte = function(code){
 		console.log(code);
@@ -17,9 +18,11 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
 		}
 		if (index == $scope.focusIndex){
 			$scope.focusIndex = -2;
+			$scope.focusId = -1;
 		}
 		else {
 			$scope.focusIndex = index;
+			$scope.focusId = $scope.jeu.main[index].id;
 		}	
 	}
 

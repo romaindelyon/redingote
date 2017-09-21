@@ -8,6 +8,8 @@ header("Content-Type: application/json; charset=UTF-8");
     $position = -1;
     $pile = $_GET["pile"];
     $categorie = $_GET["categorie"];
+    $categorie = $_GET["categorie"];
+    $ouverture = $_GET["ouverture"];
     $utilisation = $_GET["utilisation"];
     $types = $_GET["types"];
     $info = $_GET["info"];
@@ -24,23 +26,24 @@ header("Content-Type: application/json; charset=UTF-8");
     $stmt1 = $con -> prepare("SELECT * FROM parties");
 
     $stmt1 -> execute();
-    $stmt1 -> bind_result($id,$nom,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo,$positionCouronnes,$valiseNonMaterialisee);
+    $stmt1 -> bind_result($id,$nomPartie,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo,$positionCouronnes,$valiseNonMaterialisee);
 
     $results = array();
     while($stmt1->fetch()) {
         array_push($results,$id);
         $partie = $id;
-        echo($id);
-    }
-
-    foreach($results as $id){
-        // 2. Create cartes
-        $stmt2 = $con -> prepare("INSERT INTO cartes (nom, code, position, pile, categorie, utilisation, info, types, statut, partie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt2 -> bind_param('ssissssssi',$nom,$code,$position,$pile,$categorie,$utilisation,$info,$types,$statut,$id);
-        $stmt2 -> execute();
     }
 
     $stmt1 -> close();
+
+    foreach($results as $id){
+        // 2. Create cartes
+        $stmt2 = $con -> prepare("INSERT INTO cartes (nom, code, position, pile, categorie, ouverture, action, utilisation, info, types, statut, partie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt2 -> bind_param('ssissiissssi',$nom,$code,$position,$pile,$categorie,$ouverture,$action,$utilisation,$info,$types,$statut,$id);
+        $stmt2 -> execute();
+    }
+
+    $stmt2 -> close();
 
     mysqli_close($con); 
 

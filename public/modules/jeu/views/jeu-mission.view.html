@@ -20,7 +20,7 @@
 			<div layout="column" flex layout-align="center center" style="height: 100%;">
 			</div>
 			<div layout="column" flex layout-align="space-around center" style="height: 100%;max-width: 600px;">
-				<div layout="row" layout-align="center center" flex="10">
+				<div layout="row" layout-align="center center" flex="10" style="width: 250px;">
 					{{etapeTitre}}
 				</div>
 				<div ng-if="mission.statut.info.etapes[etape].categorie === 'reunir_des_cartes' || mission.statut.info.etapes[etape].categorie === 'apporter_des_cartes'" layout="row" flex="80">
@@ -31,7 +31,7 @@
 				<div ng-if="mission.statut.info.etapes[etape].categorie === 'visiter_des_cases'" layout="row" flex="80">
 					<div ng-repeat="case in mission.statut.info.etapes[etape].cases" layout="row" flex layout-align="center center" style="outline: none;width: 140px;height: 180px;padding: 5px;">
 						<md-input-container>
-							<md-checkbox ng-checked="case.completed" ng-click="completeMissionCase(etape,$index)" ng-disabled="missionCasesAvailable.indexOf(case.numero) < 0 && !case.completed" aria-label="checkbox">	
+							<md-checkbox ng-checked="case.completed" ng-click="completeMissionCase(etape,$index)" ng-disabled="missionCasesAvailable.indexOf(case.numero) < 0 && !case.completed || (etape > 0 && mission.statut.info.etapes[etape - 1].statut !== 'completed')" aria-label="checkbox">	
 							{{case.numero}}
 							</md-checkbox>
 						</md-input-container>

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','Cartes','Objets','Partie','Joueurs','Actions',
-	function($scope,$state,$stateParams,Cartes,Objets,Partie,Joueurs,Actions) {
+angular.module('partie').controller('PartieGeneralController', ['$scope','$state','$stateParams','$timeout','Cartes','Objets','Partie','Joueurs','Actions',
+	function($scope,$state,$stateParams,$timeout,Cartes,Objets,Partie,Joueurs,Actions) {
 
 	// Tracking if all information has been well retrieved:
 	$scope.loaded = {
@@ -9,7 +9,8 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 		cartes: false,
 		joueurs: false,
 		defenses: false, // integrated
-		confrontationsController: false
+		confrontationsController: false,
+		everything: false
 	};
 
 	// Get param:
@@ -65,6 +66,7 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 			}
 			$scope.loaded.defenses = true;
 		}
+		$scope.loaded.everything = true;
 	}
 
 	// Partie:
@@ -217,7 +219,12 @@ angular.module('partie').controller('PartieGeneralController', ['$scope','$state
 	    					$scope.jeu.grandesCartes.push(carte);
 	    				}
 	    				else {
-	    					$scope.jeu.horsPioche.push(carte);
+	    					if (carte.statut.ouverte){
+	    						$scope.jeu.ouvertes.push(carte);
+	    					}
+	    					else {
+	    						$scope.jeu.horsPioche.push(carte);
+	    					}	
 	    				}
 	    			}
 	    			else {

@@ -14,7 +14,7 @@ header("Pragma: no-cache");
     $stmt = $con -> prepare("SELECT * FROM cartes WHERE partie = ?");
     $stmt -> bind_param('i',$partieId);
     $stmt -> execute();
-    $stmt -> bind_result($id,$code,$position,$pile,$nom,$categorie,$utilisation,$info,$types,$statut,$partie);
+    $stmt -> bind_result($id,$code,$position,$pile,$nom,$categorie,$ouverture,$action,$utilisation,$info,$types,$statut,$partie);
 
     $results = array();
     while($stmt->fetch()) {
@@ -25,6 +25,8 @@ header("Pragma: no-cache");
             $result["nom"] = utf8_encode($nom);
             $result["pile"] = $pile;
             $result["categorie"] = $categorie;
+            $result["ouverture"] = $ouverture;
+            $result["action"] = $action;
             $result["utilisation"] = json_decode($utilisation);
             $result["info"] = json_decode($info);
             $result["types"] = json_decode($types);

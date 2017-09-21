@@ -57,7 +57,14 @@ angular.module('actions').directive('redActionsNotification', [
 		};
 	}
 ]);
-
+angular.module('actions').directive('redActionsTroisFamilles', [
+	function() {
+		return {
+			templateUrl: 'modules/actions/views/actions-trois-familles.view.html',
+			restrict: 'E'
+		};
+	}
+]);
 angular.module('actions').directive('redActionsConfrontations', [
 	function() {
 		return {

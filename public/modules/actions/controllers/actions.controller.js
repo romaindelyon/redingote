@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('actions').controller('ActionsController', ['$scope','$rootScope','$http','$timeout','Partie','Joueurs','Cartes','Objets','Actions','Questions',
-	function($scope,$rootScope,$http,$timeout,Partie,Joueurs,Cartes,Objets,Actions,Questions) {
+angular.module('actions').controller('ActionsController', ['$scope','$rootScope','$http','$timeout','Partie','Joueurs','Historique','Cartes','Objets','Actions','Questions',
+	function($scope,$rootScope,$http,$timeout,Partie,Joueurs,Historique,Cartes,Objets,Actions,Questions) {
 
 	console.log('initializing actionscontroller');
 
@@ -16,6 +16,16 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
     		$scope.actionCase.phase = 0;
     	}
     	if ($scope.action.categorie === 'notification' || $scope.action.categorie === 'deplacement'){
+    		if ($scope.action.categorie !== 'notification'){	
+    			console.log($scope.action);
+    			Historique.add({
+    				categorie: $scope.action.categorie,
+					type: $scope.action.deplacement.type,			
+					info: $scope.action.deplacement.info,
+					joueur: $scope.joueurId,
+					partie: $scope.partieId
+    			});
+    		}
     		Actions.delete({id: $scope.action[$scope.action.categorie].id}).success(function(){
     			$scope.actions[$scope.action.categorie].splice(0,1);
     			$scope.partie.dispo.tourDeJeu[$scope.action.categorie][1] --;
@@ -35,7 +45,7 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 		if (args.action === 'question'){
 			$scope.startQuestion();
 		}
-		else if (args.action === 'recompense' || args.action === 'notification' || args.action === 'achat' || args.action === 'action'  || args.action === 'deplacement'){
+		else if (args.action === 'recompense' || args.action === 'notification' || args.action === 'achat' || args.action === 'action' || args.action === 'trois-familles' || args.action === 'deplacement'){
 			$scope.action.categorie = args.action;
 		}
 	});
@@ -296,8 +306,14 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 
 	// Une carte de type REACTION vient d'être utilisée
 	var cartesUtilisationEventListener = $rootScope.$on('cartes-utilisation',function(event, args){
-		$scope.actionCase.carteUtilisee = args.carte;
+		if ($scope.actionCase != undefined){
+			$scope.actionCase.carteUtilisee = args.carte;
+		}
+		console.log(args.carte.statut.utilisable);
+		if (args.carte.statut.utilisable === 'deplacement'){
+			$scope.$emit('cartes-utilisation-deplacement',{carte: args.carte});
+		}
 	});
-	$scope.$on("$destroy", cartesUtilisationEventListener)
+	$scope.$on("$destroy", cartesUtilisationEventListener);
 
 }]);

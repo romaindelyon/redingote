@@ -1,0 +1,46 @@
+<div ng-controller="ActionsTroisFamillesController">
+
+    <!-- *** ACTIONS *** -->
+
+    <div layout="column" class="partie-cartouche-container">
+
+        <!-- Titre -->
+        <div layout="column" layout-align="center center" class="red-font">
+            <span class="confrontations-titre">
+                 Trois familles
+            </span>
+            <span style="font-size: 18px;">
+                 {{familles[familleDisplay].nom}}
+            </span>
+        </div>
+
+        <!-- Body -->
+        <div layout="row" class="cartouche-body">
+            <div layout="column" layout-align="center center" style="width: 40px;">
+                <img src="modules/core/img/core-icones-previous.png" ng-click="changeFamille(-1)" style="width: 20px;outline: none;">
+            </div>
+            <div layout="column" layout-align="center center">
+                <div layout="row">
+                    <div ng-repeat="carte in familles[familleDisplay].membres" layout-align="center center" style="outline: none;width: 140px;height: 220px;margin: 5px;">
+                        <img ng-src="{{'modules/cartes/img/pioche/cartes_pioche_'+carte.code+'.png'}}" style="width: 140px;height: 220px;" class="jeu-grandes-cartes-completed">
+                    </div>
+                </div>
+                <div layout="row" layout-align="space-between center">
+                    <span style="font-size: 18px;">
+                        {{familles[familleDisplay].description}}
+                    </span>
+                    <md-button ng-click="completerFamille(familleDisplay)" ng-if="familles[familleDisplay].statut === 'completed'" class="confrontations-button red-font md-primary md-raised" style="height: 20px;text-transform: none;">
+                        OK
+                    </md-button>
+                    <md-button ng-click="cancelAction()" class="confrontations-button red-font md-primary md-raised" style="height: 20px;text-transform: none;">
+                        Je reviendrai plus tard
+                    </md-button>
+                </div>
+            </div>
+            <div layout="column" layout-align="center center" style="width: 40px;">
+                <img src="modules/core/img/core-icones-next.png" ng-click="changeFamille(1)" style="width: 20px;outline: none;">
+            </div>
+        </div>
+
+    </div>
+</div>
