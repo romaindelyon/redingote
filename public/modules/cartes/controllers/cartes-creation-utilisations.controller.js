@@ -3,32 +3,38 @@
 angular.module('cartes').controller('CartesCreationUtilisationsController', ['$scope','$http','Cartes',
 	function($scope,$http,Cartes) {
 
-	$scope.retirerElement = function(type,object){
-		console.log(object[type])
-		if (object[type].length == 1){
-			object[type] = [];
-		}
-		else if (object[type].length == 2){
-			object[type] = [1];
-		}
-		else if (object[type].length == 3){
-			object[type] = [1,2];
-		}
-		object.info[type].splice(object[type].length-1,1);
-	}
-	$scope.ajouterElement = function(type,object){
-		console.log('ajouter');
-		if (object[type].length == 0){
-			object[type] = [1];
-		}
-		else if (object[type].length == 1){
-			object[type] = [1,2];
-		}
-		else if (object[type].length == 2){
-			object[type] = [1,2,3];
-		}
+	$scope.removeUtilisation = function(index){
+		$scope.carte.utilisation.splice(index,1);
 	}
 
+	$scope.addConsequence = function(utilisationIndex){
+		$scope.carte.utilisation[utilisationIndex].consequences.push({});
+	}
+	$scope.removeConsequence = function(utilisationIndex,index){
+		$scope.carte.utilisation[utilisationIndex].consequences.splice(index,1);
+	}
+	$scope.addCirconstance = function(utilisationIndex){
+		$scope.carte.utilisation[utilisationIndex].circonstances.push({});
+	}
+	$scope.removeCirconstance = function(utilisationIndex,index){
+		console.log(utilisationIndex);
+		console.log($scope.carte.utilisation);
+		$scope.carte.utilisation[utilisationIndex].circonstances.splice(index,1);
+	}
+	$scope.addContrainte = function(utilisationIndex){
+		$scope.carte.utilisation[utilisationIndex].contraintes.push({});
+	}
+	$scope.removeContrainte = function(utilisationIndex,index){
+		$scope.carte.utilisation[utilisationIndex].contraintes.splice(index,1);
+	}
+	$scope.changeActionUtilisation = function(index){
+		if (!$scope.carte.utilisation[index].action){
+			$scope.carte.utilisation[index].circonstances = [{}];
+		}
+		else {
+			$scope.carte.utilisation[index].circonstances = [];
+		}
+	}
 
 	// Options de cartes:
 	$scope.cases = [];
@@ -165,5 +171,80 @@ angular.module('cartes').controller('CartesCreationUtilisationsController', ['$s
 			'Cartes piochées': []
 		}
 	};
+
+	$scope.circonstances = {
+		'Action de case': [],
+		'Action': {
+			'Défense': []
+		},
+		"Changement d'humeur": [],
+		'Défausse': [],
+		'Début de tour': [],
+		'Déplacement': {
+			'Paysage': [],
+			'Labyrinthe': []
+		},
+		'Duel': {
+			'Attaque': [],
+			'Défense': []
+		},
+		'Dé': {
+			'Paysage': [2,3,4,5,7,12,16,73],
+			'Rhomboédrique': [0,1,2]
+		},
+		'Echange': [],
+		'Interlude musical': [],
+		'Mission': {
+			'Pioche': [],
+			'Réussie': []
+		},
+		'Montée de marche': {
+			'Tentative': [],
+			'Réussie': [],
+			'Echouée': []
+		},
+		'Question': {
+			'Posée': [],
+			'Répondue correctement': [],
+			'Répondue faussement': []
+		},
+		'Trois familles': [],
+		"Utilisation d'objet": [],
+		'Valise non matérialisée': []
+	};
+
+$scope.contraintes = {
+		'Carte': {
+			'Spécifique': []
+		},
+		'Carte ouverte': {
+			'Chez le lanceur': [],
+			"Chez n'importe qui": []
+		},
+		'Destination': {
+			'Case': [],
+			'Plateau': ['Escalier','Labyrinthe','Paysage'],
+			'Zone': zones
+		},
+		'Joueur': {
+			'Adversaire': ['Julia','Marie','Romain']
+		},
+		'Position': {
+			'Case': [],
+			'Plateau': ['Escalier','Labyrinthe','Paysage'],
+			'Zone': zones
+		},
+		"Type de carte": {
+			"Action": typesActions,
+			"Humeur": typesHumeurs,
+			"Objet": typesObjets
+		},
+		'Utilisation combinée': {
+			'Objet spécifique': [],
+			"N'importe quel objet": []
+		}
+	};
+
+	$scope.joueurs = ['Lanceur','Adversaire','Aucun','Tout le monde','Deux joueurs','Julia','Marie','Romain'];
 
 }]);

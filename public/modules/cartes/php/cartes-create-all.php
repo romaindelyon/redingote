@@ -39,7 +39,7 @@ header("Content-Type: application/json; charset=UTF-8");
     foreach($results as $id){
         // 2. Create cartes
         $stmt2 = $con -> prepare("INSERT INTO cartes (nom, code, position, pile, categorie, ouverture, action, utilisation, info, types, statut, partie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt2 -> bind_param('ssissiissssi',$nom,$code,$position,$pile,$categorie,$ouverture,$action,$utilisation,$info,$types,$statut,$id);
+        $stmt2 -> bind_param('ssissssssssi',$nom,$code,$position,$pile,$categorie,$ouverture,$action,$utilisation,$info,$types,$statut,$id);
         $stmt2 -> execute();
     }
 

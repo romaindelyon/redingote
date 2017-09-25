@@ -41,9 +41,11 @@ angular.module('cartes').directive('redCartesCreationUtilisations', [
 		return {
 			templateUrl: 'modules/cartes/views/cartes-creation-utilisations.view.html',
 			restrict: 'E',
-		    scope: {
-		      carte:"="
-		    }
+		    scope: true,
+			link: function(scope, element, attrs){
+				scope.index = attrs.index;
+				scope.utilisation = attrs.utilisation;
+			}
 		};
 	}
 ]);

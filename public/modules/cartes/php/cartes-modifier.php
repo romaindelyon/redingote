@@ -21,7 +21,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
     $stmt = $con -> prepare("UPDATE cartes SET nom = ?, pile = ?, categorie = ?, ouverture = ?, action = ?, utilisation = ?, info = ?, types = ? WHERE code = ?");
 
-    $stmt -> bind_param('sssiissss',$nom,$pile,$categorie,$ouverture,$action,$utilisation,$info,$types,$code);
+    $stmt -> bind_param('sssssssss',$nom,$pile,$categorie,$ouverture,$action,$utilisation,$info,$types,$code);
     $stmt -> execute();
 
     mysqli_close($con); 

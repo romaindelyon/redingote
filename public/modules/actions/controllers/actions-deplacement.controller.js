@@ -218,11 +218,8 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 			if (args.carte.pile === 'hors_pioche'){
 				var carte = args.carte;
 			}
-			else if (args.carte.utilisation[0] === 'ouverture'){
-				var carte = $scope.objets[args.carte.info[0]];
-			}
-			else if (args.carte.utilisation[1] === 'ouverture'){
-				var carte = $scope.objets[args.carte.info[1]];
+			else {
+				var carte = $scope.objets[args.carte.info[$args.carte.statut.ouverteIndex]];
 			}
 			for (var i = 0;i < carte.info.consequences.length;i ++){
 				var consequence = carte.info.consequences[i];

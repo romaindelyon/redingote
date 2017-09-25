@@ -66,4 +66,52 @@
     height: 30px;
     padding: 10px;
 }
+
+.cartes-utilisation {
+	width: 1024px;
+	margin: 10px;
+	padding: 10px;
+	background-color: #f6ead7;
+	border-radius: 6px;
+	border: 2px solid #ce7f00;
+	outline: none;
+}
+
+.cartes-consequence {
+	width: 980px;
+	margin: 10px;
+	padding: 10px;
+	background-color: #e0eedc;
+	border-radius: 6px;
+	border: 2px solid #0c6c00;
+	outline: none;
+}
+
+.cartes-circonstance {
+	width: 980px;
+	margin: 10px;
+	padding: 10px;
+	background-color: #dceeee;
+	border-radius: 6px;
+	border: 2px solid #068484;
+	outline: none;
+}
+
+.cartes-contrainte {
+	width: 980px;
+	margin: 10px;
+	padding: 10px;
+	background-color: #eedcdf;
+	border-radius: 6px;
+	border: 2px solid #bb001f;
+	outline: none;
+}
+
+.cartes-remove-property {
+	width: 30px;
+	height: 30px;
+	outline: none;
+}
+.cartes-remove-property:hover {
+	opacity: 0.5;
 }

@@ -9,7 +9,6 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
 	$scope.focusId = -1;
 
 	$scope.focusCarte = function(code){
-		console.log(code);
 		var index = -1;
 		for (var i = 0;i < $scope.jeu.main.length;i ++){
 			if ($scope.jeu.main[i].code === code){
@@ -24,6 +23,7 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
 			$scope.focusIndex = index;
 			$scope.focusId = $scope.jeu.main[index].id;
 		}	
+		console.log($scope.jeu.main[$scope.focusIndex]);
 	}
 
 	$scope.utiliserCarte = function(index){
@@ -36,6 +36,10 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
 	$scope.ouvrirCarte = function(index){
 		var carte = $scope.jeu.main[index];
 		carte.statut.ouverte = true;
+		if (carte.categorie === 'objet'){
+			carte.statut.ouverteIndex = carte.ouverture;
+		}
+		console.log(carte.statut.ouverteIndex);
 		Cartes.changementStatut({
     		carteId: $scope.jeu.main[index].id,
     		statut: carte.statut

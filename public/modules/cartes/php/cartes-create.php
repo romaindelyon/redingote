@@ -24,7 +24,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
     $stmt = $con -> prepare("INSERT INTO cartes (nom, code, position, pile, categorie, ouverture, action, utilisation, info, types, statut, partie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt -> bind_param('ssissiissssi',$nom,$code,$position,$pile,$categorie,$ouverture,$action,$utilisation,$info,$types,$statut,$partie);
+    $stmt -> bind_param('ssissssssssi',$nom,$code,$position,$pile,$categorie,$ouverture,$action,$utilisation,$info,$types,$statut,$partie);
     $stmt -> execute();
 
     mysqli_close($con); 

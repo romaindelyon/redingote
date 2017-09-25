@@ -50,10 +50,5 @@
 				<a ng-click="retirerObjet(carte)" ng-if="carte.info.echangeQuantite > 1" style="outline: none;margin-top: 41px;margin-left: 10px;">Retirer un objet</a>
 			</div>
 		</div>
-		<div ng-if="carte.utilisation == 'Action' || carte.utilisation == 'Réaction' || carte.utilisation == 'Ouverture'" layout="column">
-			<red-cartes-creation-consequences carte="carte"></red-cartes-creation-consequences>
-			<red-cartes-creation-contraintes carte="carte"></red-cartes-creation-contraintes>
-			<red-cartes-creation-circonstances ng-if="carte.utilisation == 'Réaction'" carte="carte"></red-cartes-creation-circonstances>
-		</div>
 	</div>
 </div>

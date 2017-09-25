@@ -4,10 +4,10 @@
 
 		<div layout="column" layout-align="center center" style="width: 20%;margin-right: 100px;">
 			<div ng-if="focusIndex >= 0">
-				<md-button ng-if="partie.dispo.cartes.utiliser && jeu.main[focusIndex].utilisation.indexOf('action') > -1 && !confrontation.active" ng-click="utiliserCarte(focusIndex)" class="md-primary">
+				<md-button ng-if="partie.dispo.cartes.utiliser && jeu.main[focusIndex].action && !confrontation.active" ng-click="utiliserCarte(focusIndex)" class="md-primary">
 					Utiliser
 				</md-button>
-				<md-button ng-if="partie.dispo.cartes.ouvertures && jeu.main[focusIndex].utilisation.indexOf('ouverture') > -1"  ng-click="ouvrirCarte(focusIndex)" class="md-primary">
+				<md-button ng-if="partie.dispo.cartes.ouvertures && jeu.main[focusIndex].ouverture > -1"  ng-click="ouvrirCarte(focusIndex)" class="md-primary">
 					Ouvrir
 				</md-button>
 				<md-button ng-if="partie.dispo.cartes.main_jeter && jeu.main[focusIndex].categorie !== 'pouilleux'" ng-click="jeterCarte(focusIndex)" class="md-primary">

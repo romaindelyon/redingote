@@ -1,34 +1,61 @@
-<div ng-controller="CartesCreationUtilisationsController" style="width: 1024px;margin: 10px;padding: 10px;background-color: green;">
-	<div ng-repeat="index in carte.consequences" layout="row">
+<div ng-controller="CartesCreationUtilisationsController" class="cartes-utilisation">
+	<div layout="row">
+		<md-input-container class="cartes-input">
+			<input type="checkbox" ng-model="carte.utilisation.action[index]" ng-change="changeActionUtilisation(index)" aria-label="checkbox">
+			<label>Action</label>
+		</md-input-container>
+		<div layout="row" flex></div>
+		<img ng-if="carte.utilisation.length > 1" ng-click="removeUtilisation(index)" src="modules/core/img/core_icones_remove.png" class="cartes-remove-property">
+	</div>
+
+	<div ng-repeat="circonstance in utilisation.circonstances" class="cartes-consequence" layout="row">
 		<md-input-container class="cartes-input" style="width: 300px;">
-			<md-select ng-model="carte.info.consequences[$index].categorie" required aria-label="Type">
-				<md-option ng-repeat="(categorie_nom,categorie) in consequences">{{categorie_nom}}</md-option>
+			<md-select ng-model="circonstance.categorie" required aria-label="Circonstance">
+				<md-option ng-repeat="(categorie_nom,categorie) in circonstances | orderBy:'categorie_nom'">{{categorie_nom}}</md-option>
 			</md-select>
-			<label>Conséquence - Catégorie</label>
+			<label>Circonstance - Catégorie</label>
 		</md-input-container>
-		<md-input-container ng-if="carte.info.consequences[$index].categorie != undefined" class="cartes-input" style="width: 300px;">
-			<md-select ng-model="carte.info.consequences[$index].type" required aria-label="Type">
-				<md-option ng-repeat="(type_nom,type) in consequences[carte.info.consequences[$index].categorie]">{{type_nom}}</md-option>
+		<md-input-container ng-if="circonstance.categorie != undefined && circonstances[circonstance.categorie].length != 0" class="cartes-input" style="width: 300px;">
+			<md-select ng-model="carte.info.circonstances[$index].type" required aria-label="Circonstance">
+				<md-option ng-repeat="(type_nom,type) in circonstance.categorie] | orderBy:'type_nom'">{{type_nom}}</md-option>
 			</md-select>
-			<label>Conséquence - Type</label>
+			<label>Circonstance - Type</label>
 		</md-input-container>
-		<md-input-container ng-if="carte.info.consequences[$index].type != undefined && consequences[carte.info.consequences[$index].categorie][carte.info.consequences[$index].type].length > 0" class="cartes-input" style="width: 200px;">
-			<md-select ng-model="carte.info.consequences[$index].valeur" required aria-label="Type">
-				<md-option ng-repeat="valeur in consequences[carte.info.consequences[$index].categorie][carte.info.consequences[$index].type] | orderBy:'valeur'">{{valeur}}</md-option>
+		<md-input-container ng-if="circonstance.type != undefined && circonstances[carte.info.circonstances[$index].categorie][circonstance.type].length > 0" class="cartes-input" style="width: 200px;">
+			<md-select ng-model="carte.info.circonstances[$index].valeur" required aria-label="Type">
+				<md-option ng-repeat="valeur in circonstances[circonstance.categorie][circonstance.type] | orderBy:'valeur'">{{valeur}}</md-option>
 			</md-select>
-			<label>Conséquence - Valeur</label>
+			<label>Circonstance - Valeur</label>
 		</md-input-container>
 	</div>
-	<div ng-if="carte.consequences.length > 1" style="padding-left: 10px;">
-		<a ng-click="retirerElement('consequences',carte)" style="outline: none;">Retirer une conséquence</a>
+
+	<div ng-repeat="consequence in utilisation[index].consequences" layout="column" class="cartes-consequence">
+		<div layout="row">
+			<div layout="row" flex></div>
+			<img ng-if="carte.utilisation[index].consequences.length > 1" ng-click="removeConsequence(index,$index)" src="modules/core/img/core_icones_remove.png" class="cartes-remove-property">
+		</div>
+		<div layout="row">
+			<md-input-container class="cartes-input" style="width: 300px;">
+				<md-select ng-model="consequence.categorie" required aria-label="Type">
+					<md-option ng-repeat="(categorie_nom,categorie) in consequences">{{categorie_nom}}</md-option>
+				</md-select>
+				<label>Conséquence - Catégorie</label>
+			</md-input-container>
+			<md-input-container ng-if="consequence.categorie != undefined" class="cartes-input" style="width: 300px;">
+				<md-select ng-model="consequence.type" required aria-label="Type">
+					<md-option ng-repeat="(type_nom,type) in consequences[consequence.categorie]">{{type_nom}}</md-option>
+				</md-select>
+				<label>Conséquence - Type</label>
+			</md-input-container>
+			<md-input-container ng-if="consequence.type != undefined && carte.utilisation[index].consequences[carte.info.consequences[$index].categorie][carte.info.consequences[$index].type].length > 0" class="cartes-input" style="width: 200px;">
+				<md-select ng-model="consequence.valeur" required aria-label="Type">
+					<md-option ng-repeat="valeur in consequence.categorie][consequence.type] | orderBy:'valeur'">{{valeur}}</md-option>
+				</md-select>
+				<label>Conséquence - Valeur</label>
+			</md-input-container>
+		</div>
 	</div>
-	<div ng-if="carte.consequences.length < 3" style="padding-left: 10px;">
-		<a ng-click="ajouterElement('consequences',carte)" style="outline: none;">Ajouter une conséquence</a>
+	<div ng-if="carte.consequences.length < 3" ng-click="addConsequence(index)" class="cartes-consequence" style="padding-left: 10px;">
+		Ajouter une conséquence
 	</div>
-	<md-input-container ng-if="carte.consequences.length > 1" class="cartes-input" style="width: 400px;">
-		<md-select ng-model="carte.info.exclusivite.consequences" required aria-label="Type">
-			<md-option ng-repeat="valeur in ['Exclusives','Non exclusives']">{{valeur}}</md-option>
-		</md-select>
-		<label>Conséquences - Exclusivité</label>
-	</md-input-container>
 </div>

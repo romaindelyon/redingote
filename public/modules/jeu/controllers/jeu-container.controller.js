@@ -115,12 +115,9 @@ angular.module('jeu').controller('JeuContainerController', ['$scope','$rootScope
 				if ($scope.jeu.ouvertes[i].pile === 'hors_pioche'){
 					var objet = $scope.jeu.ouvertes[i];
 				}
-				else if ($scope.jeu.ouvertes[i].utilisation[0] === 'ouverture'){
-					var objet = $scope.objets[$scope.jeu.ouvertes[i].info[0]];
-				}
-				else if ($scope.jeu.ouvertes[i].utilisation[1] === 'ouverture'){
-					var objet = $scope.objets[$scope.jeu.ouvertes[i].info[1]];
-				}
+				else {
+					var objet = $scope.objets[$scope.jeu.ouvertes[i].info[$scope.jeu.ouvertes[i].statut.ouverteIndex]];
+				} 
 				console.log(objet);
 				if (objet != undefined && objet.info.circonstances.length > 0){
 					for (var j = 0;j < objet.info.circonstances.length;j ++){

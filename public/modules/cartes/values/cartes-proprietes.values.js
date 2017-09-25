@@ -59,6 +59,7 @@ angular.module('cartes').value('CartesProprietes', {
 	'trois_familles': 'Trois familles',
 	'vision': 'Vision',
 	// Contraintes - categories
+	'destination': 'Destination',
 	'joueur': 'Joueur',
 	'position': 'Position',
 	'type_de_carte': 'Type de carte',

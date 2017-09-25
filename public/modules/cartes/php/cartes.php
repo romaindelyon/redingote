@@ -26,7 +26,7 @@ header("Pragma: no-cache");
             $result["pile"] = $pile;
             $result["categorie"] = $categorie;
             $result["ouverture"] = $ouverture;
-            $result["action"] = $action;
+            $result["action"] = json_decode($action);
             $result["utilisation"] = json_decode($utilisation);
             $result["info"] = json_decode($info);
             $result["types"] = json_decode($types);

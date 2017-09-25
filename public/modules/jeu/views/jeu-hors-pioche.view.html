@@ -8,7 +8,7 @@
 			<md-button ng-if="partie.dispo.cartes.main_jeter" ng-click="jeterCarte(focusIndex)" class="md-primary">
 				Jeter
 			</md-button>
-			<md-button ng-if="partie.dispo.cartes.ouvertures && jeu.horsPioche[focusIndex].utilisation.indexOf('ouverture') > -1"  ng-click="ouvrirCarte(focusIndex)" class="md-primary">
+			<md-button ng-if="partie.dispo.cartes.ouvertures && jeu.horsPioche[focusIndex].ouverture > -1"  ng-click="ouvrirCarte(focusIndex)" class="md-primary">
 				Ouvrir
 			</md-button>
 		</div>

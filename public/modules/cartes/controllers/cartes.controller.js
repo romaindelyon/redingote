@@ -22,6 +22,32 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 
 	$scope.formSubmitted = false;
 
+	$scope.addUtilisation = function(){
+		console.log($scope.carte.utilisation);
+		$scope.carte.utilisation.push({
+			action: null,
+			consequences: [{}],
+			circonstances: [{}],
+			contraintes: []
+		});
+	}
+	
+	$scope.updateCategorie = function(){
+		$scope.minUtilisations = $scope.piles[$scope.carte.pile].categories[$scope.carte.categorie].minUtilisations;
+		$scope.maxUtilisations = $scope.piles[$scope.carte.pile].categories[$scope.carte.categorie].maxUtilisations;
+		var utilisationsToAdd = $scope.minUtilisations - $scope.carte.utilisation.length;
+		for (var i = 0;i < utilisationsToAdd;i ++){
+			$scope.addUtilisation();
+		}
+		var utilisationsToRemove = $scope.carte.utilisation.length - $scope.maxUtilisations;
+		console.log($scope.carte.utilisation);
+		$scope.carte.utilisation.splice($scope.maxUtilisations,utilisationsToRemove);
+		if ($scope.carte.pile === 'Pioche' && $scope.carte.categorie === 'Objet'){
+			$scope.carte.utilisation[0].objet = "Objet 1";
+			$scope.carte.utilisation[1].objet = "Objet 2";
+		}
+	}
+
 	$scope.changeTab = function(index){
 		if ($scope.focusedTab === 6 && index !== 6){
 			initializeCartes();	
@@ -48,6 +74,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				consequences: [1],
 				contraintes: [],
 				circonstances: [1],
+				utilisation: [],
 				info: {
 					echangeQuantite: 1,
 					etapes: [{
@@ -56,7 +83,10 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 					}]
 				}
 			};
+			$scope.addUtilisation();
 			$scope.carte.nombreDeCartes = 1;
+			$scope.minUtilisations = 1;
+			$scope.maxUtilisations = 10;
 			$scope.objets = [
 				{types:[],
 				consequences: [1],
@@ -71,20 +101,12 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 	}
 
 	function keyToTextTransformation(carte,type){
-		console.log(carte);
 		if (type === 'carte'){
 			carte.pile = CartesProprietes[carte.pile];
 			carte.categorie = CartesProprietes[carte.categorie];
-			if (carte.utilisation != undefined){
-				carte.utilisation = CartesProprietes[carte.utilisation[0]];
-			}
-		}
-		else if (type === 'objet'){
-			carte.utilisation = CartesProprietes[carte.utilisation];
 		}
 		if (carte.categorie == 'Action'){
 			carte.info.action.type = CartesProprietes[carte.info.action.type];
-			carte.info.cible = CartesProprietes[carte.info.cible];
 		}
 		if (carte.pile === 'Missions'){
 			for (var i in carte.info.etapes){
@@ -96,7 +118,6 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				}
 			}
 		}
-		console.log(carte);
 		if (carte.pile === 'Hors Pioche' && carte.categorie === 'Objet'){
 			carte.info.paiement = CartesProprietes[carte.info.paiement];
 			if (carte.info.paiement === 'Echange'){
@@ -113,68 +134,56 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		for (var i in carte.types){
 			carte.types[CartesProprietes[i]] = carte.types[i];
 		}
-		console.log(carte.types);
-		var proprietes = ['consequences','contraintes','circonstances'];
-		for (var i in proprietes){
-			var prop = proprietes[i];
-			carte[prop] = [];
-			if (carte.info[prop] !== undefined){
-				for (var i in carte.info[prop]){
-					carte[prop].push(i+1);
-					carte.info[prop][0].categorie = CartesProprietes[carte.info[prop][0].categorie];
-					carte.info[prop][0].type = CartesProprietes[carte.info[prop][0].type];
-					carte.info[prop][0].valeur = CartesProprietes[carte.info[prop][0].valeur];
+		for (var i = 0;i < carte.utilisation.length;i ++){
+			if (carte.utilisation[i].consequences != undefined){
+				var proprietes = ['consequences','contraintes','circonstances'];
+				for (var j in proprietes){
+					var prop = proprietes[j];
+					carte[prop] = [];
+					for (var k in carte.utilisation[prop]){
+						carte.utilisation[i][prop][k].categorie = CartesProprietes[carte.utilisation[i][prop][k].categorie];
+						carte.utilisation[i][prop][k].type = CartesProprietes[carte.utilisation[i][prop][k].type];
+						carte.utilisation[i][prop][k].valeur = CartesProprietes[carte.utilisation[i][prop][k].valeur];
+						carte.utilisation[i][prop][k].joueur = CartesProprietes[carte.utilisation[i][prop][k].joueur];
+					}
 				}
+				if (carte.utilisation[i].objet !== undefined){
+					carte.utilisation[i].objet = "Objet " + (carte.utilisation[i].objet + 1).toString();
+				}	
 			}
-			if (carte.info.exclusivite !== undefined && carte.info.exclusivite[prop] !== undefined){
-				if (carte.info.exclusivite[prop]){
-					carte.info.exclusivite[prop] = 'Exclusives';
-				}
-				else {
-					carte.info.exclusivite[prop] = 'Non exclusives';
-				}
+			else {
+				carte.utilisation = [];
 			}
 		}
 	}
 
 	$scope.modifierCarte = function(code){
+		console.log($scope.cartes.toutes);
 		console.log(code);
-		$scope.carte = {
-			consequences: [1],
-			contraintes: [],
-			circonstances: [1]
-		};
-		$scope.carte = $scope.cartes.toutes[code];
+		$scope.carte = jQuery.extend(true, {}, $scope.cartes.toutes[code]);
+		console.log($scope.cartes.toutes[code]);
 		if ($scope.carte.pile === 'pioche' && $scope.carte.categorie === 'objet'){
 			$scope.objets = [
-				{types:[],
-				consequences: [1],
-				contraintes: [],
-				circonstances: [1]},
-				{types:[],
-				consequences: [1],
-				contraintes: [],
-				circonstances: [1]}
+				{types:[]},
+				{types:[]}
 			];
 			$scope.objets[0] = $scope.cartes.objets[$scope.carte.info[0]];
 			keyToTextTransformation($scope.objets[0],'objet');
 			$scope.objets[1] = $scope.cartes.objets[$scope.carte.info[1]];
 			keyToTextTransformation($scope.objets[1],'objet');
 		}
+		else if ($scope.cartes.toutes[code].ouverture >= 0){
+			$scope.carte.ouverture = true;
+		}
+		if ($scope.cartes.toutes[code].action.length > 0){
+			console.log($scope.cartes.toutes[code].action.length);
+			$scope.carte.action = true;
+		}
 		$scope.carte.nombreDeCartes = $scope.carte.statuts.length;
-		console.log($scope.carte);
 		keyToTextTransformation($scope.carte,'carte');
 		$scope.view = 'modifier_carte';
 		$scope.focusedTab = 6;
-	}
-
-	$scope.changePile = function(pile){
-		if (pile === 'humeurs'){
-			$scope.carte.circonstances = [];
-		}
-		else {
-			$scope.carte.circonstances = [1];
-		}
+		$scope.updateCategorie();
 	}
 
 	// Get cartes
@@ -201,6 +210,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				} 
 			}
 			$scope.cartesTable = $scope.cartes.toutes;
+			console.log($scope.cartesTable);
 			Objets.getObjets({partieId: 0}).success(function(responseObjets){
 				for (var i in responseObjets){
 					// agreger objets par code:
@@ -208,7 +218,6 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 						$scope.cartes.objets[responseObjets[i].code] = responseObjets[i];
 					}
 				}
-				console.log($scope.cartesTable);
 			});
 		});
 	}
@@ -232,31 +241,6 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		}
 	});
 
-	$scope.retirerElement = function(type,object){
-		console.log(object[type])
-		if (object[type].length == 1){
-			object[type] = [];
-		}
-		else if (object[type].length == 2){
-			object[type] = [1];
-		}
-		else if (object[type].length == 3){
-			object[type] = [1,2];
-		}
-	}
-	$scope.ajouterElement = function(type,object){
-		if (object[type].length == 0){
-			object[type] = [1];
-		}
-		else if (object[type].length == 1){
-			object[type] = [1,2];
-		}
-		else if (object[type].length == 2){
-			object[type] = [1,2,3];
-		}
-	}
-
-
 	// Options de cartes:
 
 	var cases = [];
@@ -274,7 +258,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
     	}
     });
     console.log($scope.cases);
-	var zones = ['Désert','Forêt','Mer','Marécages','Monde onirique','Montagne','Prairie','Royaume des ténèbres','Village','Ville','Zone industrielle'];
+	var zones = ['Désert','ForĂŞt','Mer','Marécages','Monde onirique','Montagne','Prairie','Royaume des ténèbres','Village','Ville','Zone industrielle'];
 	var typesObjets = ['Animal','Chat','Combustible','Comestible','Electrique','Insecte','Marin','Métallique','Potion bénéfique','Potion malefique','Toxique'];
 	var typesActions = ['Combustible','Faim','Insecte','Nuit','Soif','Toxique'];
 	$scope.typesHumeurs = ['Négative','Russe','Triste'];
@@ -290,80 +274,80 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		'Pioche': {
 			'categories': {
 				'Objet': {
-					'utilisations': [
-						'Action',
-						'Réaction',
-						'Ouverture'
-					],
+					'minUtilisations': 2,
+					'maxUtilisations': 10,
 					'types': typesObjets
 				},
 				'Action': {
-					'utilisations': [
-						'Action'
-					],
+					'minUtilisations': 1,
+					'maxUtilisations': 10,
 					'info': {
 						'actions': {
 							'types': ['Immédiat','Piège','Test']
-						},
-						'cibles': ['Lanceur','Adversaire','Tout le monde','Deux joueurs']
+						}
 					},
 					'types': typesActions
 				},
 				'Combat': {
-					'utilisations': [
-						'Ouverture'
-					]
+					'minUtilisations': 0,
+					'maxUtilisations': 0
 				},
 				'Effet immédiat': {
-					'utilisations': [
-						'Immédiat'
-					]
+					'minUtilisations': 0,
+					'maxUtilisations': 0
 				},
 				'Grande carte': {
-					'utilisations': [
-						'Ouverture'
-					]
+					'minUtilisations': 0,
+					'maxUtilisations': 0
 				},
 				'Orc': {
-					'utilisations': [
-						'Ouverture'
-					]
+					'minUtilisations': 0,
+					'maxUtilisations': 0
 				},
 				'Personnage': {
-					'utilisations': [
-						'Ouverture',
-						'Action'
-					]
+					'minUtilisations': 1,
+					'maxUtilisations': 10
 				},
 				'Pouilleux': {
-					'utilisations': ['Aucune']
+					'minUtilisations': 0,
+					'maxUtilisations': 0
 				},
 				'Trois familles': {
-					'utilisations': ['Aucune']
+					'minUtilisations': 0,
+					'maxUtilisations': 0
 				}
 			}
 		},
 		'Hors Pioche': {
 			'categories': {
 				'Objet': {
-					'utilisations': [
-						'Action',
-						'Réaction',
-						'Ouverture'
-					]
+					'minUtilisations': 1,
+					'maxUtilisations': 10
 				},
-				'Grande carte': {}
+				'Grande carte': {
+					'minUtilisations': 0,
+					'maxUtilisations': 0
+				}
 			}
 		},
 		'Humeurs': {
 			'categories': {
-				'Humeur': {}
+				'Humeur': {
+					'minUtilisations': 1,
+					'maxUtilisations': 10
+				}
 			}
 		},
 		'Missions': {
 			'categories': {
-				'Normale': {},
-				'Spéciale': {}
+				'Normale': {
+					'minUtilisations': 1,
+					'maxUtilisations': 10
+				},
+				'Spéciale': {
+					'minUtilisations': 1,
+					'maxUtilisations': 10
+				}
 			}
 		}
 	};
@@ -374,7 +358,7 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		string = string.replace("-", "_");
 		string = string.replace("é","e");
 		string = string.replace("è","e");
-		string = string.replace("ê","e");
+		string = string.replace("ĂŞ","e");
 		string = string.replace("'","_");
 		string = string.replace("(","");
 		string = string.replace(")","");
@@ -401,29 +385,25 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			newObject.consequences.push({
 				categorie: textToKeyTransformation(previousObject.consequences[i].categorie),
 				type: textToKeyTransformation(previousObject.consequences[i].type),
-				valeur: textToKeyTransformation(previousObject.consequences[i].valeur)
+				valeur: textToKeyTransformation(previousObject.consequences[i].valeur),
+				joueur: textToKeyTransformation(previousObject.consequences[i].joueur)
 			});
 		}
 		for (var i in previousObject.contraintes){
 			newObject.contraintes.push({
 				categorie: textToKeyTransformation(previousObject.contraintes[i].categorie),
 				type: textToKeyTransformation(previousObject.contraintes[i].type),
-				valeur: textToKeyTransformation(previousObject.contraintes[i].valeur)
+				valeur: textToKeyTransformation(previousObject.contraintes[i].valeur),
+				joueur: textToKeyTransformation(previousObject.contraintes[i].joueur)
 			});
 		}
 		for (var i in previousObject.circonstances){
 			newObject.circonstances.push({
 				categorie: textToKeyTransformation(previousObject.circonstances[i].categorie),
 				type: textToKeyTransformation(previousObject.circonstances[i].type),
-				valeur: textToKeyTransformation(previousObject.circonstances[i].valeur)
+				valeur: textToKeyTransformation(previousObject.circonstances[i].valeur),
+				joueur: textToKeyTransformation(previousObject.circonstances[i].joueur)
 			});
-		}
-		if (previousObject.exclusivite !== undefined){
-			newObject.exclusivite = {
-				contrainte: previousObject.exclusivite.contraintes === 'Exclusives',
-				consequence: previousObject.exclusivite.consequences === 'Exclusives',
-				circonstance: previousObject.exclusivite.circonstances === 'Exclusives'
-			};
 		}
     }
 
@@ -431,23 +411,15 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		console.log($scope.carte.nombreDeCartes);
 		console.log($scope.carte);
 		$scope.submitButtonDisabled = true;
-		// Transfer objet info:
-		if ($scope.carte.pile == 'Pioche' && $scope.carte.categorie == 'Objet'){
-			var utilisation = [textToKeyTransformation($scope.objets[0].utilisation),textToKeyTransformation($scope.objets[1].utilisation)];
-			console.log(utilisation);
-		}
-		else {
-			var utilisation = [textToKeyTransformation($scope.carte.utilisation)];
-		}
 
 		var carte = {
 			nom: $scope.carte.nom,
 			code: $scope.carte.code,
 			pile: textToKeyTransformation($scope.carte.pile),
 			categorie: textToKeyTransformation($scope.carte.categorie),
-			utilisation: JSON.stringify(utilisation),
-			action: $scope.carte.action,
-			ouverture: $scope.carte.ouverture,
+			utilisation: [],
+			action: [],
+			ouverture: -1,
 			types: {},
 			info: {},
 			statut: {}
@@ -455,6 +427,54 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 
 		for (var i in $scope.carte.types){
 			carte.types[textToKeyTransformation(i)] = $scope.carte.types[i];
+		}
+
+		// Transfer carte action :
+		for (var i = 0;i < $scope.carte.utilisation.length;i ++){
+			if ($scope.carte.utilisation[i].action){
+				carte.action.push(i);
+			}
+		}
+		carte.action = JSON.stringify(carte.action);
+
+		// Transfer carte ouverture :
+		console.log(carte);
+		if (carte.pile === 'pioche' && carte.categorie === 'objet'){
+			for (var i = 0;i < $scope.carte.utilisation.length;i ++){
+				if (carte.ouverture < 2 && $scope.carte.utilisation[i].ouverture){
+					if (carte.ouverture < 0){
+						carte.ouverture = $scope.carte.utilisation[i].objet.substring(6,7) - 1;
+					}
+					else if (carte.ouverture < 2 && carte.ouverture !== $scope.carte.utilisation[i].objet.substring(6,7) - 1){
+						carte.ouverture = 2;
+					}
+				}
+			}
+			console.log ("ouverture de carte is "+carte.ouverture);
+		}
+		else {
+			for (var i = 0;i < $scope.carte.utilisation.length;i ++){
+				if ($scope.carte.utilisation[i].ouverture){
+					carte.ouverture = 0;
+				}
+			}
+		}
+		
+		// Transfer carte utilisation :
+		for (var i = 0;i < $scope.carte.utilisation.length;i ++){
+			carte.utilisation.push({
+				nom: $scope.carte.utilisation[i].nom,
+				objet: "",
+				action: $scope.carte.utilisation[i].action,
+				ouverture: $scope.carte.utilisation[i].ouverture,
+				consequences: [],
+				contraintes: [],
+				circonstances: []
+			});
+			populateInfo(carte.utilisation[i],$scope.carte.utilisation[i]);
+			if ($scope.carte.utilisation[i].objet != undefined){
+				$scope.carte.utilisation[i].objet.substring(6,7) - 1
+			}
 		}
 
 		// Transfer carte info:
@@ -465,21 +485,13 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 					action: {
 						type: textToKeyTransformation($scope.carte.info.action.type)
 					},
-					cible: textToKeyTransformation($scope.carte.info.cible),
-					consequences: [],
-					contraintes: [],
-					circonstances: []
+					cible: textToKeyTransformation($scope.carte.info.cible)
 				}
-				populateInfo(carte.info,$scope.carte.info);
 			}
 			else if (carte.categorie == 'trois_familles'){
 				carte.info = {
-					famille: textToKeyTransformation($scope.carte.info.famille),
-					consequences: [],
-					contraintes: [],
-					circonstances: []
+					famille: textToKeyTransformation($scope.carte.info.famille)
 				}
-				populateInfo(carte.info,$scope.carte.info);
 			}
 			else if (carte.categorie == 'objet'){
 				carte.info = {
@@ -494,14 +506,9 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 						types: {},
 						description: $scope.objets[i].description,
 						utilisation: textToKeyTransformation($scope.objets[i].utilisation),
-						info: {
-							consequences: [],
-							contraintes: [],
-							circonstances: []
-						},
+						info: {},
 						statut: {}
 					});
-					populateInfo(objets[i].info,$scope.objets[i].info);
 					for (var j in $scope.objets[i].types){
 						objets[i].types[textToKeyTransformation(j)] = $scope.objets[i].types[j];
 					}
@@ -514,33 +521,21 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				maison: $scope.carte.info.maison,
 				nomSims: $scope.carte.info.nomSims,
 				ami: $scope.carte.info.ami,
-				ennemi: $scope.carte.info.ennemi,
-				consequences: [],
-				contraintes: [],
-				circonstances: []
+				ennemi: $scope.carte.info.ennemi
 			}
-			populateInfo(carte.info,$scope.carte.info);
 		}
 
 		else if (carte.pile === 'hors_pioche'){
 			if (carte.categorie === 'objet'){
 				carte.info = {
 					case: textToKeyTransformation($scope.carte.info.case),
-					paiement: textToKeyTransformation($scope.carte.info.paiement),
-					consequences: [],
-					contraintes: [],
-					circonstances: []
+					paiement: textToKeyTransformation($scope.carte.info.paiement)
 				}
 				if ($scope.carte.info.paiement === "Echange"){
-					console.log('echange');
 					carte.info.echange = [];
-					for (var i = 0;i < $scope.carte.info.echange.length;i ++){
+					for (var i in $scope.carte.info.echange){
 						var carteNom = $scope.carte.info.echange[i];
-						console.log(carteNom);
 						var carteCode = $scope.objetsHorsPiocheCodes[$scope.objetsHorsPiocheNoms.indexOf(carteNom)];
-						console.log(carteCode);
-						console.log($scope.objetsHorsPiocheCodes);
-						console.log($scope.objetsHorsPiocheNoms);
 						carte.info.echange[i] = carteCode;
 					}
 				}
@@ -548,16 +543,13 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 					carte.info.prix = $scope.carte.info.prix;
 					carte.info.reduction = textToKeyTransformation($scope.carte.info.reduction);
 				}
-				populateInfo(carte.info,$scope.carte.info);
 			}
 		}
 
 		else if (carte.pile === 'missions'){
 			carte.info = {
-				etapes: [],
-				consequences: []
+				etapes: []
 			}
-			populateInfo(carte.info,$scope.carte.info);
 			for (var i in $scope.carte.info.etapes){
 				carte.info.etapes.push({
 					categorie: textToKeyTransformation($scope.carte.info.etapes[i].categorie),
@@ -566,17 +558,12 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				});
 				if ($scope.carte.info.etapes[i].cartes !== undefined){
 					for (var j in $scope.carte.info.etapes[i].cartes){
-						console.log($scope.objetsHorsPiocheCodes);
-						console.log($scope.objetsHorsPiocheNoms);
 						if ($scope.carte.info.etapes[i].cartes[j].nom != undefined){
 							var carteNom = $scope.carte.info.etapes[i].cartes[j].nom;
-							console.log(carteNom);
 							var carteCode = $scope.objetsHorsPiocheCodes[$scope.objetsHorsPiocheNoms.indexOf(carteNom)];
 							carte.info.etapes[i].cartes.push({code: carteCode});
-							console.log(carteCode);
 						}
 					}
-					console.log($scope.carte.info.etapes[i].cartes);
 				}
 				if ($scope.carte.info.etapes[i].cases !== undefined){
 					carte.info.etapes[i].cases = [];
@@ -587,7 +574,6 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			}
 		}
 
-		console.log($scope.view);
 		if ($scope.view === 'nouvelle_carte'){
 			Cartes.createAll(carte).success(function(){
 				console.log(carte);

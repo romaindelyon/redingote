@@ -60,6 +60,11 @@ angular.module('cartes').controller('CartesCreationContraintesController', ['$sc
 			'Chez le lanceur': [],
 			"Chez n'importe qui": []
 		},
+		'Destination': {
+			'Case': [],
+			'Plateau': ['Escalier','Labyrinthe','Paysage'],
+			'Zone': zones
+		},
 		'Joueur': {
 			'Adversaire': ['Julia','Marie','Romain']
 		},
@@ -72,6 +77,10 @@ angular.module('cartes').controller('CartesCreationContraintesController', ['$sc
 			"Action": typesActions,
 			"Humeur": typesHumeurs,
 			"Objet": typesObjets
+		},
+		'Utilisation combinée': {
+			'Objet spécifique': [],
+			"N'importe quel objet": []
 		}
 	};
 

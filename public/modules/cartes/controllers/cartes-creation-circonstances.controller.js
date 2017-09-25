@@ -49,13 +49,17 @@ angular.module('cartes').controller('CartesCreationCirconstancesController', ['$
 		"Changement d'humeur": [],
 		'Défausse': [],
 		'Début de tour': [],
-		'Déplacement': [],
+		'Déplacement': {
+			'Paysage': [],
+			'Labyrinthe': []
+		},
 		'Duel': {
 			'Attaque': [],
 			'Défense': []
 		},
 		'Dé': {
-			'Paysage': [2,3,4,5,7,12,16,73]
+			'Paysage': [2,3,4,5,7,12,16,73],
+			'Rhomboédrique': [0,1,2]
 		},
 		'Echange': [],
 		'Interlude musical': [],

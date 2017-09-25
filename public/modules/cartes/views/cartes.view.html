@@ -158,7 +158,7 @@
 		</div>
 		<div layout="row">
 			<md-input-container class="cartes-input" style="width: 200px;">
-				<md-select ng-model="carte.pile" ng-change="changingPile(carte.pile)" required aria-label="Pile">
+				<md-select ng-model="carte.pile" ng-change="updateCategorie()" required aria-label="Pile">
 					<md-option ng-repeat="(pile_nom,pile) in piles | orderBy:'pile'">{{pile_nom}}</md-option>
 				</md-select>
 				<label>Pile</label>
@@ -169,24 +169,9 @@
 				</md-select>
 				<label>Categorie</label>
 			</md-input-container>
-			<md-input-container ng-if="(carte.pile == 'Pioche' && carte.categorie != undefined && carte.categorie != 'Objet') || carte.pile === 'Hors Pioche' && carte.categorie === 'Objet'" class="cartes-input" style="width: 200px;">
-				<md-select ng-model="carte.utilisation" required aria-label="Utilisation">
-					<md-option ng-repeat="utilisation in piles[carte.pile].categories[carte.categorie].utilisations | orderBy:'utilisation'">{{utilisation}}</md-option>
-				</md-select>
-				<label>Utilisation</label>
-			</md-input-container>
 		</div>
-		<div layout="row">
-			<md-input-container class="cartes-input">
-				<input type="checkbox" ng-model="carte.ouverture" aria-label="checkbox">
-				<label>Ouverture</label>
-			</md-input-container>
-			<md-input-container class="cartes-input">
-				<input type="checkbox" ng-model="carte.action" aria-label="checkbox">
-				<label>Action</label>
-			</md-input-container>
-		</div>
-		<red-cartes-creation-utilisations ng-if="carte.categorie !== 'objet'"></red-cartes-creation-utilisations>
+
+
 		<md-input-container ng-if="carte.categorie === 'Trois familles'" class="cartes-input" style="width: 200px;">
 			<md-select ng-model="carte.info.famille" required aria-label="Famille">
 				<md-option ng-repeat="famille in familles">{{famille}}</md-option>
@@ -204,12 +189,6 @@
 							<md-option ng-repeat="action in piles['Pioche'].categories['Action'].info.actions.types | orderBy:'action'">{{action}}</md-option>
 						</md-select>
 						<label>Action</label>
-					</md-input-container>
-					<md-input-container class="cartes-input" style="width: 200px;">
-						<md-select ng-model="carte.info.cible" required aria-label="Cible">
-							<md-option ng-repeat="cible in piles['Pioche'].categories['Action'].info.cibles | orderBy:'cible'">{{cible}}</md-option>
-						</md-select>
-						<label>Cible</label>
 					</md-input-container>
 					<div layout="column">
 						<div layout="row">
@@ -231,8 +210,6 @@
 					</div>
 				</div>
 			</div>
-			<red-cartes-creation-consequences carte="carte"></red-cartes-creation-consequences>
-			<red-cartes-creation-contraintes carte="carte"></red-cartes-creation-contraintes>
 		</div>
 
 		<div layout="column" ng-if="carte.pile == 'Missions'">
@@ -286,12 +263,6 @@
 					</md-input-container>
 				</div>
 				<div layout="row">
-					<md-input-container class="cartes-input" style="width: 200px;">
-						<md-select ng-model="objet.utilisation" required aria-label="Utilisation">
-							<md-option ng-repeat="utilisation in piles['Pioche'].categories['Objet'].utilisations | orderBy:'utilisation'">{{utilisation}}</md-option>
-						</md-select>
-						<label>Utilisation</label>
-					</md-input-container>
 					<div layout="column">
 						<div layout="row">
 							<div ng-repeat="type in piles['Pioche'].categories['Objet'].types | orderBy:'type'" layout="row">
@@ -311,13 +282,152 @@
 						</div>
 					</div>
 				</div>
-				<div ng-if="objet.utilisation == 'Action' || objet.utilisation == 'Réaction' || objet.utilisation == 'Ouverture'" layout="column">
-					<red-cartes-creation-consequences carte="objet"></red-cartes-creation-consequences>
-					<red-cartes-creation-contraintes carte="objet"></red-cartes-creation-contraintes>
-					<red-cartes-creation-circonstances carte="objet"></red-cartes-creation-circonstances>
-				</div>
 			</div>
 		</div>
+
+		<!-- UTILISATION -->
+
+		<div ng-repeat="utilisation in carte.utilisation track by $index" layout="column">
+<!-- 			<red-cartes-creation-utilisations utilisation={{utilisation}} index="{{$index}}" ng-if="carte.categorie !== 'objet'"></red-cartes-creation-utilisations> -->
+			<div ng-controller="CartesCreationUtilisationsController" class="cartes-utilisation">
+				<div layout="row">
+					<md-input-container class="cartes-input">
+						<input type="checkbox" ng-model="utilisation.action" ng-change="changeActionUtilisation($index)" aria-label="checkbox">
+						<label>Action</label>
+					</md-input-container>
+					<md-input-container class="cartes-input">
+						<input type="checkbox" ng-model="utilisation.ouverture" aria-label="checkbox">
+						<label>Ouverture</label>
+					</md-input-container>
+					<div layout="row" flex></div>
+					<img ng-if="carte.utilisation.length > minUtilisations" ng-click="removeUtilisation($index)" src="modules/core/img/core_icones_remove.png" class="cartes-remove-property">
+				</div>
+				
+				<div ng-if="carte.utilisation.length > 1" layout="row">
+					<md-input-container ng-if="carte.utilisation.length > minUtilisations" class="cartes-input" style="width: 200px;">
+						<input ng-model="utilisation.nom" required aria-label="Nom">
+						<label>Nom</label>
+					</md-input-container>
+					<md-input-container ng-if="carte.pile === 'Pioche' && carte.categorie === 'Objet'" class="cartes-input" style="width: 200px;">
+							<md-select ng-model="utilisation.objet" required aria-label="Circonstance">
+								<md-option>Objet 1</md-option>
+								<md-option>Objet 2</md-option>
+							</md-select>
+							<label>Objet</label>
+						</md-input-container>
+				</div>
+
+				<!-- CIRCONSTANCES -->
+
+				<div ng-repeat="circonstance in utilisation.circonstances" class="cartes-circonstance" layout="row">
+					<md-input-container class="cartes-input" style="width: 300px;">
+						<md-select ng-model="circonstance.categorie" required aria-label="Circonstance">
+							<md-option ng-repeat="(categorie_nom,categorie) in circonstances | orderBy:'categorie_nom'">{{categorie_nom}}</md-option>
+						</md-select>
+						<label>Circonstance - Catégorie</label>
+					</md-input-container>
+					<md-input-container ng-if="circonstance.categorie != undefined && circonstances[circonstance.categorie].length != 0" class="cartes-input" style="width: 300px;">
+						<md-select ng-model="circonstance.type" required aria-label="Circonstance">
+							<md-option ng-repeat="(type_nom,type) in circonstances[circonstance.categorie] | orderBy:'type_nom'">{{type_nom}}</md-option>
+						</md-select>
+						<label>Circonstance - Type</label>
+					</md-input-container>
+					<md-input-container ng-if="circonstance.type != undefined && circonstances[circonstance.categorie][circonstance.type].length > 0" class="cartes-input" style="width: 200px;">
+						<md-select ng-model="circonstance.valeur" required aria-label="Type">
+							<md-option ng-repeat="valeur in circonstances[circonstance.categorie][circonstance.type] | orderBy:'valeur'">{{valeur}}</md-option>
+						</md-select>
+						<label>Circonstance - Valeur</label>
+					</md-input-container>
+					<md-input-container class="cartes-input" style="width: 200px;">
+						<md-select ng-model="circonstance.joueur" required aria-label="Type">
+							<md-option ng-repeat="joueur in joueurs">{{joueur}}</md-option>
+						</md-select>
+						<label>Circonstance - Joueur</label>
+					</md-input-container>
+					<div layout="row" flex></div>
+					<img ng-if="utilisation.circonstances.length > 1" ng-click="removeCirconstance($parent.$parent.$index,$parent.$index)" src="modules/core/img/core_icones_remove.png" class="cartes-remove-property">
+				</div>
+				<div ng-if="utilisation.circonstances.length >= 1 && utilisation.circonstances.length < 3" ng-click="addCirconstance($parent.$index)" class="cartes-circonstance" style="padding-left: 10px;">
+					Ajouter une circonstance
+				</div>
+
+				<!-- CONSEQUENCES -->
+
+				<div ng-repeat="consequence in utilisation.consequences" layout="row" class="cartes-consequence">
+					<md-input-container class="cartes-input" style="width: 300px;">
+						<md-select ng-model="consequence.categorie" required aria-label="Type">
+							<md-option ng-repeat="(categorie_nom,categorie) in consequences">{{categorie_nom}}</md-option>
+						</md-select>
+						<label>Conséquence - Catégorie</label>
+					</md-input-container>
+					<md-input-container ng-if="consequence.categorie != undefined" class="cartes-input" style="width: 300px;">
+						<md-select ng-model="consequence.type" required aria-label="Type">
+							<md-option ng-repeat="(type_nom,type) in consequences[consequence.categorie]">{{type_nom}}</md-option>
+						</md-select>
+						<label>Conséquence - Type</label>
+					</md-input-container>
+					<md-input-container ng-if="consequence.type != undefined && consequences[consequence.categorie][consequence.type].length > 0" class="cartes-input" style="width: 200px;">
+						<md-select ng-model="consequence.valeur" required aria-label="Type">
+							<md-option ng-repeat="valeur in consequences[consequence.categorie][consequence.type] | orderBy:'valeur'">{{valeur}}</md-option>
+						</md-select>
+						<label>Conséquence - Valeur</label>
+					</md-input-container>
+					<md-input-container class="cartes-input" style="width: 200px;">
+						<md-select ng-model="consequence.joueur" required aria-label="Type">
+							<md-option ng-repeat="joueur in joueurs">{{joueur}}</md-option>
+						</md-select>
+						<label>Conséquence - Joueur</label>
+					</md-input-container>
+					<div layout="row" flex></div>
+					<img ng-if="utilisation.consequences.length > 1" ng-click="removeConsequence($parent.$parent.$index,$parent.$index)" src="modules/core/img/core_icones_remove.png" class="cartes-remove-property">
+				</div>
+				<div ng-if="utilisation.consequences.length < 3" ng-click="addConsequence($parent.$index)" class="cartes-consequence" style="padding-left: 10px;">
+					Ajouter une conséquence
+				</div>
+			
+				<!-- CONTRAINTES -->
+
+				<div ng-repeat="contrainte in utilisation.contraintes"  layout="row" class="cartes-contrainte">
+						<md-input-container class="cartes-input" style="width: 300px;">
+							<md-select ng-model="contrainte.categorie" required aria-label="Contrainte">
+								<md-option ng-repeat="(categorie_nom,categorie) in contraintes | orderBy:'categorie_nom'">{{categorie_nom}}</md-option>
+							</md-select>
+							<label>Contrainte - Catégorie</label>
+						</md-input-container>
+						<md-input-container ng-if="contrainte.categorie != undefined" class="cartes-input" style="width: 300px;">
+							<md-select ng-model="contrainte.type" required aria-label="Contrainte">
+								<md-option ng-repeat="(type_nom,type) in contraintes[contrainte.categorie] | orderBy:'type_nom'">{{type_nom}}</md-option>
+							</md-select>
+							<label>Contrainte - Type</label>
+						</md-input-container>
+						<md-input-container ng-if="contrainte.type != undefined && consequences[consequence.categorie][consequence.type].length > 0" class="cartes-input" style="width: 200px;">
+							<md-select ng-model="contrainte.valeur" required aria-label="Type">
+								<md-option ng-repeat="valeur in contraintes[contrainte.categorie][contrainte.type] | orderBy:'valeur'">{{valeur}}</md-option>
+							</md-select>
+							<label>Contrainte - Valeur</label>
+						</md-input-container>
+						<md-input-container class="cartes-input" style="width: 200px;">
+							<md-select ng-model="contrainte.joueur" required aria-label="Type">
+								<md-option ng-repeat="joueur in joueurs">{{joueur}}</md-option>
+							</md-select>
+							<label>Contrainte - Joueur</label>
+						</md-input-container>
+						<div layout="row" flex></div>
+						<img ng-click="removeContrainte($parent.$parent.$index,$parent.$index)" src="modules/core/img/core_icones_remove.png" class="cartes-remove-property">
+				</div>
+				<div ng-if="utilisation.contraintes.length < 3" ng-click="addContrainte($parent.$index)" class="cartes-contrainte" style="padding-left: 10px;">
+					Ajouter une contrainte
+				</div>
+
+			</div>
+
+		</div>
+		
+		
+		<div ng-if="carte.utilisation.length < maxUtilisations" ng-click="addUtilisation()" class="cartes-utilisation" style="padding-left: 10px;">
+			Ajouter une utilisation
+		</div>
+
 		<div ng-if="!carteSubmitted">
             <md-button type="submit" ng-if="view == 'nouvelle_carte'" ng-disabled="submitButtonDisabled" class="confrontations-button red-font md-primary md-raised">
                 OK !
