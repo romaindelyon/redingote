@@ -35,7 +35,14 @@ angular.module('actions').controller('ActionsConfrontationsController', ['$scope
 		$scope.confrontation.id = id;
 		$scope.confrontation.categorie = categorie;
 		$scope.confrontation.type = type;
-		$scope.confrontation.info = info;
+		if (type === 'duel'){
+			$scope.confrontation.info = info;
+		}
+		else {
+			$scope.confrontation.info = info.id;
+			$scope.confrontation.utilisation = info.utilisation;
+			var info = info.id;
+		}
 		$scope.confrontation.carteIndex = carteIndex;
 		$scope.confrontation.source = source;
 		$scope.confrontation.cible = cible;
@@ -51,7 +58,8 @@ angular.module('actions').controller('ActionsConfrontationsController', ['$scope
 		var description = "";
 		var titre = "";
 		if (type == 'action'){
-			var consequence = $scope.cartes[info].info.consequences[0];
+			var consequence = $scope.confrontation.utilisation.consequences[0];
+			console.log(consequence);
 			var action = $scope.cartes[info].info.action.type;
 			$scope.confrontation.code = $scope.cartes[info].code;
 			console.log(action);
@@ -63,19 +71,34 @@ angular.module('actions').controller('ActionsConfrontationsController', ['$scope
 			$scope.confrontation.display.carte_image = true;
 			$scope.confrontation.display.joueur_selection = true;
 			$scope.confrontation.display.description = true;
-			$scope.confrontation.display.description_type = 'cible_left';
+			$scope.confrontation.display.description_type = 'text_only';
 			console.log(consequence);
 			// titre:
 			titre = "Action : " + $scope.cartes[info].nom;
 			// description:
-			if (action === "immediat" && consequence.categorie === 'carte' && consequence.type === 'defausse'){
-				description = " perd " + consequence.valeur + " cartes !";
+			if (action === "immediat" && consequence.categorie === 'carte_defausse' && consequence.type === 'pioche'){
+				description = " perd " + consequence.valeur + " cartes de sa main !";
 			}
 			else if (action === "immediat" && consequence.categorie === 'tour' && consequence.type === 'passer'){
 				description = " passe " + consequence.valeur + " tour !";
 			}
-			else if (action === "test" && consequence.categorie === 'carte' && consequence.type === 'vol'){
-				description = " risque de perdre " + consequence.valeur + " cartes !";
+			else if (action === "test" && consequence.categorie === 'carte_vol' && consequence.type === 'pioche'){
+				description = " risque de perdre " + consequence.valeur + " cartes de sa main !";
+			}
+		}
+
+		else if (categorie === 'attaque' && type === 'personnage'){
+			$scope.confrontation.code = $scope.cartes[info].code;
+			var consequence = $scope.confrontation.utilisation.consequences[0];
+			$scope.confrontation.ready = true;
+			$scope.confrontation.display.carte_image = true;
+			$scope.confrontation.display.description = true;
+			$scope.confrontation.display.description_type = 'text_only';
+			// titre:
+			titre = "Personnage : " + $scope.cartes[info].nom;
+			// description:
+			if (consequence.categorie === 'carte_pioche' && consequence.type === 'humeur'){
+				description = "Tu gagnes " + consequence.valeur + " cartes humeur !";
 			}
 		}
 
@@ -84,12 +107,18 @@ angular.module('actions').controller('ActionsConfrontationsController', ['$scope
 			$scope.confrontation.display.joueur_selection = true;
 			$scope.confrontation.display.duel_results = true;
 			$scope.partie.dispo.des.duel = 3;
+			$scope.confrontation.utilisation = {
+				ciblePossible: []
+			};
+			for (var i in $scope.autresJoueurs){
+				$scope.confrontation.utilisation.ciblePossible.push($scope.autresJoueurs[i]);
+			}
 		}
 
 		else if (categorie === 'defense'){
 			if (type === 'action'){
 				titre = $scope.joueurs[source].nom + " t'attaque !";
-				if (action === "immediat" && consequence.categorie === 'carte' && consequence.type === 'defausse'){
+				if (action === "immediat" && consequence.categorie === 'carte_defausse' && consequence.type === 'pioche'){
 					$scope.confrontation.display.carte_image = true;
 					startCartePerte(consequence.valeur);
 					if (consequence.valeur == 1){
@@ -99,7 +128,7 @@ angular.module('actions').controller('ActionsConfrontationsController', ['$scope
 						$scope.confrontation.description = "Choisis " + consequence.valeur + " cartes à défausser :";
 					}
 				}
-				else if (action === "test" && consequence.categorie === 'carte' && consequence.type === 'vol'){
+				else if (action === "test" && consequence.categorie === 'carte_vol' && consequence.type === 'pioche'){
 					$scope.confrontation.display.test = true;
 					$scope.confrontation.ready = true;
 					$scope.confrontation.test = {
@@ -141,13 +170,18 @@ angular.module('actions').controller('ActionsConfrontationsController', ['$scope
 
 		$scope.confrontation.titre = titre;
 		$scope.confrontation.description = description;
+		console.log(description);
 	}
 
 	// Event listeners from other controllers:
 
 	// Start attaque action
 	$rootScope.$on('confrontations-attaque-action-start', function(event, args) {
-		startConfrontation('attaque','action',args.carte.id,args.carteIndex,$scope.joueurId);
+		var info = {
+			id: args.carte.id,
+			utilisation: args.carte.statut.utilisation[args.utilisationIndex]
+		};
+		startConfrontation('attaque',args.carte.categorie,info,args.carteIndex,$scope.joueurId);
 	});
 
 	// Start defense
@@ -317,8 +351,16 @@ angular.module('actions').controller('ActionsConfrontationsController', ['$scope
 						}
 						console.log(index);
 			    		var carte = $scope.jeu.main[index];
-			    		carte.statut = {};
+			    		carte.statut = {
+			    			utilisation: carte.utilisation
+			    		};
 			    		delete carte.filled;
+						carte.statut.utilisation = carte.utilisation;
+						Cartes.changementStatut({id: carte.id,statut: carte.statut}).success(function(){
+							console.log("updated statut accordingly");
+						}).error(function(){
+							console.log("problème de statut update");
+						});
 						$scope.defausses.pioche.push(carte);
 						$scope.jeu.main.splice(index,1);
 						$scope.focusIndex = -2;
@@ -340,10 +382,14 @@ angular.module('actions').controller('ActionsConfrontationsController', ['$scope
 	        }).success(function(){
 	        	console.log($scope.confrontation);
 	        	// send attaque !
+				var info = {
+					id: confrontation.info,
+					utilisation: confrontation.utilisation
+				};
 	        	Actions.add({
 	        		categorie: confrontation.categorie,
 	        		type: confrontation.type,
-	        		info: confrontation.info,
+	        		info: info,
 	        		cible: confrontation.cible,
 	        		source: confrontation.source,
 	        		partie: $scope.partieId
@@ -375,17 +421,17 @@ angular.module('actions').controller('ActionsConfrontationsController', ['$scope
 		else if (confrontation.categorie == 'defense'){
 			var defenseFinished = false; // is it the last step of this defense activity?
 			if (confrontation.type == 'action'){
-				var consequence = $scope.cartes[confrontation.info].info.consequences[0];
+				var consequence = $scope.confrontation.utilisation.consequences[0];
 				var action = $scope.cartes[confrontation.info].info.action.type;
 				if (action == 'immediat' && consequence.categorie === 'tour' && consequence.type === 'passer'){
 					$scope.toursToSkip ++;
 					defenseFinished = true;
 				}
-				else if (action == 'immediat' && consequence.categorie === 'carte' && consequence.type === 'defausse'){
+				else if (action == 'immediat' && consequence.categorie === 'carte_defausse' && consequence.type === 'pioche'){
 					deplacerCartes(-2);
 					defenseFinished = true;
 				}
-				else if (action === "test" && consequence.categorie === 'carte' && consequence.type === 'vol'){
+				else if (action === "test" && consequence.categorie === 'carte_vol' && consequence.type === 'pioche'){
 					if ($scope.confrontation.test.completed){
 						defenseFinished = true;
 					}

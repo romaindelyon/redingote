@@ -116,12 +116,26 @@
             <span ng-show="action.deplacement.info.etapes.length === 5">
                 Déplacement terminé !
             </span>
+            <span ng-show="action.showBonus">
+                Bonus utilisés
+            </span>
         </div>
 
         <!-- Body -->
         <div layout="column" layout-align="space-around center" class="cartouche-body" style="width: 500px;">
 
-            <div layout="column" layout-align="center start" style="font-size: 16px;">
+            <div layout="row" layout-align="center start" style="font-size: 16px;">
+
+                <div style="width: 120px;height:120px;margin-right: 40px;">
+                    <img src="modules/actions/img/actions-bonus-icone.png" title="Afficher les bonus" ng-click="showBonus()" ng-if="action.deplacement.info.bonus.length > 0" style="width: 100px;height:100px;outline: none">
+                </div>
+
+                <div ng-if="action.showBonus" layout="row" layout-align="center start" style="font-size: 16px;min-width: 310px;height: 235px;">
+                    <div ng-repeat="bonusCarte in action.deplacement.info.bonus">
+                        <img ng-src="{{'modules/cartes/img/'+dossierPileTransformation[bonusCarte.pile]+'/cartes_'+bonusCarte.pile+'_'+bonusCarte.code+'.png'}}" ng-click="removeBonus($index)" style="width: 140px;height: 225px;margin: 5px 15px;box-sizing: content-box;">
+                    </div>
+                </div>
+            
                 <div layout="row">
                     <div layout="row" layout-align="center-center" ng-class="!action.deplacement.info.etapes[action.deplacement.info.etapes.length-1].deResult ? 'des-container-box-disabled' : 'des-container-box'">
                         <img src="modules/des/img/des-labyrinthe-icone.png">

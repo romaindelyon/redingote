@@ -42,19 +42,5 @@ angular.module('jeu').controller('JeuOuvertesController', ['$scope','Cartes',
 
     	})
     }
-
-    $scope.utiliserCarte = function(index){
-    	var carte = $scope.jeu.ouvertes[index];
-		console.log(index);
-		if (carte.categorie == 'combat'){
-			$scope.$emit('confrontations-combat-start', {carte: carte,carteIndex: index});
-		}
-		$scope.focusIndex = -2;
-    }
-
-    $scope.utiliserCarteReaction = function(index){
-    	var carte = $scope.jeu.ouvertes[index];
-    	$scope.$emit('cartes-utilisation',{carte: $scope.jeu.ouvertes[index]});
-    }
-
+    
 }]);

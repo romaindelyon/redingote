@@ -24,6 +24,7 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 		}
 		else if ($scope.action.deplacement.type === 'labyrinthe'){
 			$scope.action.deplacement.info.etapes = [];
+			$scope.action.deplacement.info.bonus = [];
 			$scope.partie.dispo.des.labyrinthe = 4;
 		}
 	}
@@ -31,17 +32,9 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 	$rootScope.$on('plateaux-paysage-de',function(event,args){
 		$scope.action.deplacement.info.deResult = args.result;
 		for (var j = 0;j < $scope.action.deplacement.info.bonus.length;j ++){
-			if ($scope.action.deplacement.info.bonus[j].pile === 'hors_pioche'){
-				var carte = $scope.action.deplacement.info.bonus[j];
-			}
-			else if ($scope.action.deplacement.info.bonus[j].utilisation[0] === 'ouverture'){
-				var carte = $scope.objets[$scope.action.deplacement.info.bonus[j].info[0]];
-			}
-			else if ($scope.action.deplacement.info.bonus[j].utilisation[1] === 'ouverture'){
-				var carte = $scope.objets[$scope.action.deplacement.info.bonus[j].info[1]];
-			}
-			for (var i = 0;i < carte.info.consequences.length;i ++){
-				var consequence = carte.info.consequences[i];
+			var carte = $scope.action.deplacement.info.bonus[j];
+			for (var i = 0;i < carte.statut.utilisation[carte.statut.utilisationIndexChoisi].consequences.length;i ++){
+				var consequence = carte.statut.utilisation[carte.statut.utilisationIndexChoisi].consequences[i];
 				if (consequence.categorie === 'deplacement' && consequence.type === 'avantage' && consequence.valeur === 'vitesse_doublee'){
 					console.log("on double le déplacement");
 					if ($scope.action.deplacement.info.deResult != undefined && $scope.action.deplacement.info.deResult !== 146){
@@ -199,7 +192,8 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 	$scope.action.phase = 1;	
 	$scope.action.showBonus = false;	
 
-	$scope.$emit('cartes-utilisation-possible-circonstance',{categorie: 'deplacement',type: $scope.action.deplacement.type});
+	console.log($scope.action.deplacement.type);
+	$scope.$emit('cartes-utilisation-possible',{categorie: 'deplacement',type: $scope.action.deplacement.type,action: false,specifique: false});
 
 	startDeplacement();
 
@@ -215,14 +209,9 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 		}
 		if (!objetTrouve){
 			$scope.action.deplacement.info.bonus.push(args.carte);
-			if (args.carte.pile === 'hors_pioche'){
-				var carte = args.carte;
-			}
-			else {
-				var carte = $scope.objets[args.carte.info[$args.carte.statut.ouverteIndex]];
-			}
-			for (var i = 0;i < carte.info.consequences.length;i ++){
-				var consequence = carte.info.consequences[i];
+			var utilisationIndex = args.carte.statut.utilisationIndexChoisi;
+			for (var i = 0;i < args.carte.statut.utilisation[utilisationIndex].consequences.length;i ++){
+				var consequence = args.carte.statut.utilisation[utilisationIndex].consequences[i];
 				if (consequence.categorie === 'deplacement' && consequence.type === 'avantage' && consequence.valeur === 'vitesse_doublee'){
 					console.log("on double le déplacement");
 					if ($scope.action.deplacement.type ==='paysage' && $scope.action.deplacement.info.deResult != undefined && $scope.action.deplacement.info.deResult !== 146){
@@ -238,17 +227,8 @@ angular.module('actions').controller('ActionsDeplacementController', ['$scope','
 
 	$scope.removeBonus = function(index){
 		var carte = $scope.action.deplacement.info.bonus.splice(index,1)[0];
-		if (carte.pile === 'hors_pioche'){
-			
-		}
-		else if (carte.utilisation[0] === 'ouverture'){
-			carte = $scope.objets[carte.info[0]];
-		}
-		else if (args.carte.utilisation[1] === 'ouverture'){
-			carte = $scope.objets[carte.info[1]];
-		}
-		for (var i = 0;i < carte.info.consequences.length;i ++){
-			var consequence = carte.info.consequences[i];
+		for (var i = 0;i < carte.statut.utilisation[carte.statut.utilisationIndexChoisi].consequences.length;i ++){
+			var consequence = carte.statut.utilisation[carte.statut.utilisationIndexChoisi].consequences[i];
 			if (consequence.categorie === 'deplacement' && consequence.type === 'avantage' && consequence.valeur === 'vitesse_doublee'){
 				console.log("on divise le déplacement");
 				if ($scope.action.deplacement.type ==='paysage' && $scope.action.deplacement.info.deResult != undefined && $scope.action.deplacement.info.deResult !== 73){

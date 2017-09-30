@@ -116,7 +116,7 @@ angular.module('actions').controller('ActionsActionController', ['$scope','$root
 				$scope.actionCaseDisplay.utiliserCarte = true;
 				$scope.actionCase.carte = 'visa';
 				$scope.actionCase.description = "Il te faut un visa";
-				$scope.$emit('cartes-utilisation-possible',{code: $scope.actionCase.carte});
+				$scope.$emit('cartes-utilisation-possible',{code: $scope.actionCase.carte,action: false,specifique: true});
 				$scope.buttonsHidden = true;
 			}
 		}

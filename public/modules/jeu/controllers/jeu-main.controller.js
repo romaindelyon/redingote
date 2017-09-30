@@ -26,12 +26,16 @@ angular.module('jeu').controller('JeuMainController', ['$scope','$rootScope','$t
 		console.log($scope.jeu.main[$scope.focusIndex]);
 	}
 
-	$scope.utiliserCarte = function(index){
-		var carte = $scope.jeu.main[index];
-		if (carte.categorie == 'action'){
-			$scope.$emit('confrontations-attaque-action-start', {carte: carte,carteIndex: index});
-		}
-	}
+	// $scope.utiliserCarte = function(index){
+	// 	$scope.carte.statut.utilisationIndex = 0;
+	// 	if ($scope.carte.utilisation[$scope.carte.statut.utilisationIndex].action){
+	// 		if (carte.categorie == 'action'){
+	// 			$scope.$emit('confrontations-attaque-action-start', {carte: carte,carteIndex: index});
+	// 		}
+	// 	}
+		
+	// 	$scope.$emit('cartes-utilisation',{carte: $scope.jeu.ouvertes[index]});
+	// }
 
 	$scope.ouvrirCarte = function(index){
 		var carte = $scope.jeu.main[index];

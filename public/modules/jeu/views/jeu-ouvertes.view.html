@@ -8,7 +8,7 @@
 			<md-button ng-if="partie.dispo.cartes.utiliser && jeu.ouvertes[focusIndex].categorie === 'combat' && !confrontation.active" ng-click="utiliserCarte(focusIndex)" class="md-primary">
 				Utiliser
 			</md-button>
-			<md-button ng-if="jeu.ouvertes[focusIndex].statut.utilisable" ng-click="utiliserCarteReaction(focusIndex)" class="md-primary">
+			<md-button ng-if="jeu.ouvertes[focusIndex].statut.utilisable" ng-click="utiliserCarte(focusIndex,'ouvertes')" class="md-primary">
 				Utiliser
 			</md-button>
 		</div>

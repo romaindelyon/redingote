@@ -33,6 +33,7 @@ angular.module('actions').controller('ActionsNotificationController', ['$scope',
     	}).success(function(){
 			var carte = $scope.pioches.humeurs[carteOrder];
 			carte.statut.piocheDate = new Date();
+			carte.statut.utilisation = carte.utilisation;
 			Cartes.changementStatut({
 				carteId: carte.id,
 				statut: carte.statut
@@ -41,12 +42,8 @@ angular.module('actions').controller('ActionsNotificationController', ['$scope',
 			}).error(function(){
 				console.log("error when trying to change status");
 			});
-			if (joueurIndex != $scope.joueurId){
-				console.log(joueurIndex);
-				console.log($scope.joueurs);
-				$scope.joueurs[joueurIndex].humeurs.push($scope.pioches.humeurs[carteOrder]);
-			}
-	        else {
+			$scope.joueurs[joueurIndex].humeurs.push($scope.pioches.humeurs[carteOrder]);
+	        if (joueurIndex == $scope.joueurId){
 	        	$scope.jeu.humeurs.push($scope.pioches.humeurs[carteOrder]);
 	        }
 	        $scope.action.notification.info.joueurs[joueurIndex].humeurGagnee = $scope.pioches.humeurs[carteOrder];

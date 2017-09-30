@@ -83,17 +83,32 @@ angular.module('cartes').controller('CartesCreationUtilisationsController', ['$s
 			"Brouiller l'ordre": [],
 			'Réduire nombre requis': [1,2,3,4,5,6]
 		},
-		'Carte': {
-			'Défausse': [1,2,3,4,5,'Moitié','Toutes'],
-			'Don': [1,2,3,4,5,'Moitié','Toutes'],
-			'Pioche': [1,2,3,4,5,6,7],
-			'Récuperation': [1,2,3],
-			'Vol': [1,2,3,4,5,'Moitié','Toutes'],
+		'Carte - Pioche': {
+			'Humeur': [1,2,3,4],
+			'Grande carte': [1,2,3,4,5,6],
+			'Pioche': [1,2,3,4,5,6,7]
 		},
-		'Carte ouverte': {
-			'Défausse': [1,2,3,4,5,'Toutes'],
-			'Don': [1,2,3,4,5,'Toutes'],
-			'Vol': [1,2,3,4,5,'Toutes']
+		'Carte - Défausse': {
+			'Humeur': [1,2,3,'Toutes'],
+			'Grande carte': [1,2,3,'Moitié','Toutes'],
+			'Ouvertes': [1,2,3,4,5,'Toutes'],
+			'Pioche': [1,2,3,4,5,'Moitié','Toutes']
+		},
+		'Carte - Don': {
+			'Humeur': [1,2,3,'Toutes'],
+			'Grande carte': [1,2,3,'Moitié','Toutes'],
+			'Ouvertes': [1,2,3,4,5,'Toutes'],
+			'Pioche': [1,2,3,4,5,'Moitié','Toutes']
+		},
+		'Carte - Récupération': {
+			'Humeur': [1,2,3],
+			'Pioche': [1,2,3]
+		},
+		'Carte - Vol': {
+			'Humeur': [1,2,3,'Toutes'],
+			'Grande carte': [1,2,3,'Moitié','Toutes'],
+			'Ouvertes': [1,2,3,4,5,'Toutes'],
+			'Pioche': [1,2,3,4,5,'Moitié','Toutes']
 		},
 		'Combat': {
 			'Prédire victoire voler récompense': [],
@@ -112,6 +127,10 @@ angular.module('cartes').controller('CartesCreationUtilisationsController', ['$s
 			'Nombre de cases': [1,2,3,4,5,6,7,8,9,10],
 			'Zone': zones
 		},
+		'Dévoiler': {
+			'Carte': [],
+			'Conversation': []
+		},
 		'Duel': {
 			'Bonus attaque': [1,2,3,4,5,6,7,8,9,10,11,12],
 			'Bonus défense': [1,2,3,4,5,6,7,8,9,10,11,12],
@@ -120,9 +139,6 @@ angular.module('cartes').controller('CartesCreationUtilisationsController', ['$s
 			'Changement récompense': ['Vol'],
 			'Double-tranchant': [],
 			'Gagner': []
-		},
-		'Grande carte': {
-			'Pioche': [1,2,3]
 		},
 		'Joueur': {
 			'Pas de préjudice': []
@@ -196,7 +212,8 @@ angular.module('cartes').controller('CartesCreationUtilisationsController', ['$s
 		'Interlude musical': [],
 		'Mission': {
 			'Pioche': [],
-			'Réussie': []
+			'Réussie': [],
+			"Récompense immédiate": []
 		},
 		'Montée de marche': {
 			'Tentative': [],
@@ -235,6 +252,11 @@ $scope.contraintes = {
 			'Zone': zones
 		},
 		"Type de carte": {
+			"Action": typesActions,
+			"Humeur": typesHumeurs,
+			"Objet": typesObjets
+		},
+		"Type de carte ciblée": {
 			"Action": typesActions,
 			"Humeur": typesHumeurs,
 			"Objet": typesObjets

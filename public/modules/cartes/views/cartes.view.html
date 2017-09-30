@@ -41,10 +41,10 @@
 					{{carte.categorie}}
 				</td>
 				<td width="10%">
-					{{carte.utilisation[0]}}
+					
 				</td>
 				<td width="10%">
-					{{carte.utilisation[1]}}
+					
 				</td>
 				<td width="10%">
 					<a ng-click="modifierCarte(key)">Modifier</a>
@@ -170,7 +170,12 @@
 				<label>Categorie</label>
 			</md-input-container>
 		</div>
-
+		<div layout="row" ng-if="carte.pile !== 'Pioche' || carte.categorie !== 'Objet'">
+			<md-input-container class="cartes-input">
+				<input type="checkbox" ng-model="carte.ouverture" aria-label="checkbox">
+				<label>Ouverture</label>
+			</md-input-container>
+		</div>
 
 		<md-input-container ng-if="carte.categorie === 'Trois familles'" class="cartes-input" style="width: 200px;">
 			<md-select ng-model="carte.info.famille" required aria-label="Famille">
@@ -299,6 +304,10 @@
 						<input type="checkbox" ng-model="utilisation.ouverture" aria-label="checkbox">
 						<label>Ouverture</label>
 					</md-input-container>
+					<md-input-container class="cartes-input">
+						<input type="checkbox" ng-model="utilisation.passive" aria-label="checkbox">
+						<label>Passive</label>
+					</md-input-container>
 					<div layout="row" flex></div>
 					<img ng-if="carte.utilisation.length > minUtilisations" ng-click="removeUtilisation($index)" src="modules/core/img/core_icones_remove.png" class="cartes-remove-property">
 				</div>
@@ -400,7 +409,7 @@
 							</md-select>
 							<label>Contrainte - Type</label>
 						</md-input-container>
-						<md-input-container ng-if="contrainte.type != undefined && consequences[consequence.categorie][consequence.type].length > 0" class="cartes-input" style="width: 200px;">
+						<md-input-container ng-if="contrainte.type != undefined && contraintes[contrainte.categorie][contrainte.type].length > 0" class="cartes-input" style="width: 200px;">
 							<md-select ng-model="contrainte.valeur" required aria-label="Type">
 								<md-option ng-repeat="valeur in contraintes[contrainte.categorie][contrainte.type] | orderBy:'valeur'">{{valeur}}</md-option>
 							</md-select>

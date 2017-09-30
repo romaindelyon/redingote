@@ -255,6 +255,7 @@ angular.module('actions').controller('ActionsController', ['$scope','$rootScope'
 	    		var achatsDisponibles = [];
 	    		var achatsTrouves = [];
 	    		for (var i = 0;i < $scope.pioches.horsPioche.length;i ++){
+	    			console.log($scope.pioches.horsPioche[i]);
 	    			if ($scope.pioches.horsPioche[i].categorie === 'objet' &&
 	    				($scope.pioches.horsPioche[i].info.case.toString() === $scope.joueurs[$scope.joueurId].pions[0].case.toString() || $scope.joueurs[$scope.joueurId].pions[1] !== undefined && $scope.pioches.horsPioche[i].case.toString() === $scope.joueurs[$scope.joueurId].pions[1].case.toString())){
 	    				// Vérifier qu'on n'a pas déjà l'objet :

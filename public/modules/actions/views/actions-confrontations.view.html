@@ -1,4 +1,4 @@
-<div ng-controller="ActionsConfrontationsController" layout="column" ng-class="{'confrontations-container-action': confrontation.type == 'action','confrontations-container-duel': confrontation.type == 'duel','confrontations-container-combat': confrontation.type == 'combat'}">
+<div ng-controller="ActionsConfrontationsController" layout="column" ng-class="{'confrontations-container-action': confrontation.type == 'action','confrontations-container-duel': confrontation.type == 'duel','confrontations-container-combat': confrontation.type == 'combat','confrontations-container-personnage': confrontation.type == 'personnage'}">
 
 	<!-- Titre -->
  	<div layout="row" layout-align="center center" class="confrontations-titre red-font">
@@ -17,10 +17,10 @@
 
         <!-- Module 2 - Joueur selection -->
         <div ng-if="confrontation.display.joueur_selection && confrontation.display.joueur_selection_type !== 'all'" layout="column" layout-align="space-around center" class="confrontations-cible">
-            <div ng-click="selectCible(autresJoueurs[0])" ng-class="confrontation.cible == autresJoueurs[0] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
+            <div ng-click="selectCible(autresJoueurs[0])" ng-if="confrontation.utilisation.ciblePossible.indexOf(autresJoueurs[0]) >= 0" ng-class="confrontation.cible == autresJoueurs[0] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
                 <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[0]+'.png'}}">
             </div>
-            <div ng-click="selectCible(autresJoueurs[1])" ng-class="confrontation.cible == autresJoueurs[1] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
+            <div ng-click="selectCible(autresJoueurs[1])" ng-if="confrontation.utilisation.ciblePossible.indexOf(autresJoueurs[1]) >= 0" ng-class="confrontation.cible == autresJoueurs[1] ? 'confrontations-cible-image-focused' : 'confrontations-cible-image'">
                 <img ng-src="{{'modules/joueurs/img/joueurs_picture_'+autresJoueurs[1]+'.png'}}">
             </div>
         </div>

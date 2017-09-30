@@ -6,7 +6,7 @@ header("Content-Type: application/json; charset=UTF-8");
     $nom = utf8_decode($_GET["nom"]);
     $code = $_GET["code"];
     $description = utf8_decode($_GET["description"]);
-    $utilisation = $_GET["utilisation"];
+    $utilisation = "";
     $types = $_GET["types"];
     $info = $_GET["info"];
 
@@ -21,12 +21,11 @@ header("Content-Type: application/json; charset=UTF-8");
     $stmt1 = $con -> prepare("SELECT * FROM parties");
 
     $stmt1 -> execute();
-    $stmt1 -> bind_result($id,$nom,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo,$positionCouronnes,$valiseNonMaterialisee);
+    $stmt1 -> bind_result($id,$nomPartie,$tour_joueur,$tour_action,$tour_skip,$temps,$tonalite,$dispo,$positionCouronnes,$valiseNonMaterialisee);
 
     $results = array();
     while($stmt1->fetch()) {
         array_push($results,$id);
-        $partie = $id;
     }
 
     $stmt1 -> close();
@@ -34,7 +33,7 @@ header("Content-Type: application/json; charset=UTF-8");
     foreach($results as $id){
         // 2. Create objets
         $stmt2 = $con -> prepare("INSERT INTO objets (nom, code, types, description, utilisation, info, partie) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt2 -> bind_param('ssssssi',$nom,$code,$types,$description,$utilisation,$info,$partie);
+        $stmt2 -> bind_param('ssssssi',$nom,$code,$types,$description,$utilisation,$info,$id);
         $stmt2 -> execute();
     }
 

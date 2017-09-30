@@ -43,8 +43,12 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 		console.log($scope.carte.utilisation);
 		$scope.carte.utilisation.splice($scope.maxUtilisations,utilisationsToRemove);
 		if ($scope.carte.pile === 'Pioche' && $scope.carte.categorie === 'Objet'){
-			$scope.carte.utilisation[0].objet = "Objet 1";
-			$scope.carte.utilisation[1].objet = "Objet 2";
+			if (!$scope.carte.utilisation[0].objet){
+				$scope.carte.utilisation[0].objet = "Objet 1";
+			}
+			if (!$scope.carte.utilisation[1].objet){
+				$scope.carte.utilisation[1].objet = "Objet 2";
+			}			
 		}
 	}
 
@@ -135,12 +139,13 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			carte.types[CartesProprietes[i]] = carte.types[i];
 		}
 		for (var i = 0;i < carte.utilisation.length;i ++){
-			if (carte.utilisation[i].consequences != undefined){
+
+			if (carte.utilisation[i] != undefined && carte.utilisation[i].consequences != undefined){
+				console.log("in utilisations");
 				var proprietes = ['consequences','contraintes','circonstances'];
 				for (var j in proprietes){
 					var prop = proprietes[j];
-					carte[prop] = [];
-					for (var k in carte.utilisation[prop]){
+					for (var k in carte.utilisation[i][prop]){
 						carte.utilisation[i][prop][k].categorie = CartesProprietes[carte.utilisation[i][prop][k].categorie];
 						carte.utilisation[i][prop][k].type = CartesProprietes[carte.utilisation[i][prop][k].type];
 						carte.utilisation[i][prop][k].valeur = CartesProprietes[carte.utilisation[i][prop][k].valeur];
@@ -353,11 +358,14 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 	};
 
     function replaceSpecialCharacters(string){
+    	string = string.replace(" - ", "_");
+    	string = string.replace(" - ", "_");
 		string = string.replace(" : ", "_");
 		string = string.replace(" ", "_");
 		string = string.replace("-", "_");
 		string = string.replace("é","e");
 		string = string.replace("è","e");
+		string = string.replace("ê","e");
 		string = string.replace("ĂŞ","e");
 		string = string.replace("'","_");
 		string = string.replace("(","");
@@ -453,10 +461,8 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 			console.log ("ouverture de carte is "+carte.ouverture);
 		}
 		else {
-			for (var i = 0;i < $scope.carte.utilisation.length;i ++){
-				if ($scope.carte.utilisation[i].ouverture){
-					carte.ouverture = 0;
-				}
+			if ($scope.carte.ouverture){
+				carte.ouverture = 0;
 			}
 		}
 		
@@ -467,15 +473,17 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 				objet: "",
 				action: $scope.carte.utilisation[i].action,
 				ouverture: $scope.carte.utilisation[i].ouverture,
+				passive: $scope.carte.utilisation[i].passive,
 				consequences: [],
 				contraintes: [],
 				circonstances: []
 			});
 			populateInfo(carte.utilisation[i],$scope.carte.utilisation[i]);
 			if ($scope.carte.utilisation[i].objet != undefined){
-				$scope.carte.utilisation[i].objet.substring(6,7) - 1
+				carte.utilisation[i].objet = $scope.carte.utilisation[i].objet.substring(6,7) - 1;
 			}
 		}
+		carte.utilisation = JSON.stringify(carte.utilisation);
 
 		// Transfer carte info:
 
@@ -556,16 +564,16 @@ angular.module('cartes').controller('CartesController', ['$scope','$state','$htt
 					case: $scope.carte.info.etapes[i].case,
 					cartes: []
 				});
-				if ($scope.carte.info.etapes[i].cartes !== undefined){
+				if ($scope.carte.info.etapes[i].cartes != undefined){
 					for (var j in $scope.carte.info.etapes[i].cartes){
-						if ($scope.carte.info.etapes[i].cartes[j].nom != undefined){
+						if ($scope.carte.info.etapes[i].cartes[j] != undefined && $scope.carte.info.etapes[i].cartes[j].nom != undefined){
 							var carteNom = $scope.carte.info.etapes[i].cartes[j].nom;
 							var carteCode = $scope.objetsHorsPiocheCodes[$scope.objetsHorsPiocheNoms.indexOf(carteNom)];
 							carte.info.etapes[i].cartes.push({code: carteCode});
 						}
 					}
 				}
-				if ($scope.carte.info.etapes[i].cases !== undefined){
+				if ($scope.carte.info.etapes[i].cases != undefined){
 					carte.info.etapes[i].cases = [];
 					for (var j in $scope.carte.info.etapes[i].cases){
 						carte.info.etapes[i].cases.push($scope.carte.info.etapes[i].cases[j]);

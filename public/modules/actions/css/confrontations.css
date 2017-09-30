@@ -9,6 +9,15 @@
 	border-radius: 5px;
 }
 
+.confrontations-container-personnage {
+	height: 300px;
+	margin-top: 10px;
+	padding: 5px;
+	background-color: #fff2fb;
+	border: solid 2px #e75ebb;
+	border-radius: 5px;
+}
+
 .confrontations-container-combat {
 	height: 300px;
 	margin-top: 10px;

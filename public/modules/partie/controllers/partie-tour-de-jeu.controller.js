@@ -74,6 +74,7 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 				$scope.partie.dispo.cartes.utiliser = true;
 				$scope.$emit('confrontations-attaque-duel-cancel', {});
 				$scope.$emit('partie-tour-action-start', {});
+				$scope.$emit('cartes-utilisation-possible',{action: true,specifique: false});
 			}
 		}
 	}
@@ -89,6 +90,7 @@ angular.module('partie').controller('PartieTourDeJeuController', ['$scope','$roo
 		}
 		if ($scope.joueurId === $scope.partie.tour_joueur && $scope.partie.tour_action === 6){
 			$scope.$emit('partie-tour-action-start', {});
+			$scope.$emit('cartes-utilisation-possible',{action: true,specifique: false});
 		}
 	});
 	console.log('intializaing this')

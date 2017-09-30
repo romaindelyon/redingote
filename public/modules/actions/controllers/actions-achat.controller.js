@@ -44,6 +44,7 @@ angular.module('actions').controller('ActionsAchatController', ['$scope','$rootS
 	    		position: $scope.joueurId
 	    	}).success(function(){
 				var carte = $scope.actionCase.carte;
+				carte.statut.utilisation = carte.utilisation;
 				// Updater le statut de l'objet s'il est utile en mission :
 				for (var i = 0;i < $scope.jeu.missions.length;i ++){
 					if ($scope.jeu.missions[i].statut !== 'completed'){
@@ -54,17 +55,17 @@ angular.module('actions').controller('ActionsAchatController', ['$scope','$rootS
 									if ($scope.jeu.missions[i].info.etapes[j].cartes[k] != undefined && $scope.jeu.missions[i].info.etapes[j].cartes[k].code === carte.code){
 										console.log("mission locked");
 										carte.statut.missionLocked = true;
-										Cartes.changementStatut({id: carte.id,statut: carte.statut}).success(function(){
-											console.log("updated statut accordingly");
-										}).error(function(){
-											console.log("problème de statut update");
-										})
 									}
 								}
 							}
 						}
 					}
 				}
+				Cartes.changementStatut({carteId: carte.id,statut: carte.statut}).success(function(){
+					console.log("updated statut accordingly");
+				}).error(function(){
+					console.log("problème de statut update");
+				});
 		        // Ajouter la carte à la main :
 		        $scope.jeu.horsPioche.push(carte);
 		       // Retirer la carte des achats possible :

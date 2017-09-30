@@ -48,16 +48,6 @@ angular.module('jeu').controller('JeuHorsPiocheController', ['$scope','$rootScop
     	})
 	}
 
-	$rootScope.$on('cartes-utilisation-possible',function(event,args){
-		console.log('utilisation possible');
-		for (var i = 0;i < $scope.jeu.horsPioche.length;i ++){
-			if ($scope.jeu.horsPioche[i].code === args.code){
-				console.log('code trouvé');
-				$scope.jeu.horsPioche[i].statut.utilisable = true;
-			}
-		}
-	});
-
 	$scope.utiliserCarteHorsPioche = function(index){
 		console.log($scope.jeu.horsPioche[index]);
 		if ($scope.jeu.horsPioche[index].utilisation.indexOf('reaction') >= 0){

@@ -31,6 +31,12 @@ angular.module('cartes').controller('CartesPiocheController',
     		position: newPosition
     	}).success(function(){
 			var carte = $scope.pioches.pioche[carteOrder];
+			carte.statut.utilisation = carte.utilisation;
+			Cartes.changementStatut({carteId: carte.id,statut: carte.statut}).success(function(){
+				console.log("updated statut accordingly");
+			}).error(function(){
+				console.log("problème de statut update");
+			});
 			var piocheCartePopup = $mdDialog.confirm({
 	        	templateUrl: 'modules/cartes/views/cartes-pioche-popup.view.html',
 	        	clickOutsideToClose: true,
@@ -161,7 +167,7 @@ angular.module('cartes').controller('CartesPiocheController',
 							if (carte.info.etapes[j].cartes[k] != undefined && carte.info.etapes[j].cartes[k].code === $scope.jeu.horsPioche[i].code){
 								console.log("mission locked");
 								$scope.jeu.horsPioche[i].statut.missionLocked = true;
-								Cartes.changementStatut({id: $scope.jeu.horsPioche[i].id,statut: $scope.jeu.horsPioche[i].statut}).success(function(){
+								Cartes.changementStatut({carteId: $scope.jeu.horsPioche[i].id,statut: $scope.jeu.horsPioche[i].statut}).success(function(){
 									console.log("updated statut accordingly");
 								}).error(function(){
 									console.log("problème de statut update");
